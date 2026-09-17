@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elma's Cakes | Order Fresh Custom Cakes</title>
+  <style>
+    :root {
+      --primary: #e85d04;
+      --primary-hover: #dc2f02;
+      --bg-color: #fff0f3;
+      --card-bg: #ffffff;
+      --text-dark: #2b2d42;
+      --text-light: #6c757d;
+      --accent: #ffb703;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-dark);
+      padding-bottom: 80px;
+    }
+
+    header {
+      background: var(--card-bg);
+      padding: 1rem 1.5rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .cart-badge {
+      position: relative;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 2.5rem 1rem 1.5rem;
+      background: linear-gradient(135deg, #ffccd5, #fff0f3);
+    }
+
+    .hero h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero p {
+      color: var(--text-light);
+      font-size: 0.95rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background-color: #eee;
+    }
+
+    .card-body {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .card-price {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.6rem;
+      border: none;
+      border-radius: 6px;
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: auto;
+    }
+
+    .btn:active {
+      background: var(--primary-hover);
+    }
+
+    .cart-drawer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--card-bg);
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+      padding: 1.2rem;
+      max-height: 80vh;
+      overflow-y: auto;
+      transform: translateY(100%);
+      transition: transform 0.3s ease-out;
+      z-index: 200;
+    }
+
+    .cart-drawer.active {
+      transform: translateY(0);
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.5rem;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.8rem;
+      font-size: 0.95rem;
+    }
+
+    .checkout-btn {
+      background: #25D366;
+      color: white;
+      width: 100%;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-top: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      z-index: 150;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">Elma's Cakes</div>
+    <button class="cart-badge" onclick="toggleCart()">
+      Cart (<span id="cart-count">0</span>)
+    </button>
+  </header>
+
+  <section class="hero">
+    <h1>Freshly Baked with Love</h1>
+    <p>Select your favorite cake and order directly on WhatsApp</p>
+  </section>
+
+  <main class="container">
+    <div class="grid" id="product-grid"></div>
+  </main>
+
+  <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h3>Your Order</h3>
+      <button style="border:none; background:none; font-size:1.2rem; cursor:pointer;" onclick="toggleCart()">✕</button>
+    </div>
+    <div id="cart-items"></div>
+    <div style="margin-top: 1rem; font-weight: 700; text-align: right;">
+      Total: ₦<span id="cart-total">0</span>
+    </div>
+    <button class="checkout-btn" onclick="sendWhatsAppOrder()">
+      Order via WhatsApp
+    </button>
+  </div>
+
+  <script>
+    const products = [
+      { id: 1, name: "Chocolate Fudge Cake", price: 15000, img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=500&q=80" },
+      { id: 2, name: "Vanilla Birthday Cake", price: 12000, img: "https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=500&q=80" },
+      { id: 3, name: "Red Velvet Delight", price: 18000, img: "https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?auto=format&fit=crop&w=500&q=80" },
+      { id: 4, name: "Custom Cupcakes (Box of 6)", price: 8000, img: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=500&q=80" }
+    ];
+
+    let cart = [];
+
+    function renderProducts() {
+      const grid = document.getElementById('product-grid');
+      grid.innerHTML = products.map(p => `
+        <div class="card">
+          <img src="${p.img}" alt="${p.name}">
+          <div class="card-body">
+            <div class="card-title">${p.name}</div>
+            <div class="card-price">₦${p.price.toLocaleString()}</div>
+            <button class="btn" onclick="addToCart(${p.id})">Add to Cart</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addToCart(id) {
+      const item = products.find(p => p.id === id);
+      cart.push(item);
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      document.getElementById('cart-count').innerText = cart.length;
+      const cartItems = document.getElementById('cart-items');
+      
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<p style="color:var(--text-light)">Your cart is empty.</p>';
+      } else {
+        cartItems.innerHTML = cart.map((item, index) => `
+          <div class="cart-item">
+            <span>${item.name}</span>
+            <span>₦${item.price.toLocaleString()}</span>
+          </div>
+        `).join('');
+      }
+
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      document.getElementById('cart-total').innerText = total.toLocaleString();
+    }
+
+    function toggleCart() {
+      document.getElementById('cart-drawer').classList.toggle('active');
+      document.getElementById('overlay').classList.toggle('active');
+    }
+
+    function sendWhatsAppOrder() {
+      if (cart.length === 0) {
+        alert("Please add items to your cart first!");
+        return;
+      }
+      
+      const phone = "2349135059528";
+      let message = "Hello Elma's Cakes! I would like to place an order:\n\n";
+      cart.forEach((item, i) => {
+        message += `${i + 1}. ${item.name} - ₦${item.price.toLocaleString()}\n`;
+      });
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      message += `\nTotal: ₦${total.toLocaleString()}`;
+
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
+    }
+
+    renderProducts();
+    updateCartUI();
+  </script>
+</body>
+</html>
