@@ -11,7 +11,7 @@
       --dark: #2d3436;
       --light: #f8f9fa;
       --border: #dfe6e9;
-      --success: #00b894;
+      --danger: #d63031;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -38,6 +38,7 @@
       position: sticky;
       top: 78px;
       z-index: 90;
+      flex-wrap: wrap;
     }
 
     .nav-btn {
@@ -72,16 +73,16 @@
 
     /* Gallery */
     .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
-    .gallery-item { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+    .gallery-item { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); padding-bottom: 10px; text-align: center; }
     .gallery-item img { width: 100%; height: 180px; object-fit: cover; }
-    .gallery-item p { padding: 8px; text-align: center; font-weight: bold; font-size: 0.9rem; }
+    .gallery-item p { padding: 8px; font-weight: bold; font-size: 0.9rem; }
 
     /* Cart Section */
     .cart-section { background: white; padding: 20px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 25px; }
     .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
     .cart-controls { display: flex; align-items: center; gap: 8px; }
     .qty-btn { background: var(--secondary); color: white; border: none; width: 26px; height: 26px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-    .remove-btn { background: #ff7675; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+    .remove-btn { background: #ff7675; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold; }
     .cart-summary { margin-top: 15px; text-align: right; font-size: 1.2rem; font-weight: bold; }
     .checkout-btn { background-color: #25D366; color: white; border: none; padding: 12px 20px; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
@@ -352,8 +353,15 @@
         <div class="gallery-item">
           <img src="${img.url}" alt="${img.title}">
           <p>${img.title}</p>
+          ${isAdmin ? `<button class="remove-btn" onclick="removeImage(${img.id})" style="margin-top: 5px;">Delete Photo</button>` : ''}
         </div>
       `).join('');
+    }
+
+    function removeImage(id) {
+      gallery = gallery.filter(img => img.id !== id);
+      renderGallery();
+      updateDashboards();
     }
 
     // Review Logic
@@ -402,6 +410,7 @@
         isAdmin = true;
         document.getElementById('admin-login-sec').style.display = 'none';
         document.getElementById('admin-panel-sec').style.display = 'block';
+        renderGallery();
         updateDashboards();
       } else {
         alert('Incorrect Password');
