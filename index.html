@@ -3,315 +3,438 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elma's Cakes | Order Fresh Custom Cakes</title>
+  <title>Elma's Cakes 🎂</title>
   <style>
     :root {
-      --primary: #e85d04;
-      --primary-hover: #dc2f02;
-      --bg-color: #fff0f3;
-      --card-bg: #ffffff;
-      --text-dark: #2b2d42;
-      --text-light: #6c757d;
-      --accent: #ffb703;
+      --primary: #e84393;
+      --secondary: #fd79a8;
+      --dark: #2d3436;
+      --light: #f8f9fa;
+      --border: #dfe6e9;
+      --success: #00b894;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-dark);
-      padding-bottom: 80px;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: var(--light); color: var(--dark); padding-bottom: 60px; }
 
     header {
-      background: var(--card-bg);
-      padding: 1rem 1.5rem;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      background-color: var(--primary);
+      color: white;
+      padding: 20px;
+      text-align: center;
       position: sticky;
       top: 0;
       z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    nav {
+      background: white;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .brand {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
-
-    .cart-badge {
-      position: relative;
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 2.5rem 1rem 1.5rem;
-      background: linear-gradient(135deg, #ffccd5, #fff0f3);
-    }
-
-    .hero h1 {
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .hero p {
-      color: var(--text-light);
-      font-size: 0.95rem;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 1rem;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1.2rem;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      background-color: #eee;
-    }
-
-    .card-body {
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-    }
-
-    .card-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-    }
-
-    .card-price {
-      color: var(--primary);
-      font-weight: 700;
-      font-size: 1.1rem;
-      margin-bottom: 0.8rem;
-    }
-
-    .btn {
-      width: 100%;
-      padding: 0.6rem;
-      border: none;
-      border-radius: 6px;
-      background: var(--primary);
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: auto;
-    }
-
-    .btn:active {
-      background: var(--primary-hover);
-    }
-
-    .cart-drawer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--card-bg);
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
-      border-top-left-radius: 16px;
-      border-top-right-radius: 16px;
-      padding: 1.2rem;
-      max-height: 80vh;
-      overflow-y: auto;
-      transform: translateY(100%);
-      transition: transform 0.3s ease-out;
-      z-index: 200;
-    }
-
-    .cart-drawer.active {
-      transform: translateY(0);
-    }
-
-    .cart-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 0.5rem;
-    }
-
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.8rem;
-      font-size: 0.95rem;
-    }
-
-    .checkout-btn {
-      background: #25D366;
-      color: white;
-      width: 100%;
-      padding: 0.8rem;
-      border: none;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 1rem;
-      margin-top: 1rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
       justify-content: center;
-      gap: 0.5rem;
+      gap: 10px;
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 78px;
+      z-index: 90;
     }
 
-    .overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.4);
-      display: none;
-      z-index: 150;
+    .nav-btn {
+      background: none;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
     }
 
-    .overlay.active {
-      display: block;
+    .nav-btn.active {
+      background: var(--primary);
+      color: white;
     }
+
+    .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    h2 { margin-bottom: 15px; color: var(--primary); border-bottom: 2px solid var(--secondary); padding-bottom: 5px; }
+
+    /* Product Grid */
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-bottom: 25px; }
+    .card { background: white; border-radius: 8px; padding: 15px; border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+    .price { font-weight: bold; color: var(--primary); margin-bottom: 12px; }
+    
+    .btn { background-color: var(--primary); color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+    .btn:hover { opacity: 0.9; }
+
+    /* Gallery */
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+    .gallery-item { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+    .gallery-item img { width: 100%; height: 180px; object-fit: cover; }
+    .gallery-item p { padding: 8px; text-align: center; font-weight: bold; font-size: 0.9rem; }
+
+    /* Cart Section */
+    .cart-section { background: white; padding: 20px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 25px; }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+    .cart-controls { display: flex; align-items: center; gap: 8px; }
+    .qty-btn { background: var(--secondary); color: white; border: none; width: 26px; height: 26px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    .remove-btn { background: #ff7675; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+    .cart-summary { margin-top: 15px; text-align: right; font-size: 1.2rem; font-weight: bold; }
+    .checkout-btn { background-color: #25D366; color: white; border: none; padding: 12px 20px; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
+
+    /* Reviews Section */
+    .review-card { background: white; padding: 12px; border-radius: 6px; border: 1px solid var(--border); margin-bottom: 10px; }
+    .review-header { display: flex; justify-content: space-between; margin-bottom: 5px; font-weight: bold; }
+    .stars { color: #f1c40f; }
+
+    form { background: white; padding: 15px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
+    input, select, textarea { padding: 10px; border: 1px solid var(--border); border-radius: 5px; width: 100%; }
+
+    /* Admin Dashboard */
+    .dashboard-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px; }
+    .stat-card { background: white; padding: 15px; border-radius: 8px; border: 1px solid var(--border); text-align: center; }
+    .stat-card h4 { color: var(--primary); font-size: 0.9rem; margin-bottom: 5px; }
+    .stat-card p { font-size: 1.5rem; font-weight: bold; }
+
+    .empty-msg { color: #b2bec3; text-align: center; padding: 15px 0; }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="brand">Elma's Cakes</div>
-    <button class="cart-badge" onclick="toggleCart()">
-      Cart (<span id="cart-count">0</span>)
-    </button>
+    <h1>Elma's Cakes 🎂</h1>
+    <p>Freshly baked delights right to your doorstep!</p>
   </header>
 
-  <section class="hero">
-    <h1>Freshly Baked with Love</h1>
-    <p>Select your favorite cake and order directly on WhatsApp</p>
-  </section>
+  <nav>
+    <button class="nav-btn active" onclick="switchTab('store')">Store</button>
+    <button class="nav-btn" onclick="switchTab('gallery')">Gallery</button>
+    <button class="nav-btn" onclick="switchTab('reviews')">Reviews</button>
+    <button class="nav-btn" onclick="switchTab('customer-dashboard')">My Account</button>
+    <button class="nav-btn" onclick="switchTab('admin-dashboard')">Admin Panel</button>
+  </nav>
 
-  <main class="container">
-    <div class="grid" id="product-grid"></div>
-  </main>
+  <div class="container">
 
-  <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+    <!-- STORE TAB -->
+    <div id="store" class="tab-content active">
+      <h2>Menu</h2>
+      <div class="product-grid" id="product-grid"></div>
 
-  <div class="cart-drawer" id="cart-drawer">
-    <div class="cart-header">
-      <h3>Your Order</h3>
-      <button style="border:none; background:none; font-size:1.2rem; cursor:pointer;" onclick="toggleCart()">✕</button>
+      <h2>Your Cart</h2>
+      <div class="cart-section">
+        <div id="cart-items"><p class="empty-msg">Your cart is currently empty.</p></div>
+        <div class="cart-summary" id="cart-total" style="display: none;">Total: ₦<span id="total-amount">0</span></div>
+        <button class="checkout-btn" id="checkout-btn" style="display: none;" onclick="sendToWhatsApp()">Order via WhatsApp 📲</button>
+      </div>
     </div>
-    <div id="cart-items"></div>
-    <div style="margin-top: 1rem; font-weight: 700; text-align: right;">
-      Total: ₦<span id="cart-total">0</span>
+
+    <!-- GALLERY TAB -->
+    <div id="gallery" class="tab-content">
+      <h2>Cake Gallery</h2>
+      <div class="gallery-grid" id="gallery-grid"></div>
     </div>
-    <button class="checkout-btn" onclick="sendWhatsAppOrder()">
-      Order via WhatsApp
-    </button>
+
+    <!-- REVIEWS TAB -->
+    <div id="reviews" class="tab-content">
+      <h2>Customer Reviews</h2>
+      <form id="review-form" onsubmit="submitReview(event)">
+        <h3>Leave a Review</h3>
+        <input type="text" id="rev-name" placeholder="Your Name" required>
+        <select id="rev-rating" required>
+          <option value="5">5 Stars - Outstanding ⭐️⭐️⭐️⭐️⭐️</option>
+          <option value="4">4 Stars - Very Good ⭐️⭐️⭐️⭐️</option>
+          <option value="3">3 Stars - Average ⭐️⭐️⭐️</option>
+        </select>
+        <textarea id="rev-comment" placeholder="Write your feedback..." rows="3" required></textarea>
+        <button type="submit" class="btn">Submit Review</button>
+      </form>
+      <div id="reviews-list"></div>
+    </div>
+
+    <!-- CUSTOMER DASHBOARD TAB -->
+    <div id="customer-dashboard" class="tab-content">
+      <h2>Customer Dashboard</h2>
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <h4>Items in Cart</h4>
+          <p id="cust-cart-count">0</p>
+        </div>
+        <div class="stat-card">
+          <h4>Your Reviews Submitted</h4>
+          <p id="cust-review-count">0</p>
+        </div>
+      </div>
+      <div class="cart-section">
+        <h3>Order Status</h3>
+        <p style="margin-top: 10px;">Select your cake items from the Store menu and click <strong>Order via WhatsApp</strong> to finalize fulfillment directly with our team.</p>
+      </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD TAB -->
+    <div id="admin-dashboard" class="tab-content">
+      <div id="admin-login-sec">
+        <h2>Admin Login</h2>
+        <form onsubmit="adminLogin(event)">
+          <input type="password" id="admin-pass" placeholder="Enter Admin Password (default: elma)" required>
+          <button type="submit" class="btn">Login</button>
+        </form>
+      </div>
+
+      <div id="admin-panel-sec" style="display: none;">
+        <h2>Admin Control Center</h2>
+        
+        <div class="dashboard-stats">
+          <div class="stat-card">
+            <h4>Total Products</h4>
+            <p id="adm-prod-count">0</p>
+          </div>
+          <div class="stat-card">
+            <h4>Gallery Pictures</h4>
+            <p id="adm-img-count">0</p>
+          </div>
+          <div class="stat-card">
+            <h4>Total Reviews</h4>
+            <p id="adm-rev-count">0</p>
+          </div>
+        </div>
+
+        <form onsubmit="addNewProduct(event)">
+          <h3>Add New Cake Product</h3>
+          <input type="text" id="new-prod-name" placeholder="Cake Name" required>
+          <input type="number" id="new-prod-price" placeholder="Price (₦)" required>
+          <button type="submit" class="btn">Add Product</button>
+        </form>
+
+        <form onsubmit="addNewImage(event)">
+          <h3>Add Photo to Gallery</h3>
+          <input type="text" id="new-img-title" placeholder="Cake Title / Description" required>
+          <input type="url" id="new-img-url" placeholder="Image URL (e.g. https://...)" required>
+          <button type="submit" class="btn">Add Photo</button>
+        </form>
+      </div>
+    </div>
+
   </div>
 
   <script>
-    const products = [
-      { id: 1, name: "Chocolate Fudge Cake", price: 15000, img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=500&q=80" },
-      { id: 2, name: "Vanilla Birthday Cake", price: 12000, img: "https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=500&q=80" },
-      { id: 3, name: "Red Velvet Delight", price: 18000, img: "https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?auto=format&fit=crop&w=500&q=80" },
-      { id: 4, name: "Custom Cupcakes (Box of 6)", price: 8000, img: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=500&q=80" }
+    // State Data
+    let products = [
+      { id: 1, name: "6-inch Simple Cake", price: 12000 },
+      { id: 2, name: "8-inch Custom Cake", price: 20000 },
+      { id: 3, name: "10-inch Celebration Cake", price: 32000 },
+      { id: 4, name: "Box of 6 Cupcakes", price: 8000 },
+      { id: 5, name: "Chocolate Fudgy Brownies", price: 10000 }
     ];
 
-    let cart = [];
+    let gallery = [
+      { id: 1, title: "Custom Birthday Cake", url: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=400&q=80" },
+      { id: 2, title: "Chocolate Cupcakes", url: "https://images.unsplash.com/photo-1587668178277-295251f900ce?auto=format&fit=crop&w=400&q=80" }
+    ];
 
+    let reviews = [
+      { name: "Blessing", rating: 5, comment: "The cake was super moist and delicious! Highly recommend." }
+    ];
+
+    let cart = {};
+    let isAdmin = false;
+
+    // Navigation Tabs
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+      updateDashboards();
+    }
+
+    // Store Logic
     function renderProducts() {
       const grid = document.getElementById('product-grid');
       grid.innerHTML = products.map(p => `
         <div class="card">
-          <img src="${p.img}" alt="${p.name}">
-          <div class="card-body">
-            <div class="card-title">${p.name}</div>
-            <div class="card-price">₦${p.price.toLocaleString()}</div>
-            <button class="btn" onclick="addToCart(${p.id})">Add to Cart</button>
+          <div>
+            <h3>${p.name}</h3>
+            <div class="price">₦${p.price.toLocaleString()}</div>
           </div>
+          <button class="btn" onclick="addToCart(${p.id})">Add to Cart</button>
         </div>
       `).join('');
     }
 
     function addToCart(id) {
-      const item = products.find(p => p.id === id);
-      cart.push(item);
-      updateCartUI();
-    }
-
-    function updateCartUI() {
-      document.getElementById('cart-count').innerText = cart.length;
-      const cartItems = document.getElementById('cart-items');
-      
-      if (cart.length === 0) {
-        cartItems.innerHTML = '<p style="color:var(--text-light)">Your cart is empty.</p>';
-      } else {
-        cartItems.innerHTML = cart.map((item, index) => `
-          <div class="cart-item">
-            <span>${item.name}</span>
-            <span>₦${item.price.toLocaleString()}</span>
-          </div>
-        `).join('');
+      if (cart[id]) cart[id].qty += 1;
+      else {
+        const prod = products.find(p => p.id === id);
+        cart[id] = { ...prod, qty: 1 };
       }
-
-      const total = cart.reduce((sum, item) => sum + item.price, 0);
-      document.getElementById('cart-total').innerText = total.toLocaleString();
+      renderCart();
     }
 
-    function toggleCart() {
-      document.getElementById('cart-drawer').classList.toggle('active');
-      document.getElementById('overlay').classList.toggle('active');
+    function changeQty(id, delta) {
+      if (cart[id]) {
+        cart[id].qty += delta;
+        if (cart[id].qty <= 0) delete cart[id];
+      }
+      renderCart();
     }
 
-    function sendWhatsAppOrder() {
-      if (cart.length === 0) {
-        alert("Please add items to your cart first!");
+    function removeFromCart(id) {
+      delete cart[id];
+      renderCart();
+    }
+
+    function renderCart() {
+      const cartContainer = document.getElementById('cart-items');
+      const cartTotal = document.getElementById('cart-total');
+      const checkoutBtn = document.getElementById('checkout-btn');
+      const totalAmount = document.getElementById('total-amount');
+
+      const itemIds = Object.keys(cart);
+      if (itemIds.length === 0) {
+        cartContainer.innerHTML = '<p class="empty-msg">Your cart is currently empty.</p>';
+        cartTotal.style.display = 'none';
+        checkoutBtn.style.display = 'none';
+        updateDashboards();
         return;
       }
-      
-      const phone = "2349135059528";
-      let message = "Hello Elma's Cakes! I would like to place an order:\n\n";
-      cart.forEach((item, i) => {
-        message += `${i + 1}. ${item.name} - ₦${item.price.toLocaleString()}\n`;
-      });
-      const total = cart.reduce((sum, item) => sum + item.price, 0);
-      message += `\nTotal: ₦${total.toLocaleString()}`;
 
-      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-      window.open(url, '_blank');
+      let grandTotal = 0;
+      let html = '';
+      itemIds.forEach(id => {
+        const item = cart[id];
+        const subtotal = item.price * item.qty;
+        grandTotal += subtotal;
+        html += `
+          <div class="cart-item">
+            <div>
+              <strong>${item.name}</strong><br>
+              <small>₦${item.price.toLocaleString()} each</small>
+            </div>
+            <div class="cart-controls">
+              <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
+              <span>${item.qty}</span>
+              <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+              <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
+            </div>
+          </div>
+        `;
+      });
+
+      cartContainer.innerHTML = html;
+      totalAmount.innerText = grandTotal.toLocaleString();
+      cartTotal.style.display = 'block';
+      checkoutBtn.style.display = 'block';
+      updateDashboards();
     }
 
+    function sendToWhatsApp() {
+      const phone = "2349135059528";
+      let msg = "Hello Elma's Cakes! I would like to place an order:\n\n";
+      let total = 0;
+      Object.values(cart).forEach(item => {
+        const subtotal = item.price * item.qty;
+        total += subtotal;
+        msg += `• ${item.name} x${item.qty} - ₦${subtotal.toLocaleString()}\n`;
+      });
+      msg += `\n*Total Amount: ₦${total.toLocaleString()}*`;
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // Gallery Logic
+    function renderGallery() {
+      const grid = document.getElementById('gallery-grid');
+      grid.innerHTML = gallery.map(img => `
+        <div class="gallery-item">
+          <img src="${img.url}" alt="${img.title}">
+          <p>${img.title}</p>
+        </div>
+      `).join('');
+    }
+
+    // Review Logic
+    function renderReviews() {
+      const list = document.getElementById('reviews-list');
+      list.innerHTML = reviews.map(r => `
+        <div class="review-card">
+          <div class="review-header">
+            <span>${r.name}</span>
+            <span class="stars">${'⭐️'.repeat(r.rating)}</span>
+          </div>
+          <p>${r.comment}</p>
+        </div>
+      `).join('');
+    }
+
+    function submitReview(e) {
+      e.preventDefault();
+      const name = document.getElementById('rev-name').value;
+      const rating = parseInt(document.getElementById('rev-rating').value);
+      const comment = document.getElementById('rev-comment').value;
+
+      reviews.unshift({ name, rating, comment });
+      renderReviews();
+      document.getElementById('review-form').reset();
+      updateDashboards();
+    }
+
+    // Dashboard & Admin
+    function updateDashboards() {
+      // Customer
+      const totalCartCount = Object.values(cart).reduce((sum, i) => sum + i.qty, 0);
+      document.getElementById('cust-cart-count').innerText = totalCartCount;
+      document.getElementById('cust-review-count').innerText = reviews.length;
+
+      // Admin
+      document.getElementById('adm-prod-count').innerText = products.length;
+      document.getElementById('adm-img-count').innerText = gallery.length;
+      document.getElementById('adm-rev-count').innerText = reviews.length;
+    }
+
+    function adminLogin(e) {
+      e.preventDefault();
+      const pass = document.getElementById('admin-pass').value;
+      if (pass === 'elma') {
+        isAdmin = true;
+        document.getElementById('admin-login-sec').style.display = 'none';
+        document.getElementById('admin-panel-sec').style.display = 'block';
+        updateDashboards();
+      } else {
+        alert('Incorrect Password');
+      }
+    }
+
+    function addNewProduct(e) {
+      e.preventDefault();
+      const name = document.getElementById('new-prod-name').value;
+      const price = parseInt(document.getElementById('new-prod-price').value);
+      products.push({ id: Date.now(), name, price });
+      renderProducts();
+      updateDashboards();
+      e.target.reset();
+      alert('Product added successfully!');
+    }
+
+    function addNewImage(e) {
+      e.preventDefault();
+      const title = document.getElementById('new-img-title').value;
+      const url = document.getElementById('new-img-url').value;
+      gallery.push({ id: Date.now(), title, url });
+      renderGallery();
+      updateDashboards();
+      e.target.reset();
+      alert('Picture added to Gallery!');
+    }
+
+    // Initial Load
     renderProducts();
-    updateCartUI();
+    renderGallery();
+    renderReviews();
   </script>
+
 </body>
 </html>
