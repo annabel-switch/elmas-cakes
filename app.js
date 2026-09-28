@@ -4,7 +4,6 @@ let products = JSON.parse(localStorage.getItem('elma_products')) || [
   { id: 2, name: "Vanilla Cupcake Box", category: "Pastries", price: 8000, image: "https://images.unsplash.com/photo-1519869325930-281384150729?w=300", description: "Box of 6 cupcakes", outOfStock: false }
 ];
 
-
 let defaultReviews = [
   { name: "Osasere K.", rating: 5, comment: "The Chocolate Fudge Cake was extremely moist and fresh! Arrived right on time in GRA.", referral: "Referred by Osasere" },
   { name: "Adesuwa O.", rating: 5, comment: "Ordered a birthday cake for my sister. Super delicious and neat packaging!", referral: "Referred by Divine" },
@@ -14,29 +13,10 @@ let defaultReviews = [
   { name: "Tariq M.", rating: 4, comment: "Prompt WhatsApp response and the cake was delivered fresh without any mess.", referral: "Direct Customer" }
 ];
 
+// Force reset saved storage to populate all 6 reviews
 localStorage.removeItem('elma_reviews'); 
-
 let reviewsList = JSON.parse(localStorage.getItem('elma_reviews')) || defaultReviews;
 
-
-// FASTER AUTO-SCROLL CAROUSEL (1.5 Seconds Interval)
-let autoScrollInterval;
-function startAutoScroll() {
-  const container = document.querySelector(".reviews-slider-container");
-  if (!container) return;
-  clearInterval(autoScrollInterval);
-  autoScrollInterval = setInterval(() => {
-    if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
-      container.scrollLeft = 0; // Seamless reset to start
-    } else {
-      container.scrollBy({ left: 240, behavior: 'smooth' }); // Faster shift
-    }
-  }, 1500); // 1.5 seconds per slide for a fast, active scroll
-}
-
-
-
-let reviewsList = JSON.parse(localStorage.getItem('elma_reviews')) || defaultReviews;
 let cart = JSON.parse(localStorage.getItem('elma_cart')) || [];
 let ordersList = JSON.parse(localStorage.getItem('elma_orders')) || [
   { id: "ORD-101", phone: "09135059528", items: "Chocolate Fudge Cake", total: 15000, status: "Delivered 🎉" }
@@ -46,6 +26,21 @@ let discountApplied = 0;
 
 function saveProducts() { localStorage.setItem('elma_products', JSON.stringify(products)); }
 function saveOrders() { localStorage.setItem('elma_orders', JSON.stringify(ordersList)); }
+
+// FASTER AUTO-SCROLL CAROUSEL (1.5 Seconds Interval)
+let autoScrollInterval;
+function startAutoScroll() {
+  const container = document.querySelector(".reviews-slider-container");
+  if (!container) return;
+  clearInterval(autoScrollInterval);
+  autoScrollInterval = setInterval(() => {
+    if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
+      container.scrollLeft = 0;
+    } else {
+      container.scrollBy({ left: 240, behavior: 'smooth' });
+    }
+  }, 1500);
+}
 
 // TAB SWITCHER
 function switchTab(tabId) {
@@ -290,20 +285,6 @@ function submitReview(e) {
   document.getElementById("review-form").reset();
   renderReviews();
   alert("Thank you! Review published. 🎉");
-}
-
-let autoScrollInterval;
-function startAutoScroll() {
-  const container = document.querySelector(".reviews-slider-container");
-  if (!container) return;
-  clearInterval(autoScrollInterval);
-  autoScrollInterval = setInterval(() => {
-    if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 5) {
-      container.scrollLeft = 0;
-    } else {
-      container.scrollBy({ left: 220, behavior: 'smooth' });
-    }
-  }, 3500);
 }
 
 // ADMIN PANEL LOGIC
