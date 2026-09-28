@@ -447,7 +447,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCartUI();
 });
 
-// LOCATION & DELIVERY DATA STRUCTURE
+// LOCATION DATA
 const locationData = {
   "Edo": {
     "Benin City": [
@@ -488,7 +488,10 @@ function handleStateChange() {
   const citySelect = document.getElementById("select-city");
   const areaSelect = document.getElementById("select-area");
   
-  const selectedState = stateSelect.value;
+  // Clean value (e.g. "Delta State" -> "Delta")
+  let rawState = stateSelect.value;
+  let selectedState = rawState.replace(" State", "").trim();
+
   citySelect.innerHTML = '<option value="">-- Choose City --</option>';
   areaSelect.innerHTML = '<option value="">-- Choose Area --</option>';
   areaSelect.disabled = true;
@@ -509,7 +512,10 @@ function handleStateChange() {
 }
 
 function handleCityChange() {
-  const stateSelect = document.getElementById("select-state").value;
+  const stateSelect = document.getElementById("select-state");
+  let rawState = stateSelect.value;
+  let selectedState = rawState.replace(" State", "").trim();
+  
   const citySelect = document.getElementById("select-city").value;
   const areaSelect = document.getElementById("select-area");
 
@@ -517,9 +523,9 @@ function handleCityChange() {
   currentDeliveryFee = 0;
   updateDeliveryDisplay();
 
-  if (stateSelect && citySelect && locationData[stateSelect][citySelect]) {
+  if (selectedState && citySelect && locationData[selectedState][citySelect]) {
     areaSelect.disabled = false;
-    locationData[stateSelect][citySelect].forEach(item => {
+    locationData[selectedState][citySelect].forEach(item => {
       const opt = document.createElement("option");
       opt.value = item.area;
       opt.setAttribute("data-fee", item.fee);
@@ -548,4 +554,3 @@ function updateDeliveryDisplay() {
   if (feeDisplay) feeDisplay.innerText = `₦${currentDeliveryFee.toLocaleString()}`;
   updateCartUI();
 }
-
