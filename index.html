@@ -61,6 +61,38 @@
       <div class="cart-section">
         <div id="cart-items"><p class="empty-msg">Your cart is currently empty.</p></div>
 
+<!-- DYNAMIC LOCATION & DELIVERY FEE SELECTOR -->
+<div class="delivery-calculator" style="background: #fff0f5; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid #ffb6c1;">
+  <h4 style="margin: 0 0 10px 0; color: var(--primary);">📍 Delivery Location & Fee</h4>
+  
+  <!-- State Selection -->
+  <label style="font-size: 0.85rem; font-weight: bold;">Select State:</label>
+  <select id="select-state" onchange="handleStateChange()" style="width:100%; padding:8px; margin: 4px 0 10px 0; border-radius:6px; border:1px solid #ccc;">
+    <option value="">-- Choose State --</option>
+    <option value="Edo">Edo State</option>
+    <option value="Delta">Delta State</option>
+    <option value="Lagos">Lagos State</option>
+  </select>
+
+  <!-- City Selection -->
+  <label style="font-size: 0.85rem; font-weight: bold;">Select City:</label>
+  <select id="select-city" onchange="handleCityChange()" disabled style="width:100%; padding:8px; margin: 4px 0 10px 0; border-radius:6px; border:1px solid #ccc;">
+    <option value="">-- Choose City --</option>
+  </select>
+
+  <!-- Area / Neighborhood Selection -->
+  <label style="font-size: 0.85rem; font-weight: bold;">Select Specific Area:</label>
+  <select id="select-area" onchange="calculateDeliveryFee()" disabled style="width:100%; padding:8px; margin: 4px 0 10px 0; border-radius:6px; border:1px solid #ccc;">
+    <option value="">-- Choose Area --</option>
+  </select>
+
+  <!-- Delivery Fee Display -->
+  <p style="margin-top: 10px; font-weight: bold; font-size: 0.95rem;">
+    Delivery Fee: <span id="delivery-fee-display" style="color: var(--primary);">₦0</span>
+  </p>
+</div>
+
+
         <!-- DISCOUNT PROMO CODE BOX -->
         <div style="margin-top: 15px; display: flex; gap: 8px;">
           <input type="text" id="promo-input" placeholder="Enter Discount Code (e.g. ELMA10)" style="flex:1; padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
