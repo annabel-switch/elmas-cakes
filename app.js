@@ -279,3 +279,124 @@ document.addEventListener("DOMContentLoaded", () => {
   renderProducts();
   updateCartUI();
 });
+
+// DEFAULT SAMPLE REVIEWS DATA
+const defaultReviews = [
+  {
+    name: "Osasere K.",
+    rating: 5,
+    comment: "The Chocolate Fudge Cake was extremely moist and fresh! Arrived right on time in GRA.",
+    referral: "Referred by Osasere"
+  },
+  {
+    name: "Adesuwa O.",
+    rating: 5,
+    comment: "Ordered a birthday cake for my sister. Super delicious and neat packaging! Will order again.",
+    referral: "Referred by Divine"
+  },
+  {
+    name: "Eseosa B.",
+    rating: 5,
+    comment: "Best pastries in Benin City! The cupcakes were soft and rich in taste.",
+    referral: "Referred by Mercy"
+  },
+  {
+    name: "Precious A.",
+    rating: 4,
+    comment: "Fast delivery to Uselu campus. The frosting wasn't too sweet, just perfect!",
+    referral: "Direct Customer"
+  }
+];
+
+// INITIALIZE REVIEWS FROM LOCALSTORAGE OR DEFAULT
+let reviewsList = JSON.parse(localStorage.getItem('elma_reviews')) || defaultReviews;
+
+// RENDER SLIDING REVIEWS
+function renderReviews() {
+  const track = document.getElementById("reviews-track");
+  if (!track) return;
+
+  track.innerHTML = "";
+
+  reviewsList.forEach(rev => {
+    const card = document.createElement("div");
+    card.className = "review-card";
+
+    // Convert numeric rating to star emojis
+    const starStr = "⭐".repeat(rev.rating);
+
+    card.innerHTML = `
+      <div>
+        <div class="review-header">
+          <span class="review-author">${rev.name}</span>
+          <span class="review-stars">${starStr}</span>
+        </div>
+        <p class="review-body">"${rev.comment}"</p>
+      </div>
+      ${rev.referral ? `<span class="review-referral">🎁 ${rev.referral}</span>` : ''}
+    `;
+
+    track.appendChild(card);
+  });
+}
+
+// SUBMIT NEW REVIEW
+function submitReview(e) {
+  e.preventDefault();
+
+  const name = document.getElementById("rev-name").value.trim();
+  const rating = parseInt(document.getElementById("rev-rating").value);
+  const referred = document.getElementById("rev-referred").value.trim();
+  const comment = document.getElementById("rev-comment").value.trim();
+
+  if (!name || !comment) return;
+
+  const newReview = {
+    name: name,
+    rating: rating,
+    comment: comment,
+    referral: referred ? `Referred by ${referred}` : "Direct Customer"
+  };
+
+  // Add new review to the beginning of the list
+  reviewsList.unshift(newReview);
+  localStorage.setItem('elma_reviews', JSON.stringify(reviewsList));
+
+  // Reset form and re-render track
+  document.getElementById("review-form").reset();
+  renderReviews();
+
+  // Scroll carousel to top left to show newly added review
+  const container = document.querySelector(".reviews-slider-container");
+  if (container) container.scrollLeft = 0;
+
+  alert("Thank you! Your review has been published. 🎉");
+}
+
+// AUTO-SCROLL CAROUSEL FEATURE
+let autoScrollInterval;
+function startAutoScroll() {
+  const container = document.querySelector(".reviews-slider-container");
+  if (!container) return;
+
+  clearInterval(autoScrollInterval);
+  autoScrollInterval = setInterval(() => {
+    if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 5) {
+      container.scrollLeft = 0; // Loop back to start
+    } else {
+      container.scrollBy({ left: 220, behavior: 'smooth' });
+    }
+  }, 3500); // Scrolls every 3.5 seconds
+}
+
+// UPDATE SWITCH TAB TO INITIALIZE REVIEWS & AUTOSCROLL
+const originalSwitchTab = switchTab;
+switchTab = function(tabId) {
+  originalSwitchTab(tabId);
+  if (tabId === 'reviews') {
+    renderReviews();
+    startAutoScroll();
+  } else {
+    clearInterval(autoScrollInterval);
+  }
+};
