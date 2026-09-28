@@ -320,3 +320,147 @@ input, select, textarea { padding: 11px; border: 1px solid var(--border); border
   height: 30px;
   fill: white;
 }
+
+/* Features Grid */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 15px;
+  margin-bottom: 35px;
+}
+
+.feature-card {
+  background: white;
+  padding: 18px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.02);
+}
+
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.feature-card h3 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+
+.feature-card p {
+  font-size: 0.85rem;
+  color: #636e72;
+  line-height: 1.35;
+}
+
+/* Steps Grid */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 35px;
+}
+
+.step-card {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  position: relative;
+  text-align: center;
+}
+
+.step-badge {
+  background: var(--primary);
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.step-card h3 {
+  font-size: 1rem;
+  margin-bottom: 6px;
+  color: var(--dark);
+}
+
+.step-card p {
+  font-size: 0.85rem;
+  color: #636e72;
+  line-height: 1.35;
+}
+
+/* FAQ Container */
+.faq-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.faq-item {
+  background: white;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.faq-item h4 {
+  color: var(--primary);
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
+
+.faq-item p {
+  font-size: 0.88rem;
+  color: #2d3436;
+  line-height: 1.4;
+}
+
+/* Footer Section */
+.store-footer {
+  background: #2d3436;
+  color: white;
+  padding: 28px 18px 20px 18px;
+  border-radius: 15px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.store-footer h3 {
+  color: var(--secondary);
+  font-size: 1.3rem;
+  margin-bottom: 4px;
+}
+
+.store-footer p {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-bottom: 12px;
+}
+
+.footer-info {
+  border-top: 1px solid rgba(255,255,255,0.15);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  padding: 12px 0;
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.footer-copyright {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
