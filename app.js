@@ -4,7 +4,7 @@ let products = JSON.parse(localStorage.getItem('elma_products')) || [
   { id: 2, name: "Vanilla Cupcake Box", category: "Pastries", price: 8000, image: "https://images.unsplash.com/photo-1519869325930-281384150729?w=300", description: "Box of 6 cupcakes", outOfStock: false }
 ];
 
-// EXPANDED SAMPLE REVIEWS LIST
+
 let defaultReviews = [
   { name: "Osasere K.", rating: 5, comment: "The Chocolate Fudge Cake was extremely moist and fresh! Arrived right on time in GRA.", referral: "Referred by Osasere" },
   { name: "Adesuwa O.", rating: 5, comment: "Ordered a birthday cake for my sister. Super delicious and neat packaging!", referral: "Referred by Divine" },
@@ -14,14 +14,16 @@ let defaultReviews = [
   { name: "Tariq M.", rating: 4, comment: "Prompt WhatsApp response and the cake was delivered fresh without any mess.", referral: "Direct Customer" }
 ];
 
+localStorage.removeItem('elma_reviews'); 
+
 let reviewsList = JSON.parse(localStorage.getItem('elma_reviews')) || defaultReviews;
 
-// FASTER AUTO-SCROLL CAROUSEL (1.8 Seconds Interval)
+
+// FASTER AUTO-SCROLL CAROUSEL (1.5 Seconds Interval)
 let autoScrollInterval;
 function startAutoScroll() {
   const container = document.querySelector(".reviews-slider-container");
   if (!container) return;
-  
   clearInterval(autoScrollInterval);
   autoScrollInterval = setInterval(() => {
     if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
@@ -29,8 +31,9 @@ function startAutoScroll() {
     } else {
       container.scrollBy({ left: 240, behavior: 'smooth' }); // Faster shift
     }
-  }, 1800); // 1.8 seconds per slide for a brisk pace
+  }, 1500); // 1.5 seconds per slide for a fast, active scroll
 }
+
 
 
 let reviewsList = JSON.parse(localStorage.getItem('elma_reviews')) || defaultReviews;
