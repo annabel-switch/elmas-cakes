@@ -28,7 +28,7 @@
     <button class="nav-btn" onclick="switchTab('gallery', event)">Gallery</button>
     <button class="nav-btn" onclick="switchTab('reviews', event)">Reviews</button>
     <button class="nav-btn" onclick="switchTab('customer-dashboard', event)">My Account</button>
-    <button class="nav-btn" onclick="switchTab('admin-dashboard', event)">Admin Panel</button>
+    <button class="nav-btn" onclick="switchTab('admin', event)">Admin Panel</button>
   </nav>
 
   <div class="container">
@@ -68,7 +68,8 @@
         <div class="cart-summary" id="cart-total" style="display: none;">Total: ₦<span id="total-amount">0</span></div>
         <button class="checkout-btn" id="checkout-btn" style="display: none;" onclick="sendToWhatsApp()">Order via WhatsApp 📲</button>
       </div>
-            <!-- WHY CHOOSE US / TRUST BADGES -->
+
+      <!-- WHY CHOOSE US / TRUST BADGES -->
       <h2 style="margin-top: 40px;">Why Choose Elma's Cakes? ✨</h2>
       <div class="features-grid">
         <div class="feature-card">
@@ -184,97 +185,95 @@
     </div>
 
     <!-- ADMIN PANEL TAB -->
-<div id="admin" class="tab-content">
-  <h2>Admin Control Panel 🔐</h2>
+    <div id="admin" class="tab-content">
+      <h2>Admin Control Panel 🔐</h2>
 
-  <!-- PIN Protection Screen -->
-  <div id="admin-login-screen" class="cart-section" style="max-width: 400px; margin: 0 auto; text-align: center;">
-    <h3>Admin Authentication</h3>
-    <p style="font-size: 0.9rem; margin-bottom: 15px; color: #636e72;">Enter your security PIN to access the store management system.</p>
-    <form id="admin-login-form" onsubmit="unlockAdmin(event)">
-      <input type="password" id="admin-pin-input" placeholder="Enter PIN (Default: 1234)" required style="text-align: center; font-size: 1.2rem; letter-spacing: 4px;">
-      <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Unlock Panel 🔓</button>
-    </form>
-    <p id="admin-login-error" style="color: #e74c3c; font-size: 0.85rem; margin-top: 10px; display: none;">Incorrect PIN. Please try again.</p>
-  </div>
-
-  <!-- Main Dashboard (Hidden until unlocked) -->
-  <div id="admin-dashboard" style="display: none;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-      <p style="color: #27ae60; font-weight: bold;">Session Status: Authenticated ✅</p>
-      <button onclick="lockAdmin()" class="remove-btn">Lock Panel 🔒</button>
-    </div>
-
-    <!-- Quick Stats Overview -->
-    <div class="dashboard-stats">
-      <div class="stat-card">
-        <h4>Total Products</h4>
-        <p id="stat-product-count">0</p>
+      <!-- PIN Protection Screen -->
+      <div id="admin-login-screen" class="cart-section" style="max-width: 400px; margin: 0 auto; text-align: center;">
+        <h3>Admin Authentication</h3>
+        <p style="font-size: 0.9rem; margin-bottom: 15px; color: #636e72;">Enter your security PIN to access the store management system.</p>
+        <form id="admin-login-form" onsubmit="unlockAdmin(event)">
+          <input type="password" id="admin-pin-input" placeholder="Enter PIN (Default: 1234)" required style="text-align: center; font-size: 1.2rem; letter-spacing: 4px;">
+          <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Unlock Panel 🔓</button>
+        </form>
+        <p id="admin-login-error" style="color: #e74c3c; font-size: 0.85rem; margin-top: 10px; display: none;">Incorrect PIN. Please try again.</p>
       </div>
-      <div class="stat-card">
-        <h4>Gallery Items</h4>
-        <p id="stat-gallery-count">0</p>
-      </div>
-      <div class="stat-card">
-        <h4>Total Reviews</h4>
-        <p id="stat-reviews-count">0</p>
-      </div>
-    </div>
 
-    <!-- Add New Product Form -->
-    <div class="cart-section" style="margin-bottom: 25px;">
-      <h3 style="color: var(--primary); margin-bottom: 12px;">➕ Add New Menu Item</h3>
-      <form id="add-product-form" onsubmit="addNewProduct(event)">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
-          <input type="text" id="prod-name" placeholder="Item Name (e.g., Chocolate Fudge Cake)" required>
-          <select id="prod-category" required>
-            <option value="Cakes">Category: Cakes</option>
-            <option value="Pastries">Category: Pastries</option>
-            <option value="Cupcakes">Category: Cupcakes</option>
-            <option value="Desserts">Category: Desserts</option>
-          </select>
-          <input type="number" id="prod-price" placeholder="Price in ₦ (e.g., 15000)" required>
-          <input type="url" id="prod-image" placeholder="Image URL (e.g., https://...)" required>
+      <!-- Main Dashboard (Hidden until unlocked) -->
+      <div id="admin-dashboard" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <p style="color: #27ae60; font-weight: bold;">Session Status: Authenticated ✅</p>
+          <button onclick="lockAdmin()" class="remove-btn">Lock Panel 🔒</button>
         </div>
-        <textarea id="prod-desc" placeholder="Short description of ingredients or size..." rows="2" style="margin-top: 10px;"></textarea>
-        <button type="submit" class="btn" style="margin-top: 10px;">Publish Product to Store 🚀</button>
-      </form>
-    </div>
 
-    <!-- Inventory / Product Management Table -->
-    <div class="cart-section">
-      <h3 style="color: var(--primary); margin-bottom: 12px;">📦 Manage Store Inventory</h3>
-      <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
-          <thead>
-            <tr style="background: var(--light); border-bottom: 2px solid var(--border);">
-              <th style="padding: 10px;">Item</th>
-              <th style="padding: 10px;">Category</th>
-              <th style="padding: 10px;">Price (₦)</th>
-              <th style="padding: 10px;">Status</th>
-              <th style="padding: 10px; text-align: right;">Actions</th>
-            </tr>
-          </thead>
-          <tbody id="admin-inventory-table">
-            <!-- Inventory items injected dynamically via JavaScript -->
-          </tbody>
-        </table>
+        <!-- Quick Stats Overview -->
+        <div class="dashboard-stats">
+          <div class="stat-card">
+            <h4>Total Products</h4>
+            <p id="stat-product-count">0</p>
+          </div>
+          <div class="stat-card">
+            <h4>Gallery Items</h4>
+            <p id="stat-gallery-count">0</p>
+          </div>
+          <div class="stat-card">
+            <h4>Total Reviews</h4>
+            <p id="stat-reviews-count">0</p>
+          </div>
+        </div>
+
+        <!-- Add New Product Form -->
+        <div class="cart-section" style="margin-bottom: 25px;">
+          <h3 style="color: var(--primary); margin-bottom: 12px;">➕ Add New Menu Item</h3>
+          <form id="add-product-form" onsubmit="addNewProduct(event)">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+              <input type="text" id="prod-name" placeholder="Item Name (e.g., Chocolate Fudge Cake)" required>
+              <select id="prod-category" required>
+                <option value="Cakes">Category: Cakes</option>
+                <option value="Pastries">Category: Pastries</option>
+                <option value="Cupcakes">Category: Cupcakes</option>
+                <option value="Desserts">Category: Desserts</option>
+              </select>
+              <input type="number" id="prod-price" placeholder="Price in ₦ (e.g., 15000)" required>
+              <input type="url" id="prod-image" placeholder="Image URL (e.g., https://...)" required>
+            </div>
+            <textarea id="prod-desc" placeholder="Short description of ingredients or size..." rows="2" style="margin-top: 10px;"></textarea>
+            <button type="submit" class="btn" style="margin-top: 10px;">Publish Product to Store 🚀</button>
+          </form>
+        </div>
+
+        <!-- Inventory / Product Management Table -->
+        <div class="cart-section">
+          <h3 style="color: var(--primary); margin-bottom: 12px;">📦 Manage Store Inventory</h3>
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+              <thead>
+                <tr style="background: var(--light); border-bottom: 2px solid var(--border);">
+                  <th style="padding: 10px;">Item</th>
+                  <th style="padding: 10px;">Category</th>
+                  <th style="padding: 10px;">Price (₦)</th>
+                  <th style="padding: 10px;">Status</th>
+                  <th style="padding: 10px; text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-inventory-table">
+                <!-- Inventory items injected dynamically via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-
 
   </div>
 
   <!-- FLOATING WHATSAPP BUTTON -->
-<a href="https://wa.me/2349135059528?text=Hello%20%F0%9F%90%8B%20Elma%20we%20want%20to%20Order%20a%20Cake%20or%20your%20pastries" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
-  <svg viewBox="0 0 32 32" class="whatsapp-svg">
-    <path fill="#currentColor" d="M16 0c-8.837 0-16 7.163-16 16 0 2.825 0.737 5.607 2.137 8.048l-2.137 7.952 8.135-2.135c2.373 1.298 5.048 1.98 7.865 1.98 8.837 0 16-7.163 16-16s-7.163-16-16-16zM16 29.333c-2.453 0-4.853-0.653-6.96-1.88l-0.507-0.293-5.16 1.353 1.38-5.027-0.327-0.52c-1.353-2.16-2.067-4.667-2.067-7.293 0-7.36 5.973-13.333 13.333-13.333s13.333 5.973 13.333 13.333-5.973 13.333-13.333 13.333zM22.507 19.347c-0.36-0.18-2.12-1.047-2.447-1.167s-0.567-0.18-0.807 0.18c-0.24 0.36-0.92 1.167-1.127 1.407s-0.413 0.273-0.773 0.093c-0.36-0.18-1.52-0.56-2.9-1.787-1.073-0.953-1.8-2.133-2.013-2.493s-0.023-0.553 0.157-0.733c0.162-0.162 0.36-0.42 0.54-0.63 0.18-0.21 0.24-0.36 0.36-0.6 0.12-0.24 0.06-0.45-0.03-0.63s-0.807-1.947-1.107-2.667c-0.293-0.7-0.593-0.607-0.807-0.613h-0.687c-0.24 0-0.63 0.09-0.96 0.45s-1.26 1.23-1.26 3c0 1.77 1.29 3.48 1.47 3.72s2.533 3.867 6.133 5.42c0.856 0.37 1.524 0.59 2.045 0.757 0.86 0.273 1.642 0.235 2.26 0.143 0.69-0.103 2.12-0.867 2.42-1.707s0.3-1.557 0.21-1.707c-0.09-0.15-0.33-0.24-0.69-0.42z"></path>
-  </svg>
-</a>
+  <a href="https://wa.me/2349135059528?text=Hello%20%F0%9F%90%8B%20Elma%20we%20want%20to%20Order%20a%20Cake%20or%20your%20pastries" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 32 32" class="whatsapp-svg">
+      <path fill="currentColor" d="M16 0c-8.837 0-16 7.163-16 16 0 2.825 0.737 5.607 2.137 8.048l-2.137 7.952 8.135-2.135c2.373 1.298 5.048 1.98 7.865 1.98 8.837 0 16-7.163 16-16s-7.163-16-16-16zM16 29.333c-2.453 0-4.853-0.653-6.96-1.88l-0.507-0.293-5.16 1.353 1.38-5.027-0.327-0.52c-1.353-2.16-2.067-4.667-2.067-7.293 0-7.36 5.973-13.333 13.333-13.333s13.333 5.973 13.333 13.333-5.973 13.333-13.333 13.333zM22.507 19.347c-0.36-0.18-2.12-1.047-2.447-1.167s-0.567-0.18-0.807 0.18c-0.24 0.36-0.92 1.167-1.127 1.407s-0.413 0.273-0.773 0.093c-0.36-0.18-1.52-0.56-2.9-1.787-1.073-0.953-1.8-2.133-2.013-2.493s-0.023-0.553 0.157-0.733c0.162-0.162 0.36-0.42 0.54-0.63 0.18-0.21 0.24-0.36 0.36-0.6 0.12-0.24 0.06-0.45-0.03-0.63s-0.807-1.947-1.107-2.667c-0.293-0.7-0.593-0.607-0.807-0.613h-0.687c-0.24 0-0.63 0.09-0.96 0.45s-1.26 1.23-1.26 3c0 1.77 1.29 3.48 1.47 3.72s2.533 3.867 6.133 5.42c0.856 0.37 1.524 0.59 2.045 0.757 0.86 0.273 1.642 0.235 2.26 0.143 0.69-0.103 2.12-0.867 2.42-1.707s0.3-1.557 0.21-1.707c-0.09-0.15-0.33-0.24-0.69-0.42z"></path>
+    </svg>
+  </a>
 
-
-  <script src="script.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
