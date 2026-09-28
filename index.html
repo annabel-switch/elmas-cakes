@@ -61,36 +61,36 @@
       <div class="cart-section">
         <div id="cart-items"><p class="empty-msg">Your cart is currently empty.</p></div>
 
-<!-- DYNAMIC LOCATION & DELIVERY FEE SELECTOR -->
-<div class="delivery-calculator" style="background: #fff0f5; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid #ffb6c1;">
-  <h4 style="margin: 0 0 10px 0; color: var(--primary, #e91e63);">📍 Delivery Location & Fee</h4>
-  
-  <!-- State Selection -->
-  <label style="font-size: 0.85rem; font-weight: bold; display: block; margin-top: 5px;">Select State:</label>
-  <select id="select-state" style="width:100%; padding:8px; margin: 4px 0 10px 0; border-radius:6px; border:1px solid #ccc;">
-    <option value="">-- Choose State --</option>
-    <option value="Edo">Edo State</option>
-    <option value="Delta">Delta State</option>
-    <option value="Lagos">Lagos State</option>
-  </select>
+        <!-- DYNAMIC LOCATION & DELIVERY FEE SELECTOR -->
+        <div class="delivery-calculator" style="background: #fff0f5; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid #ffb6c1;">
+          <h4 style="margin: 0 0 10px 0; color: var(--primary, #e91e63);">📍 Delivery Location & Fee</h4>
+          
+          <!-- State Selection -->
+          <label style="font-size: 0.85rem; font-weight: bold; display: block; margin-top: 5px;">Select State:</label>
+          <select id="select-state" onchange="handleStateChange()" style="width:100%; padding:8px; margin: 4px 0 10px 0; border-radius:6px; border:1px solid #ccc;">
+            <option value="">-- Choose State --</option>
+            <option value="Edo">Edo State</option>
+            <option value="Delta">Delta State</option>
+            <option value="Lagos">Lagos State</option>
+          </select>
 
-  <!-- City Selection -->
-  <label style="font-size: 0.85rem; font-weight: bold; display: block;">Select City:</label>
-  <select id="select-city" disabled style="width:100%; padding:8px; margin: 4px 0 10px 0; border-radius:6px; border:1px solid #ccc;">
-    <option value="">-- Choose City --</option>
-  </select>
+          <!-- City Selection -->
+          <label style="font-size: 0.85rem; font-weight: bold; display: block;">Select City:</label>
+          <select id="select-city" onchange="handleCityChange()" disabled style="width:100%; padding:8px; margin: 4px 0 10px 0; border-radius:6px; border:1px solid #ccc;">
+            <option value="">-- Choose City --</option>
+          </select>
 
-  <!-- Area / Neighborhood Selection -->
-  <label style="font-size: 0.85rem; font-weight: bold; display: block;">Select Specific Area:</label>
-  <select id="select-area" disabled style="width:100%; padding:8px; margin: 4px 0 10px 0; border-radius:6px; border:1px solid #ccc;">
-    <option value="">-- Choose Area --</option>
-  </select>
+          <!-- Area / Neighborhood Selection -->
+          <label style="font-size: 0.85rem; font-weight: bold; display: block;">Select Specific Area:</label>
+          <select id="select-area" onchange="calculateDeliveryFee()" disabled style="width:100%; padding:8px; margin: 4px 0 10px 0; border-radius:6px; border:1px solid #ccc;">
+            <option value="">-- Choose Area --</option>
+          </select>
 
-  <!-- Delivery Fee Display -->
-  <p style="margin-top: 10px; font-weight: bold; font-size: 0.95rem;">
-    Delivery Fee: <span id="delivery-fee-display" style="color: var(--primary, #e91e63);">₦0</span>
-  </p>
-</div>
+          <!-- Delivery Fee Display -->
+          <p style="margin-top: 10px; font-weight: bold; font-size: 0.95rem;">
+            Delivery Fee: <span id="delivery-fee-display" style="color: var(--primary, #e91e63);">₦0</span>
+          </p>
+        </div>
 
         <!-- DISCOUNT PROMO CODE BOX -->
         <div style="margin-top: 15px; display: flex; gap: 8px;">
@@ -175,7 +175,7 @@
 
           <div style="margin-bottom: 12px;">
             <label><strong>Custom Cake Inscription / Message:</strong></label>
-            <input type="text" id="build-message" placeholder="e.g. Happy 22nd Birthday Divine!" style="width:100%; padding:10px; margin-top:5px; border-radius:6px; border:1px solid var(--border);" required>
+            <input type="text" id="build-message" placeholder="e.g. Happy Birthday Divine!" style="width:100%; padding:10px; margin-top:5px; border-radius:6px; border:1px solid var(--border);" required>
           </div>
 
           <div style="margin-bottom: 12px;">
@@ -248,7 +248,7 @@
       </div>
     </div>
 
-    <!-- ADMIN PANEL TAB (ANALYTICS & ORDER MANAGEMENT INCLUDED) -->
+    <!-- ADMIN PANEL TAB -->
     <div id="admin" class="tab-content">
       <h2>Admin Control Panel 🔐</h2>
 
@@ -352,6 +352,6 @@
     </svg>
   </a>
 
-<script src="app.js?v=5.0"></script>
+  <script src="app.js?v=6.0"></script>
 </body>
 </html>
