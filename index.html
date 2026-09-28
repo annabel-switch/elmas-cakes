@@ -63,36 +63,34 @@
 
 <!-- DYNAMIC LOCATION & DELIVERY FEE SELECTOR -->
 <div class="delivery-calculator" style="background: #fff0f5; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid #ffb6c1;">
-  <h4 style="margin: 0 0 10px 0; color: var(--primary);">📍 Delivery Location & Fee</h4>
+  <h4 style="margin: 0 0 10px 0; color: var(--primary, #e91e63);">📍 Delivery Location & Fee</h4>
   
   <!-- State Selection -->
-<label style="font-size: 0.85rem; font-weight: bold;">Select State:</label>
-<select id="select-state" onchange="handleStateChange()" style="width:100%; padding:8px; margin: 4px 0 10px 0; border-radius:6px; border:1px solid #ccc;">
-  <option value="">-- Choose State --</option>
-  <option value="Edo">Edo State</option>
-  <option value="Delta">Delta State</option>
-  <option value="Lagos">Lagos State</option>
-</select>
-
+  <label style="font-size: 0.85rem; font-weight: bold; display: block; margin-top: 5px;">Select State:</label>
+  <select id="select-state" style="width:100%; padding:8px; margin: 4px 0 10px 0; border-radius:6px; border:1px solid #ccc;">
+    <option value="">-- Choose State --</option>
+    <option value="Edo">Edo State</option>
+    <option value="Delta">Delta State</option>
+    <option value="Lagos">Lagos State</option>
+  </select>
 
   <!-- City Selection -->
-  <label style="font-size: 0.85rem; font-weight: bold;">Select City:</label>
-  <select id="select-city" onchange="handleCityChange()" disabled style="width:100%; padding:8px; margin: 4px 0 10px 0; border-radius:6px; border:1px solid #ccc;">
+  <label style="font-size: 0.85rem; font-weight: bold; display: block;">Select City:</label>
+  <select id="select-city" disabled style="width:100%; padding:8px; margin: 4px 0 10px 0; border-radius:6px; border:1px solid #ccc;">
     <option value="">-- Choose City --</option>
   </select>
 
   <!-- Area / Neighborhood Selection -->
-  <label style="font-size: 0.85rem; font-weight: bold;">Select Specific Area:</label>
-  <select id="select-area" onchange="calculateDeliveryFee()" disabled style="width:100%; padding:8px; margin: 4px 0 10px 0; border-radius:6px; border:1px solid #ccc;">
+  <label style="font-size: 0.85rem; font-weight: bold; display: block;">Select Specific Area:</label>
+  <select id="select-area" disabled style="width:100%; padding:8px; margin: 4px 0 10px 0; border-radius:6px; border:1px solid #ccc;">
     <option value="">-- Choose Area --</option>
   </select>
 
   <!-- Delivery Fee Display -->
   <p style="margin-top: 10px; font-weight: bold; font-size: 0.95rem;">
-    Delivery Fee: <span id="delivery-fee-display" style="color: var(--primary);">₦0</span>
+    Delivery Fee: <span id="delivery-fee-display" style="color: var(--primary, #e91e63);">₦0</span>
   </p>
 </div>
-
 
         <!-- DISCOUNT PROMO CODE BOX -->
         <div style="margin-top: 15px; display: flex; gap: 8px;">
