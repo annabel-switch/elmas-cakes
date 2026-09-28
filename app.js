@@ -483,74 +483,74 @@ const locationData = {
 
 let currentDeliveryFee = 0;
 
-function handleStateChange() {
+document.addEventListener("DOMContentLoaded", function() {
   const stateSelect = document.getElementById("select-state");
   const citySelect = document.getElementById("select-city");
   const areaSelect = document.getElementById("select-area");
-  
-  // Clean value (e.g. "Delta State" -> "Delta")
-  let rawState = stateSelect.value;
-  let selectedState = rawState.replace(" State", "").trim();
 
-  citySelect.innerHTML = '<option value="">-- Choose City --</option>';
-  areaSelect.innerHTML = '<option value="">-- Choose Area --</option>';
-  areaSelect.disabled = true;
-  currentDeliveryFee = 0;
-  updateDeliveryDisplay();
+  if (stateSelect) {
+    stateSelect.addEventListener("change", function() {
+      let selectedState = this.value;
+      
+      citySelect.innerHTML = '<option value="">-- Choose City --</option>';
+      areaSelect.innerHTML = '<option value="">-- Choose Area --</option>';
+      areaSelect.disabled = true;
+      currentDeliveryFee = 0;
+      updateDeliveryDisplay();
 
-  if (selectedState && locationData[selectedState]) {
-    citySelect.disabled = false;
-    Object.keys(locationData[selectedState]).forEach(city => {
-      const opt = document.createElement("option");
-      opt.value = city;
-      opt.textContent = city;
-      citySelect.appendChild(opt);
+      if (selectedState && locationData[selectedState]) {
+        citySelect.disabled = false;
+        Object.keys(locationData[selectedState]).forEach(city => {
+          const opt = document.createElement("option");
+          opt.value = city;
+          opt.textContent = city;
+          citySelect.appendChild(opt);
+        });
+      } else {
+        citySelect.disabled = true;
+      }
     });
-  } else {
-    citySelect.disabled = true;
   }
-}
 
-function handleCityChange() {
-  const stateSelect = document.getElementById("select-state");
-  let rawState = stateSelect.value;
-  let selectedState = rawState.replace(" State", "").trim();
-  
-  const citySelect = document.getElementById("select-city").value;
-  const areaSelect = document.getElementById("select-area");
+  if (citySelect) {
+    citySelect.addEventListener("change", function() {
+      let selectedState = stateSelect.value;
+      let selectedCity = this.value;
 
-  areaSelect.innerHTML = '<option value="">-- Choose Area --</option>';
-  currentDeliveryFee = 0;
-  updateDeliveryDisplay();
+      areaSelect.innerHTML = '<option value="">-- Choose Area --</option>';
+      currentDeliveryFee = 0;
+      updateDeliveryDisplay();
 
-  if (selectedState && citySelect && locationData[selectedState][citySelect]) {
-    areaSelect.disabled = false;
-    locationData[selectedState][citySelect].forEach(item => {
-      const opt = document.createElement("option");
-      opt.value = item.area;
-      opt.setAttribute("data-fee", item.fee);
-      opt.textContent = `${item.area} (+₦${item.fee.toLocaleString()})`;
-      areaSelect.appendChild(opt);
+      if (selectedState && selectedCity && locationData[selectedState][selectedCity]) {
+        areaSelect.disabled = false;
+        locationData[selectedState][selectedCity].forEach(item => {
+          const opt = document.createElement("option");
+          opt.value = item.area;
+          opt.setAttribute("data-fee", item.fee);
+          opt.textContent = `${item.area} (+₦${item.fee.toLocaleString()})`;
+          areaSelect.appendChild(opt);
+        });
+      } else {
+        areaSelect.disabled = true;
+      }
     });
-  } else {
-    areaSelect.disabled = true;
   }
-}
 
-function calculateDeliveryFee() {
-  const areaSelect = document.getElementById("select-area");
-  const selectedOption = areaSelect.options[areaSelect.selectedIndex];
-  
-  if (selectedOption && selectedOption.getAttribute("data-fee")) {
-    currentDeliveryFee = parseFloat(selectedOption.getAttribute("data-fee"));
-  } else {
-    currentDeliveryFee = 0;
+  if (areaSelect) {
+    areaSelect.addEventListener("change", function() {
+      const selectedOption = this.options[this.selectedIndex];
+      if (selectedOption && selectedOption.getAttribute("data-fee")) {
+        currentDeliveryFee = parseFloat(selectedOption.getAttribute("data-fee"));
+      } else {
+        currentDeliveryFee = 0;
+      }
+      updateDeliveryDisplay();
+    });
   }
-  updateDeliveryDisplay();
-}
+});
 
 function updateDeliveryDisplay() {
   const feeDisplay = document.getElementById("delivery-fee-display");
   if (feeDisplay) feeDisplay.innerText = `₦${currentDeliveryFee.toLocaleString()}`;
-  updateCartUI();
+  if (typeof updateCartUI === "function") updateCartUI();
 }
