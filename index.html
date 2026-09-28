@@ -183,54 +183,87 @@
       </div>
     </div>
 
-    <!-- ADMIN DASHBOARD TAB -->
-    <div id="admin-dashboard" class="tab-content">
-      <div id="admin-login-sec">
-        <h2>Admin Login</h2>
-        <form onsubmit="adminLogin(event)">
-          <input type="password" id="admin-pass" placeholder="Enter Admin Password (default: elma)" required>
-          <button type="submit" class="btn">Login</button>
-        </form>
+    <!-- ADMIN PANEL TAB -->
+<div id="admin" class="tab-content">
+  <h2>Admin Control Panel 🔐</h2>
+
+  <!-- PIN Protection Screen -->
+  <div id="admin-login-screen" class="cart-section" style="max-width: 400px; margin: 0 auto; text-align: center;">
+    <h3>Admin Authentication</h3>
+    <p style="font-size: 0.9rem; margin-bottom: 15px; color: #636e72;">Enter your security PIN to access the store management system.</p>
+    <form id="admin-login-form" onsubmit="unlockAdmin(event)">
+      <input type="password" id="admin-pin-input" placeholder="Enter PIN (Default: 1234)" required style="text-align: center; font-size: 1.2rem; letter-spacing: 4px;">
+      <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Unlock Panel 🔓</button>
+    </form>
+    <p id="admin-login-error" style="color: #e74c3c; font-size: 0.85rem; margin-top: 10px; display: none;">Incorrect PIN. Please try again.</p>
+  </div>
+
+  <!-- Main Dashboard (Hidden until unlocked) -->
+  <div id="admin-dashboard" style="display: none;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <p style="color: #27ae60; font-weight: bold;">Session Status: Authenticated ✅</p>
+      <button onclick="lockAdmin()" class="remove-btn">Lock Panel 🔒</button>
+    </div>
+
+    <!-- Quick Stats Overview -->
+    <div class="dashboard-stats">
+      <div class="stat-card">
+        <h4>Total Products</h4>
+        <p id="stat-product-count">0</p>
       </div>
-
-      <div id="admin-panel-sec" style="display: none;">
-        <h2>Admin Control Center</h2>
-        
-        <div class="dashboard-stats">
-          <div class="stat-card">
-            <h4>Total Products</h4>
-            <p id="adm-prod-count">0</p>
-          </div>
-          <div class="stat-card">
-            <h4>Gallery Pictures</h4>
-            <p id="adm-img-count">0</p>
-          </div>
-          <div class="stat-card">
-            <h4>Total Reviews</h4>
-            <p id="adm-rev-count">0</p>
-          </div>
-        </div>
-
-        <form onsubmit="addNewProduct(event)">
-          <h3>Add New Cake Product</h3>
-          <input type="text" id="new-prod-name" placeholder="Cake Name" required>
-          <input type="number" id="new-prod-price" placeholder="Price (₦)" required>
-          <select id="new-prod-cat" required>
-            <option value="Cakes">Cakes</option>
-            <option value="Pastries">Pastries</option>
-          </select>
-          <input type="url" id="new-prod-img" placeholder="Photo URL (optional)">
-          <button type="submit" class="btn">Add Product</button>
-        </form>
-
-        <form onsubmit="addNewImage(event)">
-          <h3>Add Photo to Gallery</h3>
-          <input type="text" id="new-img-title" placeholder="Cake Title / Description" required>
-          <input type="url" id="new-img-url" placeholder="Image URL (e.g. https://...)" required>
-          <button type="submit" class="btn">Add Photo</button>
-        </form>
+      <div class="stat-card">
+        <h4>Gallery Items</h4>
+        <p id="stat-gallery-count">0</p>
+      </div>
+      <div class="stat-card">
+        <h4>Total Reviews</h4>
+        <p id="stat-reviews-count">0</p>
       </div>
     </div>
+
+    <!-- Add New Product Form -->
+    <div class="cart-section" style="margin-bottom: 25px;">
+      <h3 style="color: var(--primary); margin-bottom: 12px;">➕ Add New Menu Item</h3>
+      <form id="add-product-form" onsubmit="addNewProduct(event)">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+          <input type="text" id="prod-name" placeholder="Item Name (e.g., Chocolate Fudge Cake)" required>
+          <select id="prod-category" required>
+            <option value="Cakes">Category: Cakes</option>
+            <option value="Pastries">Category: Pastries</option>
+            <option value="Cupcakes">Category: Cupcakes</option>
+            <option value="Desserts">Category: Desserts</option>
+          </select>
+          <input type="number" id="prod-price" placeholder="Price in ₦ (e.g., 15000)" required>
+          <input type="url" id="prod-image" placeholder="Image URL (e.g., https://...)" required>
+        </div>
+        <textarea id="prod-desc" placeholder="Short description of ingredients or size..." rows="2" style="margin-top: 10px;"></textarea>
+        <button type="submit" class="btn" style="margin-top: 10px;">Publish Product to Store 🚀</button>
+      </form>
+    </div>
+
+    <!-- Inventory / Product Management Table -->
+    <div class="cart-section">
+      <h3 style="color: var(--primary); margin-bottom: 12px;">📦 Manage Store Inventory</h3>
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+          <thead>
+            <tr style="background: var(--light); border-bottom: 2px solid var(--border);">
+              <th style="padding: 10px;">Item</th>
+              <th style="padding: 10px;">Category</th>
+              <th style="padding: 10px;">Price (₦)</th>
+              <th style="padding: 10px;">Status</th>
+              <th style="padding: 10px; text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="admin-inventory-table">
+            <!-- Inventory items injected dynamically via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
 
   </div>
 
