@@ -154,21 +154,32 @@
     </div>
 
     <!-- REVIEWS TAB -->
-    <div id="reviews" class="tab-content">
-      <h2>Customer Reviews</h2>
-      <form id="review-form" onsubmit="submitReview(event)">
-        <h3>Leave a Review</h3>
-        <input type="text" id="rev-name" placeholder="Your Name" required>
-        <select id="rev-rating" required>
-          <option value="5">5 Stars - Outstanding ⭐️⭐️⭐️⭐️⭐️</option>
-          <option value="4">4 Stars - Very Good ⭐️⭐️⭐️⭐️</option>
-          <option value="3">3 Stars - Average ⭐️⭐️⭐️</option>
-        </select>
-        <textarea id="rev-comment" placeholder="Write your feedback..." rows="3" required></textarea>
-        <button type="submit" class="btn">Submit Review</button>
-      </form>
-      <div id="reviews-list"></div>
+<div id="reviews" class="tab-content">
+  <h2>Customer Reviews & Testimonials 💬</h2>
+
+  <!-- SLIDING REVIEWS CAROUSEL -->
+  <div class="reviews-slider-container">
+    <div class="reviews-track" id="reviews-track">
+      <!-- Dynamic sample and submitted reviews render here -->
     </div>
+  </div>
+
+  <!-- LEAVE A REVIEW FORM -->
+  <div class="cart-section" style="margin-top: 30px;">
+    <h3>Leave a Review ✍️</h3>
+    <form id="review-form" onsubmit="submitReview(event)">
+      <input type="text" id="rev-name" placeholder="Your Full Name" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:8px;">
+      <select id="rev-rating" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:8px;">
+        <option value="5">⭐⭐⭐⭐⭐ 5 Stars - Outstanding</option>
+        <option value="4">⭐⭐⭐⭐ 4 Stars - Great Experience</option>
+        <option value="3">⭐⭐⭐ 3 Stars - Average</option>
+      </select>
+      <input type="text" id="rev-referred" placeholder="Did someone refer you? (e.g. Referred by Blessing)" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:8px;">
+      <textarea id="rev-comment" placeholder="Write your feedback..." rows="3" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:8px;"></textarea>
+      <button type="submit" class="btn" style="width:100%;">Submit Review 🚀</button>
+    </form>
+  </div>
+</div>
 
     <!-- CUSTOMER DASHBOARD TAB -->
     <div id="customer-dashboard" class="tab-content">
