@@ -114,3 +114,37 @@ function deleteProduct(index) {
     if (typeof renderProducts === "function") renderProducts();
   }
 }
+
+function switchTab(tabId) {
+  // 1. Hide all tab content sections
+  const tabs = document.querySelectorAll('.tab-content');
+  tabs.forEach(tab => {
+    tab.classList.remove('active');
+    tab.style.display = 'none';
+  });
+
+  // 2. Remove active state from all nav buttons
+  const buttons = document.querySelectorAll('.nav-btn');
+  buttons.forEach(btn => btn.classList.remove('active'));
+
+  // 3. Show target tab
+  const targetTab = document.getElementById(tabId);
+  if (targetTab) {
+    targetTab.classList.add('active');
+    targetTab.style.display = 'block';
+  }
+
+  // 4. Highlight clicked button
+  const clickedBtn = Array.from(buttons).find(btn => 
+    btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${tabId}'`)
+  );
+  if (clickedBtn) {
+    clickedBtn.classList.add('active');
+  }
+
+  // 5. If switching to Admin, refresh dashboard data
+  if (tabId === 'admin' && typeof renderAdminDashboard === 'function') {
+    renderAdminDashboard();
+  }
+}
+
