@@ -23,14 +23,14 @@
     </div>
   </div>
 
- <nav>
-  <button class="nav-btn active" onclick="switchTab('store')">Store</button>
-  <button class="nav-btn" onclick="switchTab('gallery')">Gallery</button>
-  <button class="nav-btn" onclick="switchTab('reviews')">Reviews</button>
-  <button class="nav-btn" onclick="switchTab('customer-dashboard')">My Account</button>
-  <button class="nav-btn" onclick="switchTab('admin')">Admin Panel</button>
-</nav>
-
+  <nav>
+    <button class="nav-btn active" onclick="switchTab('store')">Store</button>
+    <button class="nav-btn" onclick="switchTab('custom-builder')">Cake Builder 🎂</button>
+    <button class="nav-btn" onclick="switchTab('gallery')">Gallery</button>
+    <button class="nav-btn" onclick="switchTab('reviews')">Reviews</button>
+    <button class="nav-btn" onclick="switchTab('customer-dashboard')">My Account</button>
+    <button class="nav-btn" onclick="switchTab('admin')">Admin Panel</button>
+  </nav>
 
   <div class="container">
 
@@ -61,16 +61,23 @@
       <div class="cart-section">
         <div id="cart-items"><p class="empty-msg">Your cart is currently empty.</p></div>
 
+        <!-- DISCOUNT PROMO CODE BOX -->
+        <div style="margin-top: 15px; display: flex; gap: 8px;">
+          <input type="text" id="promo-input" placeholder="Enter Discount Code (e.g. ELMA10)" style="flex:1; padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
+          <button onclick="applyPromoCode()" class="btn" style="width: auto; padding: 8px 15px;">Apply</button>
+        </div>
+        <p id="promo-message" style="font-size: 0.85rem; margin-top: 5px; font-weight: bold;"></p>
+
         <div style="margin-top:15px;">
           <label><strong>Preferred Delivery/Pickup Date:</strong></label>
-          <input type="date" id="delivery-date" style="margin-top:5px;">
+          <input type="date" id="delivery-date" style="margin-top:5px; width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border);">
         </div>
 
         <div class="cart-summary" id="cart-total" style="display: none;">Total: ₦<span id="total-amount">0</span></div>
         <button class="checkout-btn" id="checkout-btn" style="display: none;" onclick="sendToWhatsApp()">Order via WhatsApp 📲</button>
       </div>
 
-      <!-- WHY CHOOSE US / TRUST BADGES -->
+      <!-- FEATURED GUIDES & FAQS -->
       <h2 style="margin-top: 40px;">Why Choose Elma's Cakes? ✨</h2>
       <div class="features-grid">
         <div class="feature-card">
@@ -95,44 +102,6 @@
         </div>
       </div>
 
-      <!-- HOW TO ORDER GUIDE -->
-      <h2>Easy 3-Step Ordering 📲</h2>
-      <div class="steps-grid">
-        <div class="step-card">
-          <span class="step-badge">1</span>
-          <h3>Select Your Treat</h3>
-          <p>Browse our cakes or pastries and select your preferred flavor & message.</p>
-        </div>
-        <div class="step-card">
-          <span class="step-badge">2</span>
-          <h3>Add Extras & Date</h3>
-          <p>Add birthday candles or toppers, then select your desired delivery date.</p>
-        </div>
-        <div class="step-card">
-          <span class="step-badge">3</span>
-          <h3>Instant WhatsApp Order</h3>
-          <p>Tap <strong>Order via WhatsApp</strong> to confirm details directly with us!</p>
-        </div>
-      </div>
-
-      <!-- FREQUENTLY ASKED QUESTIONS (FAQ) -->
-      <h2>Frequently Asked Questions 💡</h2>
-      <div class="faq-container">
-        <div class="faq-item">
-          <h4>How far in advance should I place my order?</h4>
-          <p>For custom celebration cakes, we recommend ordering 1–2 days ahead. Simple cakes and cupcake boxes can often be fulfilled same-day or within 24 hours!</p>
-        </div>
-        <div class="faq-item">
-          <h4>Do you deliver outside Benin City?</h4>
-          <p>We primarily offer doorstep delivery across Benin City. For special orders outside Benin City, please send us a direct WhatsApp message!</p>
-        </div>
-        <div class="faq-item">
-          <h4>Can I request custom flavors or designs not on the menu?</h4>
-          <p>Yes! Simply reach out to us via the floating WhatsApp button with your inspiration picture or custom requests.</p>
-        </div>
-      </div>
-
-      <!-- FOOTER SECTION -->
       <footer class="store-footer">
         <h3>Elma's Cakes 🎂</h3>
         <p>Bringing sweetness to your special moments!</p>
@@ -147,6 +116,51 @@
       </footer>
     </div>
 
+    <!-- CUSTOM CAKE BUILDER TAB -->
+    <div id="custom-builder" class="tab-content">
+      <h2>Custom Cake Builder & Price Calculator 🎨</h2>
+      <div class="cart-section">
+        <form id="cake-builder-form" onsubmit="addCustomCakeToCart(event)">
+          <div style="margin-bottom: 12px;">
+            <label><strong>Select Cake Flavor:</strong></label>
+            <select id="build-flavor" onchange="calculateCustomPrice()" style="width:100%; padding:10px; margin-top:5px; border-radius:6px; border:1px solid var(--border);">
+              <option value="Vanilla Sponge" data-price="12000">Vanilla Sponge - ₦12,000 base</option>
+              <option value="Chocolate Fudge" data-price="14000">Chocolate Fudge - ₦14,000 base</option>
+              <option value="Red Velvet" data-price="15000">Red Velvet - ₦15,000 base</option>
+              <option value="Marble Cake" data-price="13500">Marble Cake - ₦13,500 base</option>
+              <option value="Strawberry Delight" data-price="14500">Strawberry Delight - ₦14,500 base</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom: 12px;">
+            <label><strong>Select Cake Size & Tiers:</strong></label>
+            <select id="build-size" onchange="calculateCustomPrice()" style="width:100%; padding:10px; margin-top:5px; border-radius:6px; border:1px solid var(--border);">
+              <option value='6" Single Tier' data-mult="1">6 Inch Single Tier (Serves 6-8)</option>
+              <option value='8" Single Tier' data-mult="1.4">8 Inch Single Tier (Serves 12-15)</option>
+              <option value='10" Single Tier' data-mult="1.8">10 Inch Single Tier (Serves 20-25)</option>
+              <option value='2-Tier Celebration' data-mult="2.5">2-Tier Deluxe Celebration (Serves 35+)</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom: 12px;">
+            <label><strong>Custom Cake Inscription / Message:</strong></label>
+            <input type="text" id="build-message" placeholder="e.g. Happy 22nd Birthday Divine!" style="width:100%; padding:10px; margin-top:5px; border-radius:6px; border:1px solid var(--border);" required>
+          </div>
+
+          <div style="margin-bottom: 12px;">
+            <label><strong>Special Design Request / Description:</strong></label>
+            <textarea id="build-design-note" placeholder="Describe color preferences, toppers, or special theme..." rows="3" style="width:100%; padding:10px; margin-top:5px; border-radius:6px; border:1px solid var(--border);"></textarea>
+          </div>
+
+          <div style="background: var(--light, #f9f9f9); padding: 15px; border-radius: 8px; margin-bottom: 15px; text-align: center;">
+            <h3 style="margin:0; color: var(--primary);">Calculated Price: ₦<span id="custom-calculated-price">12,000</span></h3>
+          </div>
+
+          <button type="submit" class="btn" style="width:100%;">Add Custom Cake to Cart 🛒</button>
+        </form>
+      </div>
+    </div>
+
     <!-- GALLERY TAB -->
     <div id="gallery" class="tab-content">
       <h2>Cake Gallery</h2>
@@ -154,36 +168,43 @@
     </div>
 
     <!-- REVIEWS TAB -->
-<div id="reviews" class="tab-content">
-  <h2>Customer Reviews & Testimonials 💬</h2>
+    <div id="reviews" class="tab-content">
+      <h2>Customer Reviews & Testimonials 💬</h2>
+      <div class="reviews-slider-container">
+        <div class="reviews-track" id="reviews-track"></div>
+      </div>
 
-  <!-- SLIDING REVIEWS CAROUSEL -->
-  <div class="reviews-slider-container">
-    <div class="reviews-track" id="reviews-track">
-      <!-- Dynamic sample and submitted reviews render here -->
+      <div class="cart-section" style="margin-top: 30px;">
+        <h3>Leave a Review ✍️</h3>
+        <form id="review-form" onsubmit="submitReview(event)">
+          <input type="text" id="rev-name" placeholder="Your Full Name" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:8px;">
+          <select id="rev-rating" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:8px;">
+            <option value="5">⭐⭐⭐⭐⭐ 5 Stars - Outstanding</option>
+            <option value="4">⭐⭐⭐⭐ 4 Stars - Great Experience</option>
+            <option value="3">⭐⭐⭐ 3 Stars - Average</option>
+          </select>
+          <input type="text" id="rev-referred" placeholder="Did someone refer you? (e.g. Referred by Blessing)" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:8px;">
+          <textarea id="rev-comment" placeholder="Write your feedback..." rows="3" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:8px;"></textarea>
+          <button type="submit" class="btn" style="width:100%;">Submit Review 🚀</button>
+        </form>
+      </div>
     </div>
-  </div>
 
-  <!-- LEAVE A REVIEW FORM -->
-  <div class="cart-section" style="margin-top: 30px;">
-    <h3>Leave a Review ✍️</h3>
-    <form id="review-form" onsubmit="submitReview(event)">
-      <input type="text" id="rev-name" placeholder="Your Full Name" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:8px;">
-      <select id="rev-rating" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:8px;">
-        <option value="5">⭐⭐⭐⭐⭐ 5 Stars - Outstanding</option>
-        <option value="4">⭐⭐⭐⭐ 4 Stars - Great Experience</option>
-        <option value="3">⭐⭐⭐ 3 Stars - Average</option>
-      </select>
-      <input type="text" id="rev-referred" placeholder="Did someone refer you? (e.g. Referred by Blessing)" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:8px;">
-      <textarea id="rev-comment" placeholder="Write your feedback..." rows="3" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:8px;"></textarea>
-      <button type="submit" class="btn" style="width:100%;">Submit Review 🚀</button>
-    </form>
-  </div>
-</div>
-
-    <!-- CUSTOMER DASHBOARD TAB -->
+    <!-- CUSTOMER DASHBOARD TAB (TRACKING INCLUDED) -->
     <div id="customer-dashboard" class="tab-content">
-      <h2>Customer Dashboard</h2>
+      <h2>My Account & Order Tracker 🚚</h2>
+      
+      <!-- LIVE TRACKER SEARCH -->
+      <div class="cart-section" style="margin-bottom: 20px;">
+        <h3>Track Your Cake Order 📦</h3>
+        <p style="font-size:0.85rem; color:#636e72;">Enter your Phone Number or Order ID provided during WhatsApp confirmation:</p>
+        <div style="display:flex; gap:8px; margin-top:10px;">
+          <input type="text" id="track-input" placeholder="e.g. 09135059528 or ORD-101" style="flex:1; padding:10px; border:1px solid var(--border); border-radius:6px;">
+          <button onclick="trackOrder()" class="btn" style="width:auto;">Search 🔍</button>
+        </div>
+        <div id="tracking-result" style="margin-top: 15px; display: none;"></div>
+      </div>
+
       <div class="dashboard-stats">
         <div class="stat-card">
           <h4>Items in Cart</h4>
@@ -196,14 +217,13 @@
       </div>
     </div>
 
-    <!-- ADMIN PANEL TAB -->
+    <!-- ADMIN PANEL TAB (ANALYTICS & ORDER MANAGEMENT INCLUDED) -->
     <div id="admin" class="tab-content">
       <h2>Admin Control Panel 🔐</h2>
 
-      <!-- PIN Protection Screen -->
       <div id="admin-login-screen" class="cart-section" style="max-width: 400px; margin: 0 auto; text-align: center;">
         <h3>Admin Authentication</h3>
-        <p style="font-size: 0.9rem; margin-bottom: 15px; color: #636e72;">Enter your security PIN to access the store management system.</p>
+        <p style="font-size: 0.9rem; margin-bottom: 15px; color: #636e72;">Enter PIN to access store management system.</p>
         <form id="admin-login-form" onsubmit="unlockAdmin(event)">
           <input type="password" id="admin-pin-input" placeholder="Enter PIN (Default: 1234)" required style="text-align: center; font-size: 1.2rem; letter-spacing: 4px;">
           <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Unlock Panel 🔓</button>
@@ -211,22 +231,21 @@
         <p id="admin-login-error" style="color: #e74c3c; font-size: 0.85rem; margin-top: 10px; display: none;">Incorrect PIN. Please try again.</p>
       </div>
 
-      <!-- Main Dashboard (Hidden until unlocked) -->
       <div id="admin-dashboard" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
           <p style="color: #27ae60; font-weight: bold;">Session Status: Authenticated ✅</p>
           <button onclick="lockAdmin()" class="remove-btn">Lock Panel 🔒</button>
         </div>
 
-        <!-- Quick Stats Overview -->
+        <!-- REVENUE & SALES ANALYTICS STATS -->
         <div class="dashboard-stats">
+          <div class="stat-card" style="background:#e8f8f5;">
+            <h4>Total Revenue</h4>
+            <p id="stat-total-revenue" style="color:#27ae60;">₦0</p>
+          </div>
           <div class="stat-card">
             <h4>Total Products</h4>
             <p id="stat-product-count">0</p>
-          </div>
-          <div class="stat-card">
-            <h4>Gallery Items</h4>
-            <p id="stat-gallery-count">0</p>
           </div>
           <div class="stat-card">
             <h4>Total Reviews</h4>
@@ -234,27 +253,45 @@
           </div>
         </div>
 
-        <!-- Add New Product Form -->
+        <!-- MANAGE ORDERS & LIVE TRACKING STATUS -->
+        <div class="cart-section" style="margin-bottom: 25px;">
+          <h3 style="color: var(--primary); margin-bottom: 12px;">🚚 Active Orders & Live Tracking</h3>
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+              <thead>
+                <tr style="background: var(--light); border-bottom: 2px solid var(--border);">
+                  <th style="padding: 8px;">Order ID</th>
+                  <th style="padding: 8px;">Customer Phone</th>
+                  <th style="padding: 8px;">Items</th>
+                  <th style="padding: 8px;">Total</th>
+                  <th style="padding: 8px;">Status</th>
+                  <th style="padding: 8px; text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="admin-orders-table"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ADD NEW PRODUCT FORM -->
         <div class="cart-section" style="margin-bottom: 25px;">
           <h3 style="color: var(--primary); margin-bottom: 12px;">➕ Add New Menu Item</h3>
           <form id="add-product-form" onsubmit="addNewProduct(event)">
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
-              <input type="text" id="prod-name" placeholder="Item Name (e.g., Chocolate Fudge Cake)" required>
+              <input type="text" id="prod-name" placeholder="Item Name" required>
               <select id="prod-category" required>
                 <option value="Cakes">Category: Cakes</option>
                 <option value="Pastries">Category: Pastries</option>
-                <option value="Cupcakes">Category: Cupcakes</option>
-                <option value="Desserts">Category: Desserts</option>
               </select>
-              <input type="number" id="prod-price" placeholder="Price in ₦ (e.g., 15000)" required>
-              <input type="url" id="prod-image" placeholder="Image URL (e.g., https://...)" required>
+              <input type="number" id="prod-price" placeholder="Price in ₦" required>
+              <input type="url" id="prod-image" placeholder="Image URL" required>
             </div>
-            <textarea id="prod-desc" placeholder="Short description of ingredients or size..." rows="2" style="margin-top: 10px;"></textarea>
+            <textarea id="prod-desc" placeholder="Short description..." rows="2" style="margin-top: 10px; width:100%;"></textarea>
             <button type="submit" class="btn" style="margin-top: 10px;">Publish Product to Store 🚀</button>
           </form>
         </div>
 
-        <!-- Inventory / Product Management Table -->
+        <!-- INVENTORY TABLE -->
         <div class="cart-section">
           <h3 style="color: var(--primary); margin-bottom: 12px;">📦 Manage Store Inventory</h3>
           <div style="overflow-x: auto;">
@@ -268,19 +305,17 @@
                   <th style="padding: 10px; text-align: right;">Actions</th>
                 </tr>
               </thead>
-              <tbody id="admin-inventory-table">
-                <!-- Inventory items injected dynamically via JavaScript -->
-              </tbody>
+              <tbody id="admin-inventory-table"></tbody>
             </table>
           </div>
         </div>
+
       </div>
     </div>
 
   </div>
 
-  <!-- FLOATING WHATSAPP BUTTON -->
-  <a href="https://wa.me/2349135059528?text=Hello%20%F0%9F%90%8B%20Elma%20we%20want%20to%20Order%20a%20Cake%20or%20your%20pastries" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+  <a href="https://wa.me/2349135059528?text=Hello%20%F0%9F%90%8B%20Elma%20we%20want%20to%20Order%20a%20Cake" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
     <svg viewBox="0 0 32 32" class="whatsapp-svg">
       <path fill="currentColor" d="M16 0c-8.837 0-16 7.163-16 16 0 2.825 0.737 5.607 2.137 8.048l-2.137 7.952 8.135-2.135c2.373 1.298 5.048 1.98 7.865 1.98 8.837 0 16-7.163 16-16s-7.163-16-16-16zM16 29.333c-2.453 0-4.853-0.653-6.96-1.88l-0.507-0.293-5.16 1.353 1.38-5.027-0.327-0.52c-1.353-2.16-2.067-4.667-2.067-7.293 0-7.36 5.973-13.333 13.333-13.333s13.333 5.973 13.333 13.333-5.973 13.333-13.333 13.333zM22.507 19.347c-0.36-0.18-2.12-1.047-2.447-1.167s-0.567-0.18-0.807 0.18c-0.24 0.36-0.92 1.167-1.127 1.407s-0.413 0.273-0.773 0.093c-0.36-0.18-1.52-0.56-2.9-1.787-1.073-0.953-1.8-2.133-2.013-2.493s-0.023-0.553 0.157-0.733c0.162-0.162 0.36-0.42 0.54-0.63 0.18-0.21 0.24-0.36 0.36-0.6 0.12-0.24 0.06-0.45-0.03-0.63s-0.807-1.947-1.107-2.667c-0.293-0.7-0.593-0.607-0.807-0.613h-0.687c-0.24 0-0.63 0.09-0.96 0.45s-1.26 1.23-1.26 3c0 1.77 1.29 3.48 1.47 3.72s2.533 3.867 6.133 5.42c0.856 0.37 1.524 0.59 2.045 0.757 0.86 0.273 1.642 0.235 2.26 0.143 0.69-0.103 2.12-0.867 2.42-1.707s0.3-1.557 0.21-1.707c-0.09-0.15-0.33-0.24-0.69-0.42z"></path>
     </svg>
