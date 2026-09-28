@@ -13,14 +13,10 @@ let defaultReviews = [
   { name: "Tariq M.", rating: 4, comment: "Prompt WhatsApp response and the cake was delivered fresh without any mess.", referral: "Direct Customer" }
 ];
 
-// Force reset saved storage to populate all 6 reviews
-localStorage.removeItem('elma_reviews'); 
-let reviewsList = JSON.parse(localStorage.getItem('elma_reviews')) || defaultReviews;
+// FORCE UPDATE LOCAL STORAGE WITH ALL 6 REVIEWS
+localStorage.setItem('elma_reviews', JSON.stringify(defaultReviews));
+let reviewsList = defaultReviews;
 
-let cart = JSON.parse(localStorage.getItem('elma_cart')) || [];
-let ordersList = JSON.parse(localStorage.getItem('elma_orders')) || [
-  { id: "ORD-101", phone: "09135059528", items: "Chocolate Fudge Cake", total: 15000, status: "Delivered 🎉" }
-];
 
 let discountApplied = 0;
 
