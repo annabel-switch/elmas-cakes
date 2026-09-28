@@ -427,3 +427,106 @@ document.addEventListener("DOMContentLoaded", () => {
   renderProducts();
   updateCartUI();
 });
+
+// LOCATION & DELIVERY DATA STRUCTURE
+const locationData = {
+  "Edo": {
+    "Benin City": [
+      { area: "UNIBEN Ugbowo Campus / BDPA", fee: 1000 },
+      { area: "Ekosodin", fee: 1200 },
+      { area: "GRA / Airport Road", fee: 1500 },
+      { area: "Uselu / Oluku", fee: 1200 },
+      { area: "Sapele Road / Limit", fee: 1800 },
+      { area: "Aduwawa / Ikpoba Hill", fee: 2000 }
+    ]
+  },
+  "Delta": {
+    "Asaba": [
+      { area: "GRA / Okpanam Road", fee: 2500 },
+      { area: "Summit / DBS Road", fee: 2500 }
+    ],
+    "Warri": [
+      { area: "Effurun / PTI", fee: 3000 },
+      { area: "Enerhen / Airport Road", fee: 3000 }
+    ]
+  },
+  "Lagos": {
+    "Lagos Mainland": [
+      { area: "Ikeja / Yaba / Surulere", fee: 3500 },
+      { area: "Unilag Campus / Akoka", fee: 3500 }
+    ],
+    "Lagos Island": [
+      { area: "Lekki Phase 1 / Ikoyi", fee: 4500 },
+      { area: "Ajah / Sangotedo", fee: 5000 }
+    ]
+  }
+};
+
+let currentDeliveryFee = 0;
+
+function handleStateChange() {
+  const stateSelect = document.getElementById("select-state");
+  const citySelect = document.getElementById("select-city");
+  const areaSelect = document.getElementById("select-area");
+  
+  const selectedState = stateSelect.value;
+  citySelect.innerHTML = '<option value="">-- Choose City --</option>';
+  areaSelect.innerHTML = '<option value="">-- Choose Area --</option>';
+  areaSelect.disabled = true;
+  currentDeliveryFee = 0;
+  updateDeliveryDisplay();
+
+  if (selectedState && locationData[selectedState]) {
+    citySelect.disabled = false;
+    Object.keys(locationData[selectedState]).forEach(city => {
+      const opt = document.createElement("option");
+      opt.value = city;
+      opt.textContent = city;
+      citySelect.appendChild(opt);
+    });
+  } else {
+    citySelect.disabled = true;
+  }
+}
+
+function handleCityChange() {
+  const stateSelect = document.getElementById("select-state").value;
+  const citySelect = document.getElementById("select-city").value;
+  const areaSelect = document.getElementById("select-area");
+
+  areaSelect.innerHTML = '<option value="">-- Choose Area --</option>';
+  currentDeliveryFee = 0;
+  updateDeliveryDisplay();
+
+  if (stateSelect && citySelect && locationData[stateSelect][citySelect]) {
+    areaSelect.disabled = false;
+    locationData[stateSelect][citySelect].forEach(item => {
+      const opt = document.createElement("option");
+      opt.value = item.area;
+      opt.setAttribute("data-fee", item.fee);
+      opt.textContent = `${item.area} (+₦${item.fee.toLocaleString()})`;
+      areaSelect.appendChild(opt);
+    });
+  } else {
+    areaSelect.disabled = true;
+  }
+}
+
+function calculateDeliveryFee() {
+  const areaSelect = document.getElementById("select-area");
+  const selectedOption = areaSelect.options[areaSelect.selectedIndex];
+  
+  if (selectedOption && selectedOption.getAttribute("data-fee")) {
+    currentDeliveryFee = parseFloat(selectedOption.getAttribute("data-fee"));
+  } else {
+    currentDeliveryFee = 0;
+  }
+  updateDeliveryDisplay();
+}
+
+function updateDeliveryDisplay() {
+  const feeDisplay = document.getElementById("delivery-fee-display");
+  if (feeDisplay) feeDisplay.innerText = `₦${currentDeliveryFee.toLocaleString()}`;
+  updateCartUI();
+}
+
