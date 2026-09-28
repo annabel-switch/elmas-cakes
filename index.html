@@ -17,10 +17,10 @@
     <p>Freshly baked delights right to your doorstep!</p>
   </header>
 
-  <div class="trust-bar">
-    <span>🚚 Fast Benin City Delivery</span>
-    <span>🎂 100% Fresh Daily</span>
-    <span>💬 Instant WhatsApp Order</span>
+  <div class="trust-marquee">
+    <div class="marquee-content">
+      🚚 Fast Benin City Delivery &nbsp;&nbsp;•&nbsp;&nbsp; 🎂 100% Fresh Daily &nbsp;&nbsp;•&nbsp;&nbsp; 💬 Instant WhatsApp Order &nbsp;&nbsp;•&nbsp;&nbsp; 🎁 Refer Friends & Win Free Cupcakes!
+    </div>
   </div>
 
   <nav>
@@ -32,6 +32,13 @@
   </nav>
 
   <div class="container">
+
+    <!-- REFERRAL BANNER -->
+    <div class="referral-card">
+      <h3>🎁 Refer Us & Earn Free Pastries!</h3>
+      <p>Share our website with your friends and family in Benin City. Tell them to mention your name when ordering to get a <strong>FREE Box of Cupcakes</strong> on your next order!</p>
+      <button class="copy-btn" onclick="copyReferralLink()">📋 Share Store Link</button>
+    </div>
 
     <!-- STORE TAB -->
     <div id="store" class="tab-content active">
@@ -151,6 +158,11 @@
     </div>
 
   </div>
+
+  <!-- FLOATING WHATSAPP BUTTON -->
+  <a href="https://wa.me/2349135059528?text=Hello%20%F0%9F%90%8B%20Elma%20we%20want%20to%20Order%20a%20Cake%20or%20your%20pastries" class="whatsapp-float" target="_blank">
+    <span class="whatsapp-icon">💬</span> Order on WhatsApp
+  </a>
 
   <script src="script.js"></script>
 </body>
