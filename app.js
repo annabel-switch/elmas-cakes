@@ -4,10 +4,34 @@ let products = JSON.parse(localStorage.getItem('elma_products')) || [
   { id: 2, name: "Vanilla Cupcake Box", category: "Pastries", price: 8000, image: "https://images.unsplash.com/photo-1519869325930-281384150729?w=300", description: "Box of 6 cupcakes", outOfStock: false }
 ];
 
+// EXPANDED SAMPLE REVIEWS LIST
 let defaultReviews = [
   { name: "Osasere K.", rating: 5, comment: "The Chocolate Fudge Cake was extremely moist and fresh! Arrived right on time in GRA.", referral: "Referred by Osasere" },
-  { name: "Adesuwa O.", rating: 5, comment: "Ordered a birthday cake for my sister. Super delicious and neat packaging!", referral: "Referred by Divine" }
+  { name: "Adesuwa O.", rating: 5, comment: "Ordered a birthday cake for my sister. Super delicious and neat packaging!", referral: "Referred by Divine" },
+  { name: "Eseosa B.", rating: 5, comment: "Best cupcakes in Benin City! Soft, fluffy, and rich in taste.", referral: "Referred by Mercy" },
+  { name: "Precious A.", rating: 5, comment: "Fast delivery to UNIBEN Ugbowo campus! Everyone loved the Red Velvet cake.", referral: "Direct Customer" },
+  { name: "Blessing N.", rating: 5, comment: "The custom design came out exactly like the sample picture I gave them! 10/10 service.", referral: "Referred by Anita" },
+  { name: "Tariq M.", rating: 4, comment: "Prompt WhatsApp response and the cake was delivered fresh without any mess.", referral: "Direct Customer" }
 ];
+
+let reviewsList = JSON.parse(localStorage.getItem('elma_reviews')) || defaultReviews;
+
+// FASTER AUTO-SCROLL CAROUSEL (1.8 Seconds Interval)
+let autoScrollInterval;
+function startAutoScroll() {
+  const container = document.querySelector(".reviews-slider-container");
+  if (!container) return;
+  
+  clearInterval(autoScrollInterval);
+  autoScrollInterval = setInterval(() => {
+    if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
+      container.scrollLeft = 0; // Seamless reset to start
+    } else {
+      container.scrollBy({ left: 240, behavior: 'smooth' }); // Faster shift
+    }
+  }, 1800); // 1.8 seconds per slide for a brisk pace
+}
+
 
 let reviewsList = JSON.parse(localStorage.getItem('elma_reviews')) || defaultReviews;
 let cart = JSON.parse(localStorage.getItem('elma_cart')) || [];
