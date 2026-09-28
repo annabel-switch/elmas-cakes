@@ -476,3 +476,11 @@ html, body {
   padding-bottom: 30px !important;
 }
 
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
