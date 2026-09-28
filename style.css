@@ -476,30 +476,22 @@ html, body {
   padding-bottom: 30px !important;
 }
 
+/* TAB VISIBILITY CONTROLS */
 .tab-content {
-  display: none;
+  display: none !important;
 }
 
 .tab-content.active {
-  display: block;
+  display: block !important;
 }
 
-/* REVIEWS HORIZONTAL SLIDER CAROUSEL */
+/* REVIEWS SLIDER */
 .reviews-slider-container {
   width: 100%;
   overflow-x: auto;
   scroll-behavior: smooth;
   padding: 10px 0 20px 0;
   -webkit-overflow-scrolling: touch;
-}
-
-.reviews-slider-container::-webkit-scrollbar {
-  height: 6px;
-}
-
-.reviews-slider-container::-webkit-scrollbar-thumb {
-  background-color: var(--primary);
-  border-radius: 10px;
 }
 
 .reviews-track {
@@ -516,9 +508,6 @@ html, body {
   border-radius: 12px;
   padding: 18px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  justify: space-between;
 }
 
 .review-header {
@@ -531,18 +520,15 @@ html, body {
 .review-author {
   font-weight: bold;
   color: #2d3436;
-  font-size: 1rem;
 }
 
 .review-stars {
   color: #f1c40f;
-  font-size: 0.95rem;
 }
 
 .review-body {
   color: #636e72;
   font-size: 0.9rem;
-  line-height: 1.4;
   margin-bottom: 12px;
 }
 
@@ -554,6 +540,17 @@ html, body {
   padding: 4px 8px;
   border-radius: 6px;
   display: inline-block;
-  align-self: flex-start;
 }
 
+/* ORDER TRACKER BADGES */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: bold;
+  display: inline-block;
+}
+.status-received { background: #ffeaa7; color: #d63031; }
+.status-baking { background: #74b9ff; color: #0984e3; }
+.status-delivery { background: #a29bfe; color: #6c5ce7; }
+.status-completed { background: #55efc4; color: #00b894; }
