@@ -26,6 +26,16 @@ let cart = {};
 let selectedCategory = "All";
 let isAdmin = false;
 
+// Share Referral Function
+function copyReferralLink() {
+  const link = window.location.href;
+  navigator.clipboard.writeText(link).then(() => {
+    alert("Store link copied to clipboard! Share it with your friends to earn free gifts! 🎁");
+  }).catch(() => {
+    alert("Store link: " + link);
+  });
+}
+
 // Navigation
 function switchTab(tabId, evt) {
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -181,7 +191,7 @@ function sendToWhatsApp() {
   const phone = "2349135059528";
   const date = document.getElementById('delivery-date').value;
   
-  let msg = "Hello Elma's Cakes! I would like to place an order:\n\n";
+  let msg = "Hello 👋 Elma we want to Order a Cake or your pastries:\n\n";
   if (date) msg += `📅 *Preferred Date:* ${date}\n\n`;
 
   let total = 0;
