@@ -464,3 +464,15 @@ input, select, textarea { padding: 11px; border: 1px solid var(--border); border
   opacity: 0.6;
 }
 
+/* Fix extra scrolling space at the bottom */
+html, body {
+  height: auto !important;
+  min-height: 100% !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+#store, .tab-content {
+  padding-bottom: 30px !important;
+}
+
