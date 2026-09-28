@@ -172,10 +172,14 @@ function updateCartUI() {
     total = total - (total * discountApplied);
   }
 
-  if (totalAmount) totalAmount.innerText = total.toLocaleString();
+  // Add delivery fee to grand total
+  let grandTotal = total + currentDeliveryFee;
+
+  if (totalAmount) totalAmount.innerText = grandTotal.toLocaleString();
   if (cartTotal) cartTotal.style.display = "block";
   if (checkoutBtn) checkoutBtn.style.display = "block";
 }
+
 
 function removeFromCart(index) {
   cart.splice(index, 1);
@@ -186,6 +190,15 @@ function removeFromCart(index) {
 function sendToWhatsApp() {
   if (cart.length === 0) return;
   const date = document.getElementById("delivery-date") ? document.getElementById("delivery-date").value : "Not specified";
+  const state = document.getElementById("select-state") ? document.getElementById("select-state").value : "";
+  const city = document.getElementById("select-city") ? document.getElementById("select-city").value : "";
+  const area = document.getElementById("select-area") ? document.getElementById("select-area").value : "";
+
+  if (!state || !city || !area) {
+    alert("Please select your State, City, and Area before checking out!");
+    return;
+  }
+
   const userPhone = prompt("Enter your phone number so you can track your order status:");
   
   const orderId = `ORD-${Math.floor(100 + Math.random() * 900)}`;
@@ -200,19 +213,24 @@ function sendToWhatsApp() {
   });
 
   if (discountApplied > 0) {
-    total = total - (total * discountApplied);
-    message += `\n*Discount Applied:* 10% OFF`;
+    const discountVal = total * discountApplied;
+    total = total - discountVal;
+    message += `\n*Discount Applied:* 10% OFF (-₦${discountVal.toLocaleString()})`;
   }
 
-  message += `\n*Total:* ₦${total.toLocaleString()}`;
-  message += `\n*Delivery Date:* ${date}`;
+  const grandTotal = total + currentDeliveryFee;
+
+  message += `\n\n📍 *Delivery Location:* ${area}, ${city}, ${state}`;
+  message += `\n🚚 *Delivery Fee:* ₦${currentDeliveryFee.toLocaleString()}`;
+  message += `\n💰 *Grand Total:* ₦${grandTotal.toLocaleString()}`;
+  message += `\n📅 *Delivery Date:* ${date}`;
 
   // Log order to storage
   ordersList.unshift({
     id: orderId,
     phone: userPhone || "Not Provided",
     items: itemNames.join(", "),
-    total: total,
+    total: grandTotal,
     status: "Order Received 📝"
   });
   saveOrders();
@@ -223,6 +241,7 @@ function sendToWhatsApp() {
 
   window.open(`https://wa.me/2349135059528?text=${encodeURIComponent(message)}`, '_blank');
 }
+
 
 // LIVE TRACKING FEATURE
 function trackOrder() {
