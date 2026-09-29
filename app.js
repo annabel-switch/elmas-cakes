@@ -1,8 +1,11 @@
-// DATA INITIALIZATION
+// DATA INITIALIZATION & STATE
 let products = JSON.parse(localStorage.getItem('elma_products')) || [
   { id: 1, name: "Chocolate Fudge Cake", category: "Cakes", price: 15000, image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300", description: "Rich chocolate cake", outOfStock: false },
   { id: 2, name: "Vanilla Cupcake Box", category: "Pastries", price: 8000, image: "https://images.unsplash.com/photo-1519869325930-281384150729?w=300", description: "Box of 6 cupcakes", outOfStock: false }
 ];
+
+let cart = JSON.parse(localStorage.getItem('elma_cart')) || [];
+let ordersList = JSON.parse(localStorage.getItem('elma_orders')) || [];
 
 let defaultReviews = [
   { name: "Osasere K.", rating: 5, comment: "The Chocolate Fudge Cake was extremely moist and fresh! Arrived right on time in GRA.", referral: "Referred by Osasere" },
@@ -13,17 +16,52 @@ let defaultReviews = [
   { name: "Tariq M.", rating: 4, comment: "Prompt WhatsApp response and the cake was delivered fresh without any mess.", referral: "Direct Customer" }
 ];
 
-// FORCE UPDATE LOCAL STORAGE WITH ALL 6 REVIEWS
+// FORCE UPDATE LOCAL STORAGE WITH REVIEWS
 localStorage.setItem('elma_reviews', JSON.stringify(defaultReviews));
 let reviewsList = defaultReviews;
 
-
 let discountApplied = 0;
+let currentCategoryFilter = 'All';
+let currentDeliveryFee = 0;
 
 function saveProducts() { localStorage.setItem('elma_products', JSON.stringify(products)); }
 function saveOrders() { localStorage.setItem('elma_orders', JSON.stringify(ordersList)); }
 
-// FASTER AUTO-SCROLL CAROUSEL (1.5 Seconds Interval)
+// LOCATION DATA
+const locationData = {
+  "Edo": {
+    "Benin City": [
+      { area: "UNIBEN Ugbowo Campus / BDPA", fee: 1000 },
+      { area: "Ekosodin", fee: 1200 },
+      { area: "GRA / Airport Road", fee: 1500 },
+      { area: "Uselu / Oluku", fee: 1200 },
+      { area: "Sapele Road / Limit", fee: 1800 },
+      { area: "Aduwawa / Ikpoba Hill", fee: 2000 }
+    ]
+  },
+  "Delta": {
+    "Asaba": [
+      { area: "GRA / Okpanam Road", fee: 2500 },
+      { area: "Summit / DBS Road", fee: 2500 }
+    ],
+    "Warri": [
+      { area: "Effurun / PTI", fee: 3000 },
+      { area: "Enerhen / Airport Road", fee: 3000 }
+    ]
+  },
+  "Lagos": {
+    "Lagos Mainland": [
+      { area: "Ikeja / Yaba / Surulere", fee: 3500 },
+      { area: "Unilag Campus / Akoka", fee: 3500 }
+    ],
+    "Lagos Island": [
+      { area: "Lekki Phase 1 / Ikoyi", fee: 4500 },
+      { area: "Ajah / Sangotedo", fee: 5000 }
+    ]
+  }
+};
+
+// AUTO-SCROLL CAROUSEL
 let autoScrollInterval;
 function startAutoScroll() {
   const container = document.querySelector(".reviews-slider-container");
@@ -60,8 +98,11 @@ function switchTab(tabId) {
 
 // PROMO CODE SYSTEM
 function applyPromoCode() {
-  const code = document.getElementById("promo-input").value.trim().toUpperCase();
+  const codeInput = document.getElementById("promo-input");
   const msg = document.getElementById("promo-message");
+  if (!codeInput || !msg) return;
+
+  const code = codeInput.value.trim().toUpperCase();
   
   if (code === "ELMA10" || code === "UNIBENFREE") {
     discountApplied = 0.10; // 10% OFF
@@ -79,24 +120,25 @@ function applyPromoCode() {
 function calculateCustomPrice() {
   const flavorSelect = document.getElementById("build-flavor");
   const sizeSelect = document.getElementById("build-size");
-  if (!flavorSelect || !sizeSelect) return;
+  const priceDisplay = document.getElementById("custom-calculated-price");
+  if (!flavorSelect || !sizeSelect || !priceDisplay) return;
 
-  const basePrice = parseFloat(flavorSelect.options[flavorSelect.selectedIndex].getAttribute("data-price"));
-  const multiplier = parseFloat(sizeSelect.options[sizeSelect.selectedIndex].getAttribute("data-mult"));
+  const basePrice = parseFloat(flavorSelect.options[flavorSelect.selectedIndex].getAttribute("data-price") || 0);
+  const multiplier = parseFloat(sizeSelect.options[sizeSelect.selectedIndex].getAttribute("data-mult") || 1);
 
   const finalPrice = Math.round(basePrice * multiplier);
-  document.getElementById("custom-calculated-price").innerText = finalPrice.toLocaleString();
+  priceDisplay.innerText = finalPrice.toLocaleString();
 }
 
 function addCustomCakeToCart(e) {
-  e.preventDefault();
+  if (e) e.preventDefault();
   const flavor = document.getElementById("build-flavor").value;
   const size = document.getElementById("build-size").value;
   const message = document.getElementById("build-message").value.trim();
   const note = document.getElementById("build-design-note").value.trim();
   
   const priceText = document.getElementById("custom-calculated-price").innerText.replace(/,/g, '');
-  const price = parseFloat(priceText);
+  const price = parseFloat(priceText) || 0;
 
   const customItem = {
     id: Date.now(),
@@ -119,7 +161,18 @@ function renderProducts() {
   grid.innerHTML = "";
   const searchVal = document.getElementById("search-input") ? document.getElementById("search-input").value.toLowerCase() : "";
 
-  products.filter(p => p.name.toLowerCase().includes(searchVal)).forEach(p => {
+  const filtered = products.filter(p => {
+    const matchesSearch = p.name.toLowerCase().includes(searchVal);
+    const matchesCategory = (currentCategoryFilter === 'All' || p.category === currentCategoryFilter);
+    return matchesSearch && matchesCategory;
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #777;">No products found.</p>`;
+    return;
+  }
+
+  filtered.forEach(p => {
     const card = document.createElement("div");
     card.className = "product-card";
     card.innerHTML = `
@@ -132,6 +185,15 @@ function renderProducts() {
     `;
     grid.appendChild(card);
   });
+}
+
+function filterCategory(cat, e) {
+  currentCategoryFilter = cat;
+  if (e) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    if (e.target) e.target.classList.add('active');
+  }
+  renderProducts();
 }
 
 function addToCart(id) {
@@ -172,14 +234,12 @@ function updateCartUI() {
     total = total - (total * discountApplied);
   }
 
-  // Add delivery fee to grand total
   let grandTotal = total + currentDeliveryFee;
 
   if (totalAmount) totalAmount.innerText = grandTotal.toLocaleString();
   if (cartTotal) cartTotal.style.display = "block";
   if (checkoutBtn) checkoutBtn.style.display = "block";
 }
-
 
 function removeFromCart(index) {
   cart.splice(index, 1);
@@ -225,7 +285,6 @@ function sendToWhatsApp() {
   message += `\n💰 *Grand Total:* ₦${grandTotal.toLocaleString()}`;
   message += `\n📅 *Delivery Date:* ${date}`;
 
-  // Log order to storage
   ordersList.unshift({
     id: orderId,
     phone: userPhone || "Not Provided",
@@ -242,11 +301,13 @@ function sendToWhatsApp() {
   window.open(`https://wa.me/2349135059528?text=${encodeURIComponent(message)}`, '_blank');
 }
 
-
 // LIVE TRACKING FEATURE
 function trackOrder() {
-  const query = document.getElementById("track-input").value.trim().toLowerCase();
+  const queryInput = document.getElementById("track-input");
   const res = document.getElementById("tracking-result");
+  if (!queryInput || !res) return;
+
+  const query = queryInput.value.trim().toLowerCase();
   if (!query) return;
 
   const found = ordersList.filter(o => o.id.toLowerCase().includes(query) || o.phone.includes(query));
@@ -289,7 +350,7 @@ function renderReviews() {
 }
 
 function submitReview(e) {
-  e.preventDefault();
+  if (e) e.preventDefault();
   const name = document.getElementById("rev-name").value.trim();
   const rating = parseInt(document.getElementById("rev-rating").value);
   const comment = document.getElementById("rev-comment").value.trim();
@@ -297,7 +358,10 @@ function submitReview(e) {
 
   reviewsList.unshift({ name, rating, comment, referral: ref ? `Referred by ${ref}` : "Direct Customer" });
   localStorage.setItem('elma_reviews', JSON.stringify(reviewsList));
-  document.getElementById("review-form").reset();
+  
+  const form = document.getElementById("review-form");
+  if (form) form.reset();
+
   renderReviews();
   alert("Thank you! Review published. 🎉");
 }
@@ -306,8 +370,9 @@ function submitReview(e) {
 const ADMIN_PIN = "1234";
 
 function unlockAdmin(e) {
-  e.preventDefault();
-  if (document.getElementById("admin-pin-input").value === ADMIN_PIN) {
+  if (e) e.preventDefault();
+  const pinInput = document.getElementById("admin-pin-input");
+  if (pinInput && pinInput.value === ADMIN_PIN) {
     document.getElementById("admin-login-screen").style.display = "none";
     document.getElementById("admin-dashboard").style.display = "block";
     renderAdminDashboard();
@@ -322,57 +387,63 @@ function lockAdmin() {
 }
 
 function renderAdminDashboard() {
-  // Update Analytics
   let totalRev = ordersList.reduce((acc, curr) => acc + curr.total, 0);
-  document.getElementById("stat-total-revenue").innerText = `₦${totalRev.toLocaleString()}`;
-  document.getElementById("stat-product-count").innerText = products.length;
-  document.getElementById("stat-reviews-count").innerText = reviewsList.length;
+  
+  const revStat = document.getElementById("stat-total-revenue");
+  const prodStat = document.getElementById("stat-product-count");
+  const revCountStat = document.getElementById("stat-reviews-count");
 
-  // Render Orders & Tracking Management
+  if (revStat) revStat.innerText = `₦${totalRev.toLocaleString()}`;
+  if (prodStat) prodStat.innerText = products.length;
+  if (revCountStat) revCountStat.innerText = reviewsList.length;
+
   const orderTable = document.getElementById("admin-orders-table");
-  orderTable.innerHTML = "";
-  ordersList.forEach((o, index) => {
-    const row = document.createElement("tr");
-    row.style.borderBottom = "1px solid var(--border)";
-    row.innerHTML = `
-      <td style="padding:8px;"><strong>${o.id}</strong></td>
-      <td style="padding:8px;">${o.phone}</td>
-      <td style="padding:8px;">${o.items}</td>
-      <td style="padding:8px; font-weight:bold;">₦${o.total.toLocaleString()}</td>
-      <td style="padding:8px;">
-        <select onchange="updateOrderStatus(${index}, this.value)" style="padding:4px; border-radius:4px;">
-          <option value="Order Received 📝" ${o.status === 'Order Received 📝' ? 'selected' : ''}>Order Received 📝</option>
-          <option value="Baking in Progress 🥣" ${o.status === 'Baking in Progress 🥣' ? 'selected' : ''}>Baking in Progress 🥣</option>
-          <option value="Out for Delivery 🚚" ${o.status === 'Out for Delivery 🚚' ? 'selected' : ''}>Out for Delivery 🚚</option>
-          <option value="Delivered 🎉" ${o.status === 'Delivered 🎉' ? 'selected' : ''}>Delivered 🎉</option>
-        </select>
-      </td>
-      <td style="padding:8px; text-align:right;"><button onclick="deleteOrder(${index})" class="remove-btn">Delete</button></td>
-    `;
-    orderTable.appendChild(row);
-  });
+  if (orderTable) {
+    orderTable.innerHTML = "";
+    ordersList.forEach((o, index) => {
+      const row = document.createElement("tr");
+      row.style.borderBottom = "1px solid var(--border)";
+      row.innerHTML = `
+        <td style="padding:8px;"><strong>${o.id}</strong></td>
+        <td style="padding:8px;">${o.phone}</td>
+        <td style="padding:8px;">${o.items}</td>
+        <td style="padding:8px; font-weight:bold;">₦${o.total.toLocaleString()}</td>
+        <td style="padding:8px;">
+          <select onchange="updateOrderStatus(${index}, this.value)" style="padding:4px; border-radius:4px;">
+            <option value="Order Received 📝" ${o.status === 'Order Received 📝' ? 'selected' : ''}>Order Received 📝</option>
+            <option value="Baking in Progress 🥣" ${o.status === 'Baking in Progress 🥣' ? 'selected' : ''}>Baking in Progress 🥣</option>
+            <option value="Out for Delivery 🚚" ${o.status === 'Out for Delivery 🚚' ? 'selected' : ''}>Out for Delivery 🚚</option>
+            <option value="Delivered 🎉" ${o.status === 'Delivered 🎉' ? 'selected' : ''}>Delivered 🎉</option>
+          </select>
+        </td>
+        <td style="padding:8px; text-align:right;"><button onclick="deleteOrder(${index})" class="remove-btn">Delete</button></td>
+      `;
+      orderTable.appendChild(row);
+    });
+  }
 
-  // Render Inventory
   const tbody = document.getElementById("admin-inventory-table");
-  tbody.innerHTML = "";
-  products.forEach((item, index) => {
-    const isOut = item.outOfStock;
-    const row = document.createElement("tr");
-    row.style.borderBottom = "1px solid var(--border)";
-    row.innerHTML = `
-      <td style="padding: 10px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
-        <img src="${item.image}" style="width:35px; height:35px; object-fit:cover; border-radius:4px;"> ${item.name}
-      </td>
-      <td style="padding: 10px;">${item.category}</td>
-      <td style="padding: 10px; font-weight: bold; color: var(--primary);">₦${item.price.toLocaleString()}</td>
-      <td style="padding: 10px;"><span style="padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; background: ${isOut ? '#ff7675' : '#55efc4'}; color: ${isOut ? 'white' : '#2d3436'};">${isOut ? 'Out of Stock' : 'In Stock'}</span></td>
-      <td style="padding: 10px; text-align: right;">
-        <button onclick="toggleStock(${index})" class="qty-btn" style="width:auto; padding: 4px 8px; font-size: 0.75rem; margin-right: 4px;">${isOut ? 'Mark In Stock' : 'Mark Out'}</button>
-        <button onclick="deleteProduct(${index})" class="remove-btn" style="padding: 4px 8px;">Delete</button>
-      </td>
-    `;
-    tbody.appendChild(row);
-  });
+  if (tbody) {
+    tbody.innerHTML = "";
+    products.forEach((item, index) => {
+      const isOut = item.outOfStock;
+      const row = document.createElement("tr");
+      row.style.borderBottom = "1px solid var(--border)";
+      row.innerHTML = `
+        <td style="padding: 10px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+          <img src="${item.image}" style="width:35px; height:35px; object-fit:cover; border-radius:4px;"> ${item.name}
+        </td>
+        <td style="padding: 10px;">${item.category}</td>
+        <td style="padding: 10px; font-weight: bold; color: var(--primary);">₦${item.price.toLocaleString()}</td>
+        <td style="padding: 10px;"><span style="padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; background: ${isOut ? '#ff7675' : '#55efc4'}; color: ${isOut ? 'white' : '#2d3436'};">${isOut ? 'Out of Stock' : 'In Stock'}</span></td>
+        <td style="padding: 10px; text-align: right;">
+          <button onclick="toggleStock(${index})" class="qty-btn" style="width:auto; padding: 4px 8px; font-size: 0.75rem; margin-right: 4px;">${isOut ? 'Mark In Stock' : 'Mark Out'}</button>
+          <button onclick="deleteProduct(${index})" class="remove-btn" style="padding: 4px 8px;">Delete</button>
+        </td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
 }
 
 function updateOrderStatus(index, newStatus) {
@@ -390,7 +461,7 @@ function deleteOrder(index) {
 }
 
 function addNewProduct(e) {
-  e.preventDefault();
+  if (e) e.preventDefault();
   const name = document.getElementById("prod-name").value.trim();
   const category = document.getElementById("prod-category").value;
   const price = parseFloat(document.getElementById("prod-price").value);
@@ -399,7 +470,10 @@ function addNewProduct(e) {
 
   products.push({ id: Date.now(), name, category, price, image, description: desc, outOfStock: false });
   saveProducts();
-  document.getElementById("add-product-form").reset();
+  
+  const form = document.getElementById("add-product-form");
+  if (form) form.reset();
+
   renderAdminDashboard();
   renderProducts();
   alert(`"${name}" published! 🎉`);
@@ -421,14 +495,6 @@ function deleteProduct(index) {
   }
 }
 
-function filterCategory(cat, e) {
-  if (e) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    e.target.classList.add('active');
-  }
-  renderProducts();
-}
-
 function copyReferralLink() {
   navigator.clipboard.writeText(window.location.href);
   alert("Store link copied to clipboard! Share with friends to earn free cupcakes. 🎁");
@@ -441,49 +507,18 @@ function updateCustomerDashboard() {
   if (custRev) custRev.innerText = reviewsList.length;
 }
 
+function updateDeliveryDisplay() {
+  const feeDisplay = document.getElementById("delivery-fee-display");
+  if (feeDisplay) feeDisplay.innerText = `₦${currentDeliveryFee.toLocaleString()}`;
+  updateCartUI();
+}
+
+// CONSOLIDATED DOM INITIALIZATION
 document.addEventListener("DOMContentLoaded", () => {
   switchTab("store");
   renderProducts();
   updateCartUI();
-});
 
-// LOCATION DATA
-const locationData = {
-  "Edo": {
-    "Benin City": [
-      { area: "UNIBEN Ugbowo Campus / BDPA", fee: 1000 },
-      { area: "Ekosodin", fee: 1200 },
-      { area: "GRA / Airport Road", fee: 1500 },
-      { area: "Uselu / Oluku", fee: 1200 },
-      { area: "Sapele Road / Limit", fee: 1800 },
-      { area: "Aduwawa / Ikpoba Hill", fee: 2000 }
-    ]
-  },
-  "Delta": {
-    "Asaba": [
-      { area: "GRA / Okpanam Road", fee: 2500 },
-      { area: "Summit / DBS Road", fee: 2500 }
-    ],
-    "Warri": [
-      { area: "Effurun / PTI", fee: 3000 },
-      { area: "Enerhen / Airport Road", fee: 3000 }
-    ]
-  },
-  "Lagos": {
-    "Lagos Mainland": [
-      { area: "Ikeja / Yaba / Surulere", fee: 3500 },
-      { area: "Unilag Campus / Akoka", fee: 3500 }
-    ],
-    "Lagos Island": [
-      { area: "Lekki Phase 1 / Ikoyi", fee: 4500 },
-      { area: "Ajah / Sangotedo", fee: 5000 }
-    ]
-  }
-};
-
-let currentDeliveryFee = 0;
-
-document.addEventListener("DOMContentLoaded", function() {
   const stateSelect = document.getElementById("select-state");
   const citySelect = document.getElementById("select-city");
   const areaSelect = document.getElementById("select-area");
@@ -548,9 +583,3 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 });
-
-function updateDeliveryDisplay() {
-  const feeDisplay = document.getElementById("delivery-fee-display");
-  if (feeDisplay) feeDisplay.innerText = `₦${currentDeliveryFee.toLocaleString()}`;
-  if (typeof updateCartUI === "function") updateCartUI();
-}
