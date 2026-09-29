@@ -583,3 +583,30 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+// SECRET ADMIN UNLOCK SYSTEM
+// Option A: Secret URL Parameter (?admin=true)
+window.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('admin') === 'true' || localStorage.getItem('elma_admin_unlocked') === 'true') {
+    const adminBtn = document.getElementById("admin-nav-btn");
+    if (adminBtn) adminBtn.style.display = "inline-block";
+  }
+});
+
+// Option B: Secret Key Combination (Press 'A' + 'D' + 'M' + 'I' + 'N' sequence or triple-tap footer)
+let secretCode = "";
+document.addEventListener("keydown", (e) => {
+  secretCode += e.key.toLowerCase();
+  if (secretCode.endsWith("admin")) {
+    const adminBtn = document.getElementById("admin-nav-btn");
+    if (adminBtn) {
+      adminBtn.style.display = "inline-block";
+      localStorage.setItem('elma_admin_unlocked', 'true');
+      alert("🔓 Admin Panel Unlocked!");
+    }
+    secretCode = "";
+  }
+  if (secretCode.length > 10) secretCode = secretCode.substring(1);
+});
+
