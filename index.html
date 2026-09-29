@@ -29,7 +29,7 @@
     <button class="nav-btn" onclick="switchTab('gallery')">Gallery</button>
     <button class="nav-btn" onclick="switchTab('reviews')">Reviews</button>
     <button class="nav-btn" onclick="switchTab('customer-dashboard')">My Account</button>
-    <button class="nav-btn" onclick="switchTab('admin')">Admin Panel</button>
+<button id="admin-nav-btn" class="nav-btn" onclick="switchTab('admin')" style="display: none;">Admin Panel</button>
   </nav>
 
   <div class="container">
@@ -267,6 +267,7 @@
           <p style="color: #27ae60; font-weight: bold;">Session Status: Authenticated ✅</p>
           <button onclick="lockAdmin()" class="remove-btn">Lock Panel 🔒</button>
         </div>
+        
 
         <!-- REVENUE & SALES ANALYTICS STATS -->
         <div class="dashboard-stats">
