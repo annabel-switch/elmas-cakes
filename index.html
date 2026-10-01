@@ -316,7 +316,9 @@
                 <option value="Pastries">Category: Pastries</option>
               </select>
               <input type="number" id="prod-price" placeholder="Price in ₦" required>
-              <input type="url" id="prod-image" placeholder="Image URL" required>
+           <!-- Replace the old Image URL text input with this -->
+<input type="file" id="prod-file" accept="image/*" style="width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 6px; background: #fff;">
+ required>
             </div>
             <textarea id="prod-desc" placeholder="Short description..." rows="2" style="margin-top: 10px; width:100%;"></textarea>
             <button type="submit" class="btn" style="margin-top: 10px;">Publish Product to Store 🚀</button>
