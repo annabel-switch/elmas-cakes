@@ -176,16 +176,39 @@ function renderProducts() {
     const card = document.createElement("div");
     card.className = "product-card";
     card.innerHTML = `
-      <img src="${p.image}" alt="${p.name}" style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
+      <img src="${p.image}" alt="${p.name}" onclick="openImageModal('${p.image}')" style="width:100%; height:150px; object-fit:cover; border-radius:8px; cursor:pointer;" title="Tap to preview image">
       <h3 style="margin:8px 0 4px 0;">${p.name}</h3>
       <p style="color:var(--primary); font-weight:bold; margin-bottom:8px;">₦${p.price.toLocaleString()}</p>
-      <button class="btn" ${p.outOfStock ? 'disabled style="background:#ccc;"' : ''} onclick="addToCart(${p.id})">
-        ${p.outOfStock ? 'Out of Stock' : 'Add to Cart 🛒'}
-      </button>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <button class="btn" ${p.outOfStock ? 'disabled style="background:#ccc;"' : ''} onclick="addToCart(${p.id})" style="flex:1;">
+          ${p.outOfStock ? 'Out of Stock' : 'Add to Cart 🛒'}
+        </button>
+        <button class="btn" onclick="openImageModal('${p.image}')" style="background:transparent; border:1px solid var(--primary); color:var(--primary); padding:6px 10px; font-size:0.85rem;">
+          Preview 👁️
+        </button>
+      </div>
     `;
     grid.appendChild(card);
   });
 }
+
+// MODAL CONTROLS
+function openImageModal(imgSrc) {
+  const modal = document.getElementById("image-modal");
+  const modalImg = document.getElementById("modal-img");
+  if (modal && modalImg) {
+    modalImg.src = imgSrc;
+    modal.style.display = "flex";
+  }
+}
+
+function closeImageModal() {
+  const modal = document.getElementById("image-modal");
+  if (modal) {
+    modal.style.display = "none";
+  }
+}
+
 
 function filterCategory(cat, e) {
   currentCategoryFilter = cat;
