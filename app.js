@@ -485,22 +485,47 @@ function deleteOrder(index) {
 
 function addNewProduct(e) {
   if (e) e.preventDefault();
+  
   const name = document.getElementById("prod-name").value.trim();
   const category = document.getElementById("prod-category").value;
   const price = parseFloat(document.getElementById("prod-price").value);
-  const image = document.getElementById("prod-image").value.trim();
   const desc = document.getElementById("prod-desc").value.trim();
+  const fileInput = document.getElementById("prod-file");
 
-  products.push({ id: Date.now(), name, category, price, image, description: desc, outOfStock: false });
-  saveProducts();
-  
-  const form = document.getElementById("add-product-form");
-  if (form) form.reset();
+  if (!fileInput || !fileInput.files[0]) {
+    alert("Please select a photo for the product!");
+    return;
+  }
 
-  renderAdminDashboard();
-  renderProducts();
-  alert(`"${name}" published! 🎉`);
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function(event) {
+    const base64Image = event.target.result;
+
+    products.push({
+      id: Date.now(),
+      name: name,
+      category: category,
+      price: price,
+      image: base64Image,
+      description: desc,
+      outOfStock: false
+    });
+
+    saveProducts();
+
+    const form = document.getElementById("add-product-form");
+    if (form) form.reset();
+
+    renderAdminDashboard();
+    renderProducts();
+    alert(`"${name}" published successfully! 🎉`);
+  };
+
+  reader.readAsDataURL(file);
 }
+
 
 function toggleStock(index) {
   products[index].outOfStock = !products[index].outOfStock;
