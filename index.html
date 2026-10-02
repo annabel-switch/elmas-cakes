@@ -24,12 +24,18 @@
   </div>
 
   <nav>
-    <button class="nav-btn active" onclick="switchTab('store')">Store</button>
-    <button class="nav-btn" onclick="switchTab('custom-builder')">Cake Builder 🎂</button>
-    <button class="nav-btn" onclick="switchTab('gallery')">Gallery</button>
-    <button class="nav-btn" onclick="switchTab('reviews')">Reviews</button>
-    <button class="nav-btn" onclick="switchTab('customer-dashboard')">My Account</button>
-    <button id="admin-nav-btn" class="nav-btn" onclick="switchTab('admin')" style="display: none;">Admin Panel</button>
+  <!-- Main Navigation Buttons -->
+<div class="nav-buttons">
+  <button class="nav-btn active" onclick="switchTab('store')">Store</button>
+  <button class="nav-btn" onclick="switchTab('custom-builder')">Cake Builder 🎂</button>
+  <button class="nav-btn" onclick="switchTab('gallery')">Gallery</button>
+  <button class="nav-btn" onclick="switchTab('reviews')">Reviews</button>
+  <button class="nav-btn" onclick="switchTab('customer-dashboard')">My Account</button>
+  
+  <!-- ADD THIS MISSING ADMIN BUTTON BELOW -->
+  <button class="nav-btn" id="admin-nav-btn" onclick="switchTab('admin')" style="display: none; background: #2d3436; color: #fff;">Admin 🔐</button>
+</div>
+
   </nav>
 
   <div class="container">
