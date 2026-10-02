@@ -31,7 +31,8 @@
   <button class="nav-btn" onclick="switchTab('gallery')">Gallery</button>
   <button class="nav-btn" onclick="switchTab('reviews')">Reviews</button>
   <button class="nav-btn" onclick="switchTab('customer-dashboard')">My Account</button>
-  
+  <button class="nav-btn" onclick="showTab('price-list')">Price List 📋</button>
+
   <!-- ADD THIS MISSING ADMIN BUTTON BELOW -->
   <button class="nav-btn" id="admin-nav-btn" onclick="switchTab('admin')" style="display: none; background: #2d3436; color: #fff;">Admin 🔐</button>
 </div>
@@ -46,9 +47,33 @@
       <p>Share our website with your friends and family in Benin City. Tell them to mention your name when ordering to get a <strong>FREE Box of Cupcakes</strong> on your next order!</p>
       <button class="copy-btn" onclick="copyReferralLink()">📋 Share Store Link</button>
     </div>
+<!-- PRICE LIST TAB / SECTION -->
+<div id="price-list" class="tab-content">
+  <div style="text-align: center; margin-bottom: 20px;">
+    <h2 style="color: var(--primary, #d63031); margin-bottom: 4px;">CAKE PRICE LIST</h2>
+    <p style="color: #666; font-size: 0.9rem;">Buttercream & Custom Cake Pricing Matrix</p>
+  </div>
+
+  <div id="price-list-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+    <!-- Price grid cards will render here dynamically -->
+  </div>
+
+  <!-- NOTES BOX -->
+  <div style="background: #fff0f3; border: 1px solid #ffccd5; padding: 15px; border-radius: 12px; margin-top: 20px;">
+    <h4 style="color: #d63031; margin-bottom: 8px;">💖 NOTE:</h4>
+    <ul style="font-size: 0.85rem; color: #444; line-height: 1.6; padding-left: 20px;">
+      <li>Whipped cream and fondant cost extra.</li>
+      <li>Special designs and decorations cost extra.</li>
+      <li>Red velvet and chocolate cakes cost extra.</li>
+      <li>Urgent orders attract extra charges.</li>
+    </ul>
+  </div>
+</div>
 
     <!-- STORE TAB -->
     <div id="store" class="tab-content active">
+      
+
       <h2>Menu</h2>
 
       <div class="filter-container">
@@ -352,6 +377,31 @@
         <!-- INVENTORY TABLE -->
         <div class="cart-section">
           <h3 style="color: var(--primary); margin-bottom: 12px;">📦 Manage Store Inventory</h3>
+          <!-- ADMIN PRICE LIST MANAGEMENT -->
+<div style="background: #fff; padding: 15px; border-radius: 10px; margin-top: 20px; border: 1px solid #eee;">
+  <h3>📊 Manage Dynamic Price List</h3>
+  
+  <form id="add-price-entry-form" onsubmit="addPriceListEntry(event)" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
+    <input type="text" id="price-category" placeholder="Category (e.g. Single Layer)" required style="flex: 1; padding: 8px;">
+    <input type="text" id="price-size" placeholder="Size (e.g. 8 inches)" required style="flex: 1; padding: 8px;">
+    <input type="number" id="price-amount" placeholder="Price (₦)" required style="flex: 1; padding: 8px;">
+    <button type="submit" class="btn" style="padding: 8px 15px;">Add Entry ➕</button>
+  </form>
+
+  <table style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr style="background: #f8f9fa; text-align: left;">
+        <th style="padding: 8px;">Category</th>
+        <th style="padding: 8px;">Size</th>
+        <th style="padding: 8px;">Price (₦)</th>
+        <th style="padding: 8px; text-align: right;">Action</th>
+      </tr>
+    </thead>
+    <tbody id="admin-price-list-body">
+      <!-- Admin entries populated dynamically -->
+    </tbody>
+  </table>
+</div>
           <div style="overflow-x: auto;">
             <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
               <thead>
