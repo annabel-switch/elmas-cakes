@@ -796,15 +796,27 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCustomerPriceList();
   renderAdminPriceList();
 });
-// Ensure tab switching works for Price List
-const originalSwitchTab = window.switchTab || window.showTab || window.showSection;
+// // Universal Tab Switcher Fix
 window.switchTab = function(tabId) {
-  document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-  const target = document.getElementById(tabId);
-  if (target) target.style.display = 'block';
-  
-  // Update active button state
-  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-  if (event && event.target) event.target.classList.add('active');
-};
+  // Hide all tab sections
+  const tabs = document.querySelectorAll('.tab-content');
+  tabs.forEach(tab => {
+    tab.style.display = 'none';
+  });
 
+  // Show selected tab
+  const targetTab = document.getElementById(tabId);
+  if (targetTab) {
+    targetTab.style.display = 'block';
+  }
+
+  // Update button active highlights
+  const buttons = document.querySelectorAll('.nav-btn');
+  buttons.forEach(btn => {
+    btn.classList.remove('active');
+  });
+
+  if (window.event && window.event.currentTarget) {
+    window.event.currentTarget.classList.add('active');
+  }
+};
