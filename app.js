@@ -1,7 +1,13 @@
 // DATA INITIALIZATION & STATE
 let products = JSON.parse(localStorage.getItem('elma_products')) || [
-  { id: 1, name: "Chocolate Fudge Cake", category: "Cakes", price: 15000, image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300", description: "Rich chocolate cake", outOfStock: false },
-  { id: 2, name: "Vanilla Cupcake Box", category: "Pastries", price: 8000, image: "https://images.unsplash.com/photo-1519869325930-281384150729?w=300", description: "Box of 6 cupcakes", outOfStock: false }
+  { id: 1, name: "Chocolate Fudge Cake", category: "Cakes", price: 15000, image: "https://i.postimg.cc/xjMzDsqP/IMG-5042.jpg", description: "Rich chocolate cake with custom drip design", outOfStock: false },
+  { id: 2, name: "Vanilla Cupcake Box", category: "Pastries", price: 8000, image: "https://i.postimg.cc/cL4g30Ts/IMG-6097.jpg", description: "Box of 6 fluffy vanilla cupcakes", outOfStock: false },
+  { id: 3, name: "Custom Birthday Cake", category: "Cakes", price: 18000, image: "https://i.postimg.cc/RFfNmFCn/IMG-8135.jpg", description: "Special occasion decorated layer cake", outOfStock: false },
+  { id: 4, name: "Celebration Special Cake", category: "Cakes", price: 20000, image: "https://i.postimg.cc/kGvGVpbS/IMG-0921.jpg", description: "Premium handcrafted celebration cake", outOfStock: false },
+  { id: 5, name: "Red Velvet Delights", category: "Cakes", price: 16000, image: "https://i.postimg.cc/Vk6v64Lw/IMG-1336.jpg", description: "Moist red velvet cake with cream cheese frosting", outOfStock: false },
+  { id: 6, name: "Whipped Cream Pastry Box", category: "Pastries", price: 10000, image: "https://i.postimg.cc/QtLdf3gD/IMG-1545.jpg", description: "Assorted sweet pastry treats", outOfStock: false }
+];
+
 ];
 
 let cart = JSON.parse(localStorage.getItem('elma_cart')) || [];
