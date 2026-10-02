@@ -8,8 +8,6 @@ let products = JSON.parse(localStorage.getItem('elma_products')) || [
   { id: 6, name: "Whipped Cream Pastry Box", category: "Pastries", price: 10000, image: "https://i.postimg.cc/QtLdf3gD/IMG-1545.jpg", description: "Assorted sweet pastry treats", outOfStock: false }
 ];
 
-];
-
 let cart = JSON.parse(localStorage.getItem('elma_cart')) || [];
 let ordersList = JSON.parse(localStorage.getItem('elma_orders')) || [];
 
@@ -214,7 +212,6 @@ function closeImageModal() {
     modal.style.display = "none";
   }
 }
-
 
 function filterCategory(cat, e) {
   currentCategoryFilter = cat;
@@ -426,6 +423,26 @@ function renderAdminDashboard() {
   if (prodStat) prodStat.innerText = products.length;
   if (revCountStat) revCountStat.innerText = reviewsList.length;
 
+  // POPULATE QUICK PRICE LIST EDITOR
+  const priceBody = document.getElementById("price-editor-body");
+  if (priceBody) {
+    priceBody.innerHTML = "";
+    products.forEach((p, index) => {
+      const tr = document.createElement("tr");
+      tr.style.borderBottom = "1px solid var(--border, #eee)";
+      tr.innerHTML = `
+        <td style="padding:10px; font-weight:bold;">${p.name}</td>
+        <td style="padding:10px;">
+          <input type="number" id="quick-price-${index}" value="${p.price}" style="width:110px; padding:6px; border:1px solid #ccc; border-radius:4px;">
+        </td>
+        <td style="padding:10px; text-align:right;">
+          <button onclick="updateQuickPrice(${index})" class="btn" style="padding:4px 10px; font-size:0.8rem; width:auto;">Save 💾</button>
+        </td>
+      `;
+      priceBody.appendChild(tr);
+    });
+  }
+
   const orderTable = document.getElementById("admin-orders-table");
   if (orderTable) {
     orderTable.innerHTML = "";
@@ -473,6 +490,21 @@ function renderAdminDashboard() {
       tbody.appendChild(row);
     });
   }
+}
+
+function updateQuickPrice(index) {
+  const input = document.getElementById(`quick-price-${index}`);
+  if (!input) return;
+  const newPrice = parseFloat(input.value);
+  if (isNaN(newPrice) || newPrice < 0) {
+    alert("Please enter a valid price!");
+    return;
+  }
+  products[index].price = newPrice;
+  saveProducts();
+  renderAdminDashboard();
+  renderProducts();
+  alert(`Price for "${products[index].name}" updated to ₦${newPrice.toLocaleString()}! 💰`);
 }
 
 function updateOrderStatus(index, newStatus) {
@@ -531,7 +563,6 @@ function addNewProduct(e) {
 
   reader.readAsDataURL(file);
 }
-
 
 function toggleStock(index) {
   products[index].outOfStock = !products[index].outOfStock;
@@ -648,7 +679,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Option B: Secret Key Combination (Press 'A' + 'D' + 'M' + 'I' + 'N' sequence or triple-tap footer)
+// Option B: Secret Key Combination (Press 'A' + 'D' + 'M' + 'I' + 'N' sequence)
 let secretCode = "";
 document.addEventListener("keydown", (e) => {
   secretCode += e.key.toLowerCase();
