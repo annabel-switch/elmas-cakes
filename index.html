@@ -29,7 +29,7 @@
     <button class="nav-btn" onclick="switchTab('gallery')">Gallery</button>
     <button class="nav-btn" onclick="switchTab('reviews')">Reviews</button>
     <button class="nav-btn" onclick="switchTab('customer-dashboard')">My Account</button>
-<button id="admin-nav-btn" class="nav-btn" onclick="switchTab('admin')" style="display: none;">Admin Panel</button>
+    <button id="admin-nav-btn" class="nav-btn" onclick="switchTab('admin')" style="display: none;">Admin Panel</button>
   </nav>
 
   <div class="container">
@@ -246,6 +246,7 @@
           <p id="cust-review-count">0</p>
         </div>
       </div>
+    </div>
 
     <!-- ADMIN PANEL TAB -->
     <div id="admin" class="tab-content">
@@ -266,7 +267,6 @@
           <p style="color: #27ae60; font-weight: bold;">Session Status: Authenticated ✅</p>
           <button onclick="lockAdmin()" class="remove-btn">Lock Panel 🔒</button>
         </div>
-        
 
         <!-- REVENUE & SALES ANALYTICS STATS -->
         <div class="dashboard-stats">
@@ -275,7 +275,7 @@
             <p id="stat-total-revenue" style="color:#27ae60;">₦0</p>
           </div>
           <div class="stat-card">
-    <h4>Products Listed</h4>
+            <h4>Products Listed</h4>
             <p id="stat-product-count">0</p>
           </div>
           <div class="stat-card">
@@ -283,28 +283,30 @@
             <p id="stat-reviews-count">0</p>
           </div>
         </div>
+
         <!-- QUICK PRICE LIST EDITOR -->
-<div style="background: #fff; padding: 18px; border-radius: 12px; margin-top: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-  <h3 style="margin-top:0; color: var(--primary, #e84393);">📋 Quick Price List Editor</h3>
-  <p style="font-size:0.85rem; color:#666;">Update item prices in real time across the entire store.</p>
-  
-  <div style="overflow-x: auto;">
-    <table style="width:100%; border-collapse: collapse; text-align: left;" id="price-list-table">
-      <thead>
-        <tr style="border-bottom: 2px solid var(--border, #eee);">
-          <th style="padding: 10px;">Item Name</th>
-          <th style="padding: 10px;">Price (₦)</th>
-          <th style="padding: 10px; text-align: right;">Action</th>
-        </tr>
-      </thead>
-      <tbody id="price-editor-body">
-        <!-- Javascript populates price rows here -->
-      </tbody>
-    </table>
-  </div>
-</div>
+        <div style="background: #fff; padding: 18px; border-radius: 12px; margin-top: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+          <h3 style="margin-top:0; color: var(--primary, #e84393);">📋 Quick Price List Editor</h3>
+          <p style="font-size:0.85rem; color:#666;">Update item prices in real time across the entire store.</p>
+          
+          <div style="overflow-x: auto;">
+            <table style="width:100%; border-collapse: collapse; text-align: left;" id="price-list-table">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--border, #eee);">
+                  <th style="padding: 10px;">Item Name</th>
+                  <th style="padding: 10px;">Price (₦)</th>
+                  <th style="padding: 10px; text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="price-editor-body">
+                <!-- Javascript populates price rows here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
         <!-- MANAGE ORDERS & LIVE TRACKING STATUS -->
-        <div class="cart-section" style="margin-bottom: 25px;">
+        <div class="cart-section" style="margin-top: 25px; margin-bottom: 25px;">
           <h3 style="color: var(--primary); margin-bottom: 12px;">🚚 Active Orders & Live Tracking</h3>
           <div style="overflow-x: auto;">
             <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
@@ -334,8 +336,7 @@
                 <option value="Pastries">Category: Pastries</option>
               </select>
               <input type="number" id="prod-price" placeholder="Price in ₦" required>
-           <!-- Replace the old Image URL text input with this -->
-<input type="file" id="prod-file" accept="image/*" style="width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 6px; background: #fff;">
+              <input type="file" id="prod-file" accept="image/*" style="width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 6px; background: #fff;">
             </div>
             <textarea id="prod-desc" placeholder="Short description..." rows="2" style="margin-top: 10px; width:100%;"></textarea>
             <button type="submit" class="btn" style="margin-top: 10px;">Publish Product to Store 🚀</button>
@@ -373,11 +374,10 @@
   </a>
   
   <!-- IMAGE PREVIEW MODAL -->
-<div id="image-modal" onclick="closeImageModal()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center; cursor:pointer;">
-  <span style="position:absolute; top:20px; right:25px; color:#fff; font-size:30px; font-weight:bold;">&times;</span>
-  <img id="modal-img" src="" alt="Cake Preview" style="max-width:90%; max-height:80%; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.5); object-fit:contain;">
-</div>
-
+  <div id="image-modal" onclick="closeImageModal()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center; cursor:pointer;">
+    <span style="position:absolute; top:20px; right:25px; color:#fff; font-size:30px; font-weight:bold;">&times;</span>
+    <img id="modal-img" src="" alt="Cake Preview" style="max-width:90%; max-height:80%; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.5); object-fit:contain;">
+  </div>
 
   <script src="app.js?v=6.0"></script>
 </body>
