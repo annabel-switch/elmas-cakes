@@ -663,4 +663,3 @@ document.addEventListener("keydown", (e) => {
   }
   if (secretCode.length > 10) secretCode = secretCode.substring(1);
 });
-
