@@ -306,7 +306,7 @@ function adminLogin(e) {
   const passEl = document.getElementById('admin-pass');
   const pass = passEl ? passEl.value : "";
   
-  if (pass === 'elma') {
+  if (pass === '1234') {
     isAdmin = true;
     const loginSec = document.getElementById('admin-login-sec');
     const panelSec = document.getElementById('admin-panel-sec');
