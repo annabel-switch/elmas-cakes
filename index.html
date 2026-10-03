@@ -4,222 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Elma's Cakes 🎂</title>
-  <style>
-    /* Global Variables & Resets */
-    :root {
-      --primary: #e91e63;
-      --primary-dark: #c2185b;
-      --secondary: #ff80ab;
-      --light: #fff0f5;
-      --border: #ffb6c1;
-      --text: #2d3436;
-      --bg: #fffbfd;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      padding-bottom: 60px;
-    }
-
-    /* Header */
-    header {
-      background: linear-gradient(135deg, #e91e63, #ff4081);
-      color: white;
-      text-align: center;
-      padding: 30px 15px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    header h1 {
-      font-size: 2.2rem;
-      margin-bottom: 5px;
-    }
-
-    .floating-icon {
-      position: absolute;
-      opacity: 0.2;
-      font-size: 2rem;
-    }
-    .icon-1 { top: 10px; left: 10%; }
-    .icon-2 { top: 20px; right: 12%; }
-    .icon-3 { bottom: 10px; left: 20%; }
-    .icon-4 { bottom: 15px; right: 25%; }
-
-    /* Trust Marquee */
-    .trust-marquee {
-      background: #ffe4e8;
-      color: #c2185b;
-      font-weight: 600;
-      font-size: 0.9rem;
-      padding: 8px 0;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-
-    .marquee-content {
-      display: inline-block;
-      padding-left: 100%;
-      animation: marquee 20s linear infinite;
-    }
-
-    @keyframes marquee {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(-100%, 0); }
-    }
-
-    /* Navigation */
-    nav {
-      background: #ffffff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      padding: 10px;
-    }
-
-    .nav-buttons {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      max-width: 1000px;
-      margin: 0 auto;
-      padding-bottom: 4px;
-    }
-
-    .nav-btn {
-      background: #f1f2f6;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-weight: 600;
-      color: #555;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s ease;
-    }
-
-    .nav-btn.active, .nav-btn:hover {
-      background: var(--primary);
-      color: white;
-    }
-
-    /* Container & Tab Visibility */
-    .container {
-      max-width: 1000px;
-      margin: 20px auto;
-      padding: 0 15px;
-    }
-
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    /* Cards & Section Styling */
-    .referral-card, .cart-section, .feature-card, .stat-card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      border: 1px solid #f0f0f0;
-      margin-bottom: 25px;
-    }
-
-    .referral-card {
-      background: #fff5f8;
-      border: 1px dashed var(--primary);
-      text-align: center;
-    }
-
-    /* Buttons & Inputs */
-    .btn, .copy-btn, .checkout-btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .btn:hover, .copy-btn:hover, .checkout-btn:hover {
-      background: var(--primary-dark);
-    }
-
-    .checkout-btn {
-      width: 100%;
-      padding: 14px;
-      font-size: 1.1rem;
-      margin-top: 15px;
-    }
-
-    input[type="text"], input[type="number"], input[type="password"], input[type="date"], select, textarea {
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 0.95rem;
-    }
-
-    /* Grids */
-    .filter-container {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    .product-grid, .features-grid, .dashboard-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-
-    /* Floating WhatsApp Button */
-    .whatsapp-float {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #25d366;
-      color: white;
-      border-radius: 50px;
-      width: 55px;
-      height: 55px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      z-index: 1000;
-    }
-
-    .whatsapp-svg {
-      width: 32px;
-      height: 32px;
-    }
-
-    /* Footer */
-    .store-footer {
-      text-align: center;
-      padding: 30px 10px;
-      border-top: 1px solid #eee;
-      margin-top: 40px;
-      color: #666;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -239,6 +24,7 @@
   </div>
 
   <nav>
+    <!-- Main Navigation Buttons -->
     <div class="nav-buttons">
       <button class="nav-btn active" onclick="switchTab('store')">Store</button>
       <button class="nav-btn" onclick="switchTab('custom-builder')">Cake Builder 🎂</button>
@@ -246,6 +32,8 @@
       <button class="nav-btn" onclick="switchTab('reviews')">Reviews</button>
       <button class="nav-btn" onclick="switchTab('customer-dashboard')">My Account</button>
       <button class="nav-btn" onclick="switchTab('price-list')">Price List 📋</button>
+
+      <!-- ADMIN BUTTON -->
       <button class="nav-btn" id="admin-nav-btn" onclick="switchTab('admin')" style="display: none; background: #2d3436; color: #fff;">Admin 🔐</button>
     </div>
   </nav>
@@ -259,9 +47,33 @@
       <button class="copy-btn" onclick="copyReferralLink()">📋 Share Store Link</button>
     </div>
 
+    <!-- PRICE LIST TAB / SECTION -->
+    <div id="price-list" class="tab-content">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <h2 style="color: var(--primary, #d63031); margin-bottom: 4px;">CAKE PRICE LIST</h2>
+        <p style="color: #666; font-size: 0.9rem;">Buttercream & Custom Cake Pricing Matrix</p>
+      </div>
+
+      <div id="price-list-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+        <!-- Price grid cards will render here dynamically -->
+      </div>
+
+      <!-- NOTES BOX -->
+      <div style="background: #fff0f3; border: 1px solid #ffccd5; padding: 15px; border-radius: 12px; margin-top: 20px;">
+        <h4 style="color: #d63031; margin-bottom: 8px;">💖 NOTE:</h4>
+        <ul style="font-size: 0.85rem; color: #444; line-height: 1.6; padding-left: 20px;">
+          <li>Whipped cream and fondant cost extra.</li>
+          <li>Special designs and decorations cost extra.</li>
+          <li>Red velvet and chocolate cakes cost extra.</li>
+          <li>Urgent orders attract extra charges.</li>
+        </ul>
+      </div>
+    </div>
+
     <!-- STORE TAB -->
-    <div id="store" class="tab-content active" style="display: block;">
+    <div id="store" class="tab-content active">
       <h2>Menu</h2>
+
       <div class="filter-container">
         <input type="text" id="search-input" placeholder="Search cakes, cupcakes..." onkeyup="renderProducts()" style="flex:1;">
         <button class="filter-btn active" onclick="filterCategory('All', event)">All</button>
@@ -280,67 +92,71 @@
 
         <!-- DYNAMIC LOCATION & DELIVERY FEE SELECTOR -->
         <div class="delivery-calculator" style="background: #fff0f5; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid #ffb6c1;">
-          <h4 style="margin: 0 0 10px 0; color: var(--primary);">📍 Delivery Location & Fee</h4>
+          <h4 style="margin: 0 0 10px 0; color: var(--primary, #e91e63);">📍 Delivery Location & Fee</h4>
           
+          <!-- State Selection -->
           <label style="font-size: 0.85rem; font-weight: bold; display: block; margin-top: 5px;">Select State:</label>
-          <select id="select-state" style="width:100%; padding:8px; margin: 4px 0 10px 0;">
+          <select id="select-state" onchange="handleStateChange()" style="width:100%; padding:8px; margin: 4px 0 10px 0; border-radius:6px; border:1px solid #ccc;">
             <option value="">-- Choose State --</option>
             <option value="Edo">Edo State</option>
             <option value="Delta">Delta State</option>
             <option value="Lagos">Lagos State</option>
           </select>
 
+          <!-- City Selection -->
           <label style="font-size: 0.85rem; font-weight: bold; display: block;">Select City:</label>
-          <select id="select-city" disabled style="width:100%; padding:8px; margin: 4px 0 10px 0;">
+          <select id="select-city" onchange="handleCityChange()" disabled style="width:100%; padding:8px; margin: 4px 0 10px 0; border-radius:6px; border:1px solid #ccc;">
             <option value="">-- Choose City --</option>
           </select>
 
+          <!-- Area / Neighborhood Selection -->
           <label style="font-size: 0.85rem; font-weight: bold; display: block;">Select Specific Area:</label>
-          <select id="select-area" disabled style="width:100%; padding:8px; margin: 4px 0 10px 0;">
+          <select id="select-area" onchange="calculateDeliveryFee()" disabled style="width:100%; padding:8px; margin: 4px 0 10px 0; border-radius:6px; border:1px solid #ccc;">
             <option value="">-- Choose Area --</option>
           </select>
 
+          <!-- Delivery Fee Display -->
           <p style="margin-top: 10px; font-weight: bold; font-size: 0.95rem;">
-            Delivery Fee: <span id="delivery-fee-display" style="color: var(--primary);">₦0</span>
+            Delivery Fee: <span id="delivery-fee-display" style="color: var(--primary, #e91e63);">₦0</span>
           </p>
         </div>
 
         <!-- DISCOUNT PROMO CODE BOX -->
         <div style="margin-top: 15px; display: flex; gap: 8px;">
-          <input type="text" id="promo-input" placeholder="Enter Discount Code (e.g. ELMA10)" style="flex:1;">
-          <button onclick="applyPromoCode()" class="btn" style="width: auto;">Apply</button>
+          <input type="text" id="promo-input" placeholder="Enter Discount Code (e.g. ELMA10)" style="flex:1; padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
+          <button onclick="applyPromoCode()" class="btn" style="width: auto; padding: 8px 15px;">Apply</button>
         </div>
         <p id="promo-message" style="font-size: 0.85rem; margin-top: 5px; font-weight: bold;"></p>
 
         <div style="margin-top:15px;">
           <label><strong>Preferred Delivery/Pickup Date:</strong></label>
-          <input type="date" id="delivery-date" style="margin-top:5px; width: 100%;">
+          <input type="date" id="delivery-date" style="margin-top:5px; width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border);">
         </div>
 
         <div class="cart-summary" id="cart-total" style="display: none;">Total: ₦<span id="total-amount">0</span></div>
         <button class="checkout-btn" id="checkout-btn" style="display: none;" onclick="sendToWhatsApp()">Order via WhatsApp 📲</button>
       </div>
 
-      <!-- FEATURES & FAQS -->
+      <!-- FEATURED GUIDES & FAQS -->
       <h2 style="margin-top: 40px;">Why Choose Elma's Cakes? ✨</h2>
       <div class="features-grid">
         <div class="feature-card">
-          <div class="feature-icon" style="font-size: 2rem;">🍓</div>
+          <div class="feature-icon">🍓</div>
           <h3>100% Fresh Daily</h3>
           <p>Baked with premium ingredients right before delivery for maximum rich flavor.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon" style="font-size: 2rem;">🚚</div>
+          <div class="feature-icon">🚚</div>
           <h3>Benin City Express</h3>
           <p>Prompt and safe door-to-door delivery across Benin City to keep your cakes intact.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon" style="font-size: 2rem;">🎨</div>
+          <div class="feature-icon">🎨</div>
           <h3>Custom Creations</h3>
           <p>Tailored cake inscriptions, customized flavors, and special toppers for every event.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon" style="font-size: 2rem;">💵</div>
+          <div class="feature-icon">💵</div>
           <h3>Best Value Prices</h3>
           <p>Delicious premium quality cakes designed to fit every celebration budget.</p>
         </div>
@@ -349,7 +165,7 @@
       <footer class="store-footer">
         <h3>Elma's Cakes 🎂</h3>
         <p>Bringing sweetness to your special moments!</p>
-        <div class="footer-info" style="margin: 15px 0;">
+        <div class="footer-info">
           <p>📍 <strong>Location:</strong> Benin City, Edo State, Nigeria</p>
           <p>⏰ <strong>Hours:</strong> Mon - Sat: 8:00 AM - 7:00 PM</p>
           <p>📞 <strong>WhatsApp Orders:</strong> +234 913 505 9528</p>
@@ -360,14 +176,14 @@
       </footer>
     </div>
 
-    <!-- CAKE BUILDER TAB -->
+    <!-- CUSTOM CAKE BUILDER TAB -->
     <div id="custom-builder" class="tab-content">
       <h2>Custom Cake Builder & Price Calculator 🎨</h2>
       <div class="cart-section">
         <form id="cake-builder-form" onsubmit="addCustomCakeToCart(event)">
           <div style="margin-bottom: 12px;">
             <label><strong>Select Cake Flavor:</strong></label>
-            <select id="build-flavor" onchange="calculateCustomPrice()" style="width:100%; margin-top:5px;">
+            <select id="build-flavor" onchange="calculateCustomPrice()" style="width:100%; padding:10px; margin-top:5px; border-radius:6px; border:1px solid var(--border);">
               <option value="Vanilla Sponge" data-price="12000">Vanilla Sponge - ₦12,000 base</option>
               <option value="Chocolate Fudge" data-price="14000">Chocolate Fudge - ₦14,000 base</option>
               <option value="Red Velvet" data-price="15000">Red Velvet - ₦15,000 base</option>
@@ -378,7 +194,7 @@
 
           <div style="margin-bottom: 12px;">
             <label><strong>Select Cake Size & Tiers:</strong></label>
-            <select id="build-size" onchange="calculateCustomPrice()" style="width:100%; margin-top:5px;">
+            <select id="build-size" onchange="calculateCustomPrice()" style="width:100%; padding:10px; margin-top:5px; border-radius:6px; border:1px solid var(--border);">
               <option value='6" Single Tier' data-mult="1">6 Inch Single Tier (Serves 6-8)</option>
               <option value='8" Single Tier' data-mult="1.4">8 Inch Single Tier (Serves 12-15)</option>
               <option value='10" Single Tier' data-mult="1.8">10 Inch Single Tier (Serves 20-25)</option>
@@ -388,15 +204,15 @@
 
           <div style="margin-bottom: 12px;">
             <label><strong>Custom Cake Inscription / Message:</strong></label>
-            <input type="text" id="build-message" placeholder="e.g. Happy Birthday!" style="width:100%; margin-top:5px;" required>
+            <input type="text" id="build-message" placeholder="e.g. Happy Birthday Divine!" style="width:100%; padding:10px; margin-top:5px; border-radius:6px; border:1px solid var(--border);" required>
           </div>
 
           <div style="margin-bottom: 12px;">
             <label><strong>Special Design Request / Description:</strong></label>
-            <textarea id="build-design-note" placeholder="Describe color preferences, toppers, or special theme..." rows="3" style="width:100%; margin-top:5px;"></textarea>
+            <textarea id="build-design-note" placeholder="Describe color preferences, toppers, or special theme..." rows="3" style="width:100%; padding:10px; margin-top:5px; border-radius:6px; border:1px solid var(--border);"></textarea>
           </div>
 
-          <div style="background: var(--light); padding: 15px; border-radius: 8px; margin-bottom: 15px; text-align: center;">
+          <div style="background: var(--light, #f9f9f9); padding: 15px; border-radius: 8px; margin-bottom: 15px; text-align: center;">
             <h3 style="margin:0; color: var(--primary);">Calculated Price: ₦<span id="custom-calculated-price">12,000</span></h3>
           </div>
 
@@ -407,14 +223,8 @@
 
     <!-- GALLERY TAB -->
     <div id="gallery" class="tab-content">
-      <h2>Cake Gallery 📸</h2>
-      <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px;">Explore our recent custom cake designs and bakery creations.</p>
-      <div class="gallery-grid" id="gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-        <img src="https://i.postimg.cc/FRcMbPQn/IMG-5042.jpg" alt="Gallery Cake 1" onclick="openImageModal(this.src)" style="width:100%; height:200px; object-fit:cover; border-radius:8px; cursor:pointer;">
-        <img src="https://i.postimg.cc/7ZFX1qYH/IMG-6097.jpg" alt="Gallery Cake 2" onclick="openImageModal(this.src)" style="width:100%; height:200px; object-fit:cover; border-radius:8px; cursor:pointer;">
-        <img src="https://i.postimg.cc/vTK5Qv47/IMG-8135.jpg" alt="Gallery Cake 3" onclick="openImageModal(this.src)" style="width:100%; height:200px; object-fit:cover; border-radius:8px; cursor:pointer;">
-        <img src="https://i.postimg.cc/GhsyFGBy/IMG-0921.jpg" alt="Gallery Cake 4" onclick="openImageModal(this.src)" style="width:100%; height:200px; object-fit:cover; border-radius:8px; cursor:pointer;">
-      </div>
+      <h2>Cake Gallery</h2>
+      <div class="gallery-grid" id="gallery-grid"></div>
     </div>
 
     <!-- REVIEWS TAB -->
@@ -427,28 +237,29 @@
       <div class="cart-section" style="margin-top: 30px;">
         <h3>Leave a Review ✍️</h3>
         <form id="review-form" onsubmit="submitReview(event)">
-          <input type="text" id="rev-name" placeholder="Your Full Name" required style="width:100%; margin-bottom:10px;">
-          <select id="rev-rating" required style="width:100%; margin-bottom:10px;">
+          <input type="text" id="rev-name" placeholder="Your Full Name" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:8px;">
+          <select id="rev-rating" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:8px;">
             <option value="5">⭐⭐⭐⭐⭐ 5 Stars - Outstanding</option>
             <option value="4">⭐⭐⭐⭐ 4 Stars - Great Experience</option>
             <option value="3">⭐⭐⭐ 3 Stars - Average</option>
           </select>
-          <input type="text" id="rev-referred" placeholder="Did someone refer you? (e.g. Referred by Blessing)" style="width:100%; margin-bottom:10px;">
-          <textarea id="rev-comment" placeholder="Write your feedback..." rows="3" required style="width:100%; margin-bottom:10px;"></textarea>
+          <input type="text" id="rev-referred" placeholder="Did someone refer you? (e.g. Referred by Blessing)" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:8px;">
+          <textarea id="rev-comment" placeholder="Write your feedback..." rows="3" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:8px;"></textarea>
           <button type="submit" class="btn" style="width:100%;">Submit Review 🚀</button>
         </form>
       </div>
     </div>
 
-    <!-- MY ACCOUNT / CUSTOMER DASHBOARD TAB -->
+    <!-- CUSTOMER DASHBOARD TAB (TRACKING INCLUDED) -->
     <div id="customer-dashboard" class="tab-content">
       <h2>My Account & Order Tracker 🚚</h2>
       
+      <!-- LIVE TRACKER SEARCH -->
       <div class="cart-section" style="margin-bottom: 20px;">
         <h3>Track Your Cake Order 📦</h3>
         <p style="font-size:0.85rem; color:#636e72;">Enter your Phone Number or Order ID provided during WhatsApp confirmation:</p>
         <div style="display:flex; gap:8px; margin-top:10px;">
-          <input type="text" id="track-input" placeholder="e.g. 09135059528 or ORD-101" style="flex:1;">
+          <input type="text" id="track-input" placeholder="e.g. 09135059528 or ORD-101" style="flex:1; padding:10px; border:1px solid var(--border); border-radius:6px;">
           <button onclick="trackOrder()" class="btn" style="width:auto;">Search 🔍</button>
         </div>
         <div id="tracking-result" style="margin-top: 15px; display: none;"></div>
@@ -457,32 +268,12 @@
       <div class="dashboard-stats">
         <div class="stat-card">
           <h4>Items in Cart</h4>
-          <p id="cust-cart-count" style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">0</p>
+          <p id="cust-cart-count">0</p>
         </div>
         <div class="stat-card">
           <h4>Your Reviews Submitted</h4>
-          <p id="cust-review-count" style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">0</p>
+          <p id="cust-review-count">0</p>
         </div>
-      </div>
-    </div>
-
-    <!-- PRICE LIST TAB -->
-    <div id="price-list" class="tab-content">
-      <div style="text-align: center; margin-bottom: 20px;">
-        <h2 style="color: var(--primary); margin-bottom: 4px;">CAKE PRICE LIST</h2>
-        <p style="color: #666; font-size: 0.9rem;">Buttercream & Custom Cake Pricing Matrix</p>
-      </div>
-
-      <div id="price-list-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;"></div>
-
-      <div style="background: #fff0f3; border: 1px solid #ffccd5; padding: 15px; border-radius: 12px; margin-top: 20px;">
-        <h4 style="color: #d63031; margin-bottom: 8px;">💖 NOTE:</h4>
-        <ul style="font-size: 0.85rem; color: #444; line-height: 1.6; padding-left: 20px;">
-          <li>Whipped cream and fondant cost extra.</li>
-          <li>Special designs and decorations cost extra.</li>
-          <li>Red velvet and chocolate cakes cost extra.</li>
-          <li>Urgent orders attract extra charges.</li>
-        </ul>
       </div>
     </div>
 
@@ -494,7 +285,7 @@
         <h3>Admin Authentication</h3>
         <p style="font-size: 0.9rem; margin-bottom: 15px; color: #636e72;">Enter PIN to access store management system.</p>
         <form id="admin-login-form" onsubmit="unlockAdmin(event)">
-          <input type="password" id="admin-pin-input" placeholder="Enter PIN (Default: 1234)" required style="text-align: center; font-size: 1.2rem; letter-spacing: 4px; width: 100%;">
+          <input type="password" id="admin-pin-input" placeholder="Enter PIN (Default: 1234)" required style="text-align: center; font-size: 1.2rem; letter-spacing: 4px;">
           <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Unlock Panel 🔓</button>
         </form>
         <p id="admin-login-error" style="color: #e74c3c; font-size: 0.85rem; margin-top: 10px; display: none;">Incorrect PIN. Please try again.</p>
@@ -503,25 +294,48 @@
       <div id="admin-dashboard" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
           <p style="color: #27ae60; font-weight: bold;">Session Status: Authenticated ✅</p>
-          <button onclick="lockAdmin()" class="btn" style="background: #e74c3c;">Lock Panel 🔒</button>
+          <button onclick="lockAdmin()" class="remove-btn">Lock Panel 🔒</button>
         </div>
 
+        <!-- REVENUE & SALES ANALYTICS STATS -->
         <div class="dashboard-stats">
           <div class="stat-card" style="background:#e8f8f5;">
             <h4>Total Revenue</h4>
-            <p id="stat-total-revenue" style="color:#27ae60; font-size: 1.5rem; font-weight: bold;">₦0</p>
+            <p id="stat-total-revenue" style="color:#27ae60;">₦0</p>
           </div>
           <div class="stat-card">
             <h4>Products Listed</h4>
-            <p id="stat-product-count" style="font-size: 1.5rem; font-weight: bold;">0</p>
+            <p id="stat-product-count">0</p>
           </div>
           <div class="stat-card">
             <h4>Total Reviews</h4>
-            <p id="stat-reviews-count" style="font-size: 1.5rem; font-weight: bold;">0</p>
+            <p id="stat-reviews-count">0</p>
           </div>
         </div>
 
-        <div class="cart-section" style="margin-top: 25px;">
+        <!-- QUICK PRICE LIST EDITOR -->
+        <div style="background: #fff; padding: 18px; border-radius: 12px; margin-top: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+          <h3 style="margin-top:0; color: var(--primary, #e84393);">📋 Quick Price List Editor</h3>
+          <p style="font-size:0.85rem; color:#666;">Update item prices in real time across the entire store.</p>
+          
+          <div style="overflow-x: auto;">
+            <table style="width:100%; border-collapse: collapse; text-align: left;" id="price-list-table">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--border, #eee);">
+                  <th style="padding: 10px;">Item Name</th>
+                  <th style="padding: 10px;">Price (₦)</th>
+                  <th style="padding: 10px; text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="price-editor-body">
+                <!-- Javascript populates price rows here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- MANAGE ORDERS & LIVE TRACKING STATUS -->
+        <div class="cart-section" style="margin-top: 25px; margin-bottom: 25px;">
           <h3 style="color: var(--primary); margin-bottom: 12px;">🚚 Active Orders & Live Tracking</h3>
           <div style="overflow-x: auto;">
             <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
@@ -539,6 +353,71 @@
             </table>
           </div>
         </div>
+
+        <!-- ADD NEW PRODUCT FORM -->
+        <div class="cart-section" style="margin-bottom: 25px;">
+          <h3 style="color: var(--primary); margin-bottom: 12px;">➕ Add New Menu Item</h3>
+          <form id="add-product-form" onsubmit="addNewProduct(event)">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+              <input type="text" id="prod-name" placeholder="Item Name" required>
+              <select id="prod-category" required>
+                <option value="Cakes">Category: Cakes</option>
+                <option value="Pastries">Category: Pastries</option>
+              </select>
+              <input type="number" id="prod-price" placeholder="Price in ₦" required>
+              <input type="file" id="prod-file" accept="image/*" style="width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 6px; background: #fff;">
+            </div>
+            <textarea id="prod-desc" placeholder="Short description..." rows="2" style="margin-top: 10px; width:100%;"></textarea>
+            <button type="submit" class="btn" style="margin-top: 10px;">Publish Product to Store 🚀</button>
+          </form>
+        </div>
+
+        <!-- INVENTORY TABLE -->
+        <div class="cart-section">
+          <h3 style="color: var(--primary); margin-bottom: 12px;">📦 Manage Store Inventory</h3>
+          
+          <!-- ADMIN PRICE LIST MANAGEMENT -->
+          <div style="background: #fff; padding: 15px; border-radius: 10px; margin-top: 20px; border: 1px solid #eee;">
+            <h3>📊 Manage Dynamic Price List</h3>
+            
+            <form id="add-price-entry-form" onsubmit="addPriceListEntry(event)" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
+              <input type="text" id="price-category" placeholder="Category (e.g. Single Layer)" required style="flex: 1; padding: 8px;">
+              <input type="text" id="price-size" placeholder="Size (e.g. 8 inches)" required style="flex: 1; padding: 8px;">
+              <input type="number" id="price-amount" placeholder="Price (₦)" required style="flex: 1; padding: 8px;">
+              <button type="submit" class="btn" style="padding: 8px 15px;">Add Entry ➕</button>
+            </form>
+
+            <table style="width: 100%; border-collapse: collapse;">
+              <thead>
+                <tr style="background: #f8f9fa; text-align: left;">
+                  <th style="padding: 8px;">Category</th>
+                  <th style="padding: 8px;">Size</th>
+                  <th style="padding: 8px;">Price (₦)</th>
+                  <th style="padding: 8px; text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="admin-price-list-body">
+                <!-- Admin entries populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+
+          <div style="overflow-x: auto; margin-top: 20px;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+              <thead>
+                <tr style="background: var(--light); border-bottom: 2px solid var(--border);">
+                  <th style="padding: 10px;">Item</th>
+                  <th style="padding: 10px;">Category</th>
+                  <th style="padding: 10px;">Price (₦)</th>
+                  <th style="padding: 10px;">Status</th>
+                  <th style="padding: 10px; text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-inventory-table"></tbody>
+            </table>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -549,14 +428,15 @@
       <path fill="currentColor" d="M16 0c-8.837 0-16 7.163-16 16 0 2.825 0.737 5.607 2.137 8.048l-2.137 7.952 8.135-2.135c2.373 1.298 5.048 1.98 7.865 1.98 8.837 0 16-7.163 16-16s-7.163-16-16-16zM16 29.333c-2.453 0-4.853-0.653-6.96-1.88l-0.507-0.293-5.16 1.353 1.38-5.027-0.327-0.52c-1.353-2.16-2.067-4.667-2.067-7.293 0-7.36 5.973-13.333 13.333-13.333s13.333 5.973 13.333 13.333-5.973 13.333-13.333 13.333zM22.507 19.347c-0.36-0.18-2.12-1.047-2.447-1.167s-0.567-0.18-0.807 0.18c-0.24 0.36-0.92 1.167-1.127 1.407s-0.413 0.273-0.773 0.093c-0.36-0.18-1.52-0.56-2.9-1.787-1.073-0.953-1.8-2.133-2.013-2.493s-0.023-0.553 0.157-0.733c0.162-0.162 0.36-0.42 0.54-0.63 0.18-0.21 0.24-0.36 0.36-0.6 0.12-0.24 0.06-0.45-0.03-0.63s-0.807-1.947-1.107-2.667c-0.293-0.7-0.593-0.607-0.807-0.613h-0.687c-0.24 0-0.63 0.09-0.96 0.45s-1.26 1.23-1.26 3c0 1.77 1.29 3.48 1.47 3.72s2.533 3.867 6.133 5.42c0.856 0.37 1.524 0.59 2.045 0.757 0.86 0.273 1.642 0.235 2.26 0.143 0.69-0.103 2.12-0.867 2.42-1.707s0.3-1.557 0.21-1.707c-0.09-0.15-0.33-0.24-0.69-0.42z"></path>
     </svg>
   </a>
-
+  
   <!-- IMAGE PREVIEW MODAL -->
-  <div id="image-modal" onclick="closeImageModal()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center; cursor:pointer;">
-    <span style="position:absolute; top:20px; right:25px; color:#fff; font-size:30px; font-weight:bold;">&times;</span>
-    <img id="modal-img" src="" alt="Cake Preview" style="max-width:90%; max-height:80%; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.5); object-fit:contain;">
+  <div id="image-modal" onclick="closeImageModal()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center;">
+    <img id="modal-image" src="" alt="Cake Preview" style="max-width:90%; max-height:90%; border-radius:10px; box-shadow:0 0 20px rgba(255,255,255,0.2);">
   </div>
 
-  <script src="app.js?v=6.0"></script>
+  <!-- Include your JavaScript files before closing body -->
+  <script src="script.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
 
