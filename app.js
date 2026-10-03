@@ -8,7 +8,6 @@ let products = JSON.parse(localStorage.getItem('elma_products')) || [
   { id: 11, name: "Specialty Custom Cake", category: "Cakes", price: 22000, image: "https://i.postimg.cc/QtLdf3gD/IMG-1545.jpg", description: "Freshly crafted custom cake design", outOfStock: false }
 ];
 
-
 let cart = JSON.parse(localStorage.getItem('elma_cart')) || [];
 let ordersList = JSON.parse(localStorage.getItem('elma_orders')) || [];
 
@@ -79,26 +78,6 @@ function startAutoScroll() {
       container.scrollBy({ left: 240, behavior: 'smooth' });
     }
   }, 1500);
-}
-
-// TAB SWITCHER
-function switchTab(tabId) {
-  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-
-  const targetTab = document.getElementById(tabId);
-  if (targetTab) targetTab.classList.add('active');
-
-  const clickedBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => 
-    btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${tabId}'`)
-  );
-  if (clickedBtn) clickedBtn.classList.add('active');
-
-  if (tabId === 'admin') renderAdminDashboard();
-  if (tabId === 'store') renderProducts();
-  if (tabId === 'reviews') { renderReviews(); startAutoScroll(); } else { clearInterval(autoScrollInterval); }
-  if (tabId === 'custom-builder') calculateCustomPrice();
-  if (tabId === 'customer-dashboard') updateCustomerDashboard();
 }
 
 // PROMO CODE SYSTEM
@@ -599,11 +578,160 @@ function updateDeliveryDisplay() {
   updateCartUI();
 }
 
-// CONSOLIDATED DOM INITIALIZATION
+// SECRET ADMIN UNLOCK SYSTEM
+window.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('admin') === 'true' || localStorage.getItem('elma_admin_unlocked') === 'true') {
+    const adminBtn = document.getElementById("admin-nav-btn");
+    if (adminBtn) adminBtn.style.display = "inline-block";
+  }
+});
+
+let secretCode = "";
+document.addEventListener("keydown", (e) => {
+  secretCode += e.key.toLowerCase();
+  if (secretCode.endsWith("admin")) {
+    const adminBtn = document.getElementById("admin-nav-btn");
+    if (adminBtn) {
+      adminBtn.style.display = "inline-block";
+      localStorage.setItem('elma_admin_unlocked', 'true');
+      alert("🔓 Admin Panel Unlocked!");
+    }
+    secretCode = "";
+  }
+  if (secretCode.length > 10) secretCode = secretCode.substring(1);
+});
+
+// INITIAL PRICE MATRIX DATA
+let priceMatrix = JSON.parse(localStorage.getItem('elma_price_matrix')) || [
+  { id: 1, category: "Single Layer", size: "4 inches", price: 10000 },
+  { id: 2, category: "Single Layer", size: "6 inches", price: 15000 },
+  { id: 3, category: "Single Layer", size: "8 inches", price: 20000 },
+  { id: 4, category: "Double Layer", size: "6 inches", price: 25000 },
+  { id: 5, category: "Double Layer", size: "8 inches", price: 30000 },
+  { id: 6, category: "3 Layers", size: "8 inches", price: 55000 }
+];
+
+function savePriceMatrix() {
+  localStorage.setItem('elma_price_matrix', JSON.stringify(priceMatrix));
+}
+
+// RENDER PRICE LIST FOR CUSTOMERS
+function renderCustomerPriceList() {
+  const container = document.getElementById("price-list-container");
+  if (!container) return;
+  container.innerHTML = "";
+
+  const grouped = {};
+  priceMatrix.forEach(item => {
+    if (!grouped[item.category]) grouped[item.category] = [];
+    grouped[item.category].push(item);
+  });
+
+  Object.keys(grouped).forEach(cat => {
+    const card = document.createElement("div");
+    card.style.cssText = "background: #fff; border: 2px solid #ffccd5; border-radius: 12px; overflow: hidden;";
+    
+    let rowsHtml = grouped[cat].map(row => `
+      <tr style="border-bottom: 1px solid #ffe6ea;">
+        <td style="padding: 8px 12px; font-weight: 500;">${row.size}</td>
+        <td style="padding: 8px 12px; text-align: right; font-weight: bold; color: #d63031;">₦${row.price.toLocaleString()}</td>
+      </tr>
+    `).join('');
+
+    card.innerHTML = `
+      <div style="background: #d63031; color: white; padding: 10px; text-align: center; font-weight: bold;">
+        ♥ ${cat.toUpperCase()} ♥
+      </div>
+      <table style="width: 100%; border-collapse: collapse;">
+        ${rowsHtml}
+      </table>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// PRICE MATRIX ADMIN FUNCTIONS
+function addPriceListEntry(e) {
+  if (e) e.preventDefault();
+  const cat = document.getElementById("price-category").value.trim();
+  const size = document.getElementById("price-size").value.trim();
+  const price = parseFloat(document.getElementById("price-amount").value);
+
+  priceMatrix.push({ id: Date.now(), category: cat, size: size, price: price });
+  savePriceMatrix();
+
+  document.getElementById("add-price-entry-form").reset();
+  renderAdminPriceList();
+  renderCustomerPriceList();
+  alert("Price entry added successfully!");
+}
+
+function deletePriceEntry(id) {
+  priceMatrix = priceMatrix.filter(p => p.id !== id);
+  savePriceMatrix();
+  renderAdminPriceList();
+  renderCustomerPriceList();
+}
+
+function renderAdminPriceList() {
+  const tbody = document.getElementById("admin-price-list-body");
+  if (!tbody) return;
+  tbody.innerHTML = "";
+
+  priceMatrix.forEach(p => {
+    const tr = document.createElement("tr");
+    tr.style.borderBottom = "1px solid #eee";
+    tr.innerHTML = `
+      <td style="padding: 8px;">${p.category}</td>
+      <td style="padding: 8px;">${p.size}</td>
+      <td style="padding: 8px; font-weight: bold;">₦${p.price.toLocaleString()}</td>
+      <td style="padding: 8px; text-align: right;">
+        <button onclick="deletePriceEntry(${p.id})" class="remove-btn">Delete</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// UNIVERSAL TAB SWITCHER
+window.switchTab = function(tabId) {
+  // Hide all tabs
+  document.querySelectorAll('.tab-content').forEach(tab => {
+    tab.style.display = 'none';
+  });
+
+  // Show targeted tab
+  const targetTab = document.getElementById(tabId);
+  if (targetTab) {
+    targetTab.style.display = 'block';
+  }
+
+  // Highlight active button
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+
+  if (window.event && window.event.currentTarget) {
+    window.event.currentTarget.classList.add('active');
+  }
+
+  // Trigger tab specific functions
+  if (tabId === 'admin') renderAdminDashboard();
+  if (tabId === 'store') renderProducts();
+  if (tabId === 'reviews') { renderReviews(); startAutoScroll(); } else { clearInterval(autoScrollInterval); }
+  if (tabId === 'custom-builder') calculateCustomPrice();
+  if (tabId === 'customer-dashboard' || tabId === 'account') updateCustomerDashboard();
+  if (tabId === 'price-list') { renderCustomerPriceList(); renderAdminPriceList(); }
+};
+
+// INITIAL DOM SETUP
 document.addEventListener("DOMContentLoaded", () => {
   switchTab("store");
   renderProducts();
   updateCartUI();
+  renderCustomerPriceList();
+  renderAdminPriceList();
 
   const stateSelect = document.getElementById("select-state");
   const citySelect = document.getElementById("select-city");
@@ -612,7 +740,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (stateSelect) {
     stateSelect.addEventListener("change", function() {
       let selectedState = this.value;
-      
       citySelect.innerHTML = '<option value="">-- Choose City --</option>';
       areaSelect.innerHTML = '<option value="">-- Choose Area --</option>';
       areaSelect.disabled = true;
@@ -670,150 +797,3 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// SECRET ADMIN UNLOCK SYSTEM
-// Option A: Secret URL Parameter (?admin=true)
-window.addEventListener("DOMContentLoaded", () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('admin') === 'true' || localStorage.getItem('elma_admin_unlocked') === 'true') {
-    const adminBtn = document.getElementById("admin-nav-btn");
-    if (adminBtn) adminBtn.style.display = "inline-block";
-  }
-});
-
-// Option B: Secret Key Combination (Press 'A' + 'D' + 'M' + 'I' + 'N' sequence)
-let secretCode = "";
-document.addEventListener("keydown", (e) => {
-  secretCode += e.key.toLowerCase();
-  if (secretCode.endsWith("admin")) {
-    const adminBtn = document.getElementById("admin-nav-btn");
-    if (adminBtn) {
-      adminBtn.style.display = "inline-block";
-      localStorage.setItem('elma_admin_unlocked', 'true');
-      alert("🔓 Admin Panel Unlocked!");
-    }
-    secretCode = "";
-  }
-  if (secretCode.length > 10) secretCode = secretCode.substring(1);
-});
-// INITIAL PRICE MATRIX DATA
-let priceMatrix = JSON.parse(localStorage.getItem('elma_price_matrix')) || [
-  { id: 1, category: "Single Layer", size: "4 inches", price: 10000 },
-  { id: 2, category: "Single Layer", size: "6 inches", price: 15000 },
-  { id: 3, category: "Single Layer", size: "8 inches", price: 20000 },
-  { id: 4, category: "Double Layer", size: "6 inches", price: 25000 },
-  { id: 5, category: "Double Layer", size: "8 inches", price: 30000 },
-  { id: 6, category: "3 Layers", size: "8 inches", price: 55000 }
-];
-
-function savePriceMatrix() {
-  localStorage.setItem('elma_price_matrix', JSON.stringify(priceMatrix));
-}
-
-// RENDER PRICE LIST FOR CUSTOMERS
-function renderCustomerPriceList() {
-  const container = document.getElementById("price-list-container");
-  if (!container) return;
-  container.innerHTML = "";
-
-  // Group entries by Category
-  const grouped = {};
-  priceMatrix.forEach(item => {
-    if (!grouped[item.category]) grouped[item.category] = [];
-    grouped[item.category].push(item);
-  });
-
-  Object.keys(grouped).forEach(cat => {
-    const card = document.createElement("div");
-    card.style.cssText = "background: #fff; border: 2px solid #ffccd5; border-radius: 12px; overflow: hidden;";
-    
-    let rowsHtml = grouped[cat].map(row => `
-      <tr style="border-bottom: 1px solid #ffe6ea;">
-        <td style="padding: 8px 12px; font-weight: 500;">${row.size}</td>
-        <td style="padding: 8px 12px; text-align: right; font-weight: bold; color: #d63031;">₦${row.price.toLocaleString()}</td>
-      </tr>
-    `).join('');
-
-    card.innerHTML = `
-      <div style="background: #d63031; color: white; padding: 10px; text-align: center; font-weight: bold;">
-        ♥ ${cat.toUpperCase()} ♥
-      </div>
-      <table style="width: 100%; border-collapse: collapse;">
-        ${rowsHtml}
-      </table>
-    `;
-    container.appendChild(card);
-  });
-}
-
-// ADMIN FUNCTIONS
-function addPriceListEntry(e) {
-  if (e) e.preventDefault();
-  const cat = document.getElementById("price-category").value.trim();
-  const size = document.getElementById("price-size").value.trim();
-  const price = parseFloat(document.getElementById("price-amount").value);
-
-  priceMatrix.push({ id: Date.now(), category: cat, size: size, price: price });
-  savePriceMatrix();
-
-  document.getElementById("add-price-entry-form").reset();
-  renderAdminPriceList();
-  renderCustomerPriceList();
-  alert("Price entry added successfully!");
-}
-
-function deletePriceEntry(id) {
-  priceMatrix = priceMatrix.filter(p => p.id !== id);
-  savePriceMatrix();
-  renderAdminPriceList();
-  renderCustomerPriceList();
-}
-
-function renderAdminPriceList() {
-  const tbody = document.getElementById("admin-price-list-body");
-  if (!tbody) return;
-  tbody.innerHTML = "";
-
-  priceMatrix.forEach(p => {
-    const tr = document.createElement("tr");
-    tr.style.borderBottom = "1px solid #eee";
-    tr.innerHTML = `
-      <td style="padding: 8px;">${p.category}</td>
-      <td style="padding: 8px;">${p.size}</td>
-      <td style="padding: 8px; font-weight: bold;">₦${p.price.toLocaleString()}</td>
-      <td style="padding: 8px; text-align: right;">
-        <button onclick="deletePriceEntry(${p.id})" class="remove-btn">Delete</button>
-      </td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-// Call render functions inside DOMContentLoaded
-document.addEventListener("DOMContentLoaded", () => {
-  renderCustomerPriceList();
-  renderAdminPriceList();
-});
-// // Universal Tab Switcher Fix
-window.switchTab = function(tabId) {
-  // Hide all tab sections
-  const tabs = document.querySelectorAll('.tab-content');
-  tabs.forEach(tab => {
-    tab.style.display = 'none';
-  });
-
-  // Show selected tab
-  const targetTab = document.getElementById(tabId);
-  if (targetTab) {
-    targetTab.style.display = 'block';
-  }
-
-  // Update button active highlights
-  const buttons = document.querySelectorAll('.nav-btn');
-  buttons.forEach(btn => {
-    btn.classList.remove('active');
-  });
-
-  if (window.event && window.event.currentTarget) {
-    window.event.currentTarget.classList.add('active');
-  }
-};
