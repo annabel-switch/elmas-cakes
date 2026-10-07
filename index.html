@@ -29,8 +29,8 @@
       <button class="nav-btn" onclick="switchTab('custom-builder', event)">Cake Builder 🎂</button>
       <button class="nav-btn" onclick="switchTab('gallery', event)">Gallery</button>
       <button class="nav-btn" onclick="switchTab('reviews', event)">Reviews</button>
-      <button class="nav-btn" onclick="switchTab('customer-dashboard', event)">My Account</button>
       <button class="nav-btn" onclick="switchTab('price-list', event)">Price List 📋</button>
+      <button class="nav-btn" onclick="switchTab('customer-dashboard', event)">My Account 👤</button>
     </div>
   </nav>
 
@@ -235,7 +235,7 @@
       </div>
     </div>
 
-    <!-- CUSTOMER DASHBOARD TAB -->
+    <!-- ACCOUNT & ADMIN TAB -->
     <div id="customer-dashboard" class="tab-content" style="display: none;">
       <h2>My Account & Order Tracker 🚚</h2>
       
@@ -249,7 +249,7 @@
         <div id="tracking-result" style="margin-top: 15px; display: none;"></div>
       </div>
 
-      <div class="dashboard-stats">
+      <div class="dashboard-stats" style="margin-bottom: 25px;">
         <div class="stat-card">
           <h4>Items in Cart</h4>
           <p id="cust-cart-count">0</p>
@@ -259,6 +259,101 @@
           <p id="cust-review-count">0</p>
         </div>
       </div>
+
+      <!-- STORE OWNER ADMIN PORTAL ACCESS -->
+      <div class="cart-section" style="border: 2px dashed #d63031; background: #fff5f5; border-radius: 12px; padding: 20px; text-align: center;">
+        <h3 style="color: #d63031; margin-bottom: 5px;">Store Management Portal 🔐</h3>
+        <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">Store Owner access only. Enter PIN to reveal sales analytics and manage inventory.</p>
+        
+        <div id="admin-login-screen">
+          <form id="admin-login-form" onsubmit="unlockAdmin(event)">
+            <input type="password" id="admin-pin-input" placeholder="Enter Admin PIN" required style="text-align: center; font-size: 1.1rem; letter-spacing: 4px; padding: 10px; border-radius: 6px; border: 1px solid #ccc; max-width: 250px; width: 100%;">
+            <br>
+            <button type="submit" class="btn" style="margin-top: 10px; width: auto; padding: 8px 20px;">Unlock Dashboard 🔓</button>
+          </form>
+          <p id="admin-login-error" style="color: #e74c3c; font-size: 0.85rem; margin-top: 10px; display: none;">Incorrect PIN. Please try again.</p>
+        </div>
+
+        <!-- HIDDEN DASHBOARD UNLOCKED ON PIN -->
+        <div id="admin-dashboard" style="display: none; text-align: left; margin-top: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <p style="color: #27ae60; font-weight: bold; margin: 0;">Session Status: Authenticated ✅</p>
+            <button onclick="lockAdmin()" class="remove-btn" style="background:#ff7675; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer;">Lock Panel 🔒</button>
+          </div>
+
+          <div class="dashboard-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px;">
+            <div class="stat-card" style="background:#e8f8f5; padding:15px; border-radius:8px; text-align:center;">
+              <h4>Total Revenue</h4>
+              <p id="stat-total-revenue" style="color:#27ae60; font-size:1.3rem; font-weight:bold; margin:5px 0 0 0;">₦0</p>
+            </div>
+            <div class="stat-card" style="background:#fff; padding:15px; border-radius:8px; text-align:center; border:1px solid #eee;">
+              <h4>Products Listed</h4>
+              <p id="stat-product-count" style="font-size:1.3rem; font-weight:bold; margin:5px 0 0 0;">0</p>
+            </div>
+            <div class="stat-card" style="background:#fff; padding:15px; border-radius:8px; text-align:center; border:1px solid #eee;">
+              <h4>Total Reviews</h4>
+              <p id="stat-reviews-count" style="font-size:1.3rem; font-weight:bold; margin:5px 0 0 0;">0</p>
+            </div>
+          </div>
+
+          <!-- QUICK PRICE EDITOR -->
+          <div style="background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 20px; border:1px solid #eee;">
+            <h4 style="margin-top:0; color: #d63031;">📋 Quick Price List Editor</h4>
+            <div style="overflow-x: auto;">
+              <table style="width:100%; border-collapse: collapse; text-align: left;" id="price-list-table">
+                <thead>
+                  <tr style="border-bottom: 2px solid #eee;">
+                    <th style="padding: 8px;">Item Name</th>
+                    <th style="padding: 8px;">Price (₦)</th>
+                    <th style="padding: 8px; text-align: right;">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="price-editor-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- ACTIVE ORDERS -->
+          <div style="background:#fff; padding:15px; border-radius:8px; margin-bottom:20px; border:1px solid #eee;">
+            <h4 style="color: #d63031; margin-top:0;">🚚 Active Orders</h4>
+            <div style="overflow-x: auto;">
+              <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+                <thead>
+                  <tr style="background: #f8f9fa; border-bottom: 2px solid #eee;">
+                    <th style="padding: 8px;">Order ID</th>
+                    <th style="padding: 8px;">Phone</th>
+                    <th style="padding: 8px;">Items</th>
+                    <th style="padding: 8px;">Total</th>
+                    <th style="padding: 8px;">Status</th>
+                    <th style="padding: 8px; text-align: right;">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-orders-table"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- ADD PRODUCT -->
+          <div style="background:#fff; padding:15px; border-radius:8px; border:1px solid #eee;">
+            <h4 style="color: #d63031; margin-top:0;">➕ Add New Menu Item</h4>
+            <form id="add-product-form" onsubmit="addNewProduct(event)">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;">
+                <input type="text" id="prod-name" placeholder="Item Name" required style="padding:8px; border-radius:6px; border:1px solid #ccc;">
+                <select id="prod-category" required style="padding:8px; border-radius:6px; border:1px solid #ccc;">
+                  <option value="Cakes">Category: Cakes</option>
+                  <option value="Pastries">Category: Pastries</option>
+                </select>
+                <input type="number" id="prod-price" placeholder="Price in ₦" required style="padding:8px; border-radius:6px; border:1px solid #ccc;">
+                <input type="file" id="prod-file" accept="image/*" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; background: #fff;">
+              </div>
+              <textarea id="prod-desc" placeholder="Short description..." rows="2" style="margin-top: 10px; width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;"></textarea>
+              <button type="submit" class="btn" style="margin-top: 10px; padding:8px 15px;">Publish Product 🚀</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+
     </div>
 
   </div>
