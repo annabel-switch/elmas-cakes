@@ -31,8 +31,6 @@
       <button class="nav-btn" onclick="switchTab('reviews', event)">Reviews</button>
       <button class="nav-btn" onclick="switchTab('customer-dashboard', event)">My Account</button>
       <button class="nav-btn" onclick="switchTab('price-list', event)">Price List 📋</button>
-     <button class="nav-btn" id="admin-nav-btn" onclick="switchTab('admin', event)">Admin 🔐</button>
-    
     </div>
   </nav>
 
@@ -81,7 +79,7 @@
       <div class="cart-section">
         <div id="cart-items"><p class="empty-msg">Your cart is currently empty.</p></div>
 
-        <!-- DYNAMIC LOCATION & DELIVERY SELECTOR -->
+        <!-- LOCATION & DELIVERY SELECTOR -->
         <div class="delivery-calculator" style="background: #fff0f5; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid #ffb6c1;">
           <h4 style="margin: 0 0 10px 0; color: var(--primary, #e91e63);">📍 Delivery Location & Fee</h4>
           
@@ -263,144 +261,6 @@
       </div>
     </div>
 
-    <!-- ADMIN PANEL TAB -->
-    <div id="admin" class="tab-content" style="display: none;">
-      <h2>Admin Control Panel 🔐</h2>
-
-      <div id="admin-login-screen" class="cart-section" style="max-width: 400px; margin: 0 auto; text-align: center;">
-        <h3>Admin Authentication</h3>
-        <p style="font-size: 0.9rem; margin-bottom: 15px; color: #636e72;">Enter PIN to access store management system.</p>
-        <form id="admin-login-form" onsubmit="unlockAdmin(event)">
-          <input type="password" id="admin-pin-input" placeholder="Enter PIN (Default: 1234)" required style="text-align: center; font-size: 1.2rem; letter-spacing: 4px; padding: 10px; border-radius: 6px; border: 1px solid #ccc; width: 100%;">
-          <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Unlock Panel 🔓</button>
-        </form>
-        <p id="admin-login-error" style="color: #e74c3c; font-size: 0.85rem; margin-top: 10px; display: none;">Incorrect PIN. Please try again.</p>
-      </div>
-
-      <div id="admin-dashboard" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-          <p style="color: #27ae60; font-weight: bold;">Session Status: Authenticated ✅</p>
-          <button onclick="lockAdmin()" class="remove-btn">Lock Panel 🔒</button>
-        </div>
-
-        <div class="dashboard-stats">
-          <div class="stat-card" style="background:#e8f8f5;">
-            <h4>Total Revenue</h4>
-            <p id="stat-total-revenue" style="color:#27ae60;">₦0</p>
-          </div>
-          <div class="stat-card">
-            <h4>Products Listed</h4>
-            <p id="stat-product-count">0</p>
-          </div>
-          <div class="stat-card">
-            <h4>Total Reviews</h4>
-            <p id="stat-reviews-count">0</p>
-          </div>
-        </div>
-
-        <!-- QUICK PRICE LIST EDITOR -->
-        <div style="background: #fff; padding: 18px; border-radius: 12px; margin-top: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-          <h3 style="margin-top:0; color: var(--primary, #e84393);">📋 Quick Price List Editor</h3>
-          <p style="font-size:0.85rem; color:#666;">Update item prices in real time across the entire store.</p>
-          
-          <div style="overflow-x: auto;">
-            <table style="width:100%; border-collapse: collapse; text-align: left;" id="price-list-table">
-              <thead>
-                <tr style="border-bottom: 2px solid var(--border, #eee);">
-                  <th style="padding: 10px;">Item Name</th>
-                  <th style="padding: 10px;">Price (₦)</th>
-                  <th style="padding: 10px; text-align: right;">Action</th>
-                </tr>
-              </thead>
-              <tbody id="price-editor-body"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- MANAGE ORDERS -->
-        <div class="cart-section" style="margin-top: 25px; margin-bottom: 25px;">
-          <h3 style="color: var(--primary, #d63031); margin-bottom: 12px;">🚚 Active Orders & Live Tracking</h3>
-          <div style="overflow-x: auto;">
-            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
-              <thead>
-                <tr style="background: var(--light, #f8f9fa); border-bottom: 2px solid var(--border, #eee);">
-                  <th style="padding: 8px;">Order ID</th>
-                  <th style="padding: 8px;">Customer Phone</th>
-                  <th style="padding: 8px;">Items</th>
-                  <th style="padding: 8px;">Total</th>
-                  <th style="padding: 8px;">Status</th>
-                  <th style="padding: 8px; text-align: right;">Action</th>
-                </tr>
-              </thead>
-              <tbody id="admin-orders-table"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- ADD NEW PRODUCT FORM -->
-        <div class="cart-section" style="margin-bottom: 25px;">
-          <h3 style="color: var(--primary, #d63031); margin-bottom: 12px;">➕ Add New Menu Item</h3>
-          <form id="add-product-form" onsubmit="addNewProduct(event)">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
-              <input type="text" id="prod-name" placeholder="Item Name" required style="padding:8px; border-radius:6px; border:1px solid #ccc;">
-              <select id="prod-category" required style="padding:8px; border-radius:6px; border:1px solid #ccc;">
-                <option value="Cakes">Category: Cakes</option>
-                <option value="Pastries">Category: Pastries</option>
-              </select>
-              <input type="number" id="prod-price" placeholder="Price in ₦" required style="padding:8px; border-radius:6px; border:1px solid #ccc;">
-              <input type="file" id="prod-file" accept="image/*" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; background: #fff;">
-            </div>
-            <textarea id="prod-desc" placeholder="Short description..." rows="2" style="margin-top: 10px; width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;"></textarea>
-            <button type="submit" class="btn" style="margin-top: 10px;">Publish Product to Store 🚀</button>
-          </form>
-        </div>
-
-        <!-- INVENTORY TABLE -->
-        <div class="cart-section">
-          <h3 style="color: var(--primary, #d63031); margin-bottom: 12px;">📦 Manage Store Inventory</h3>
-          
-          <div style="background: #fff; padding: 15px; border-radius: 10px; margin-top: 20px; border: 1px solid #eee;">
-            <h3>📊 Manage Dynamic Price List</h3>
-            
-            <form id="add-price-entry-form" onsubmit="addPriceListEntry(event)" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
-              <input type="text" id="price-category" placeholder="Category (e.g. Buttercream Cakes)" required style="flex: 1; padding: 8px; border-radius:6px; border:1px solid #ccc;">
-              <input type="text" id="price-size" placeholder="Size (e.g. 8 inches)" required style="flex: 1; padding: 8px; border-radius:6px; border:1px solid #ccc;">
-              <input type="number" id="price-amount" placeholder="Price (₦)" required style="flex: 1; padding: 8px; border-radius:6px; border:1px solid #ccc;">
-              <button type="submit" class="btn" style="padding: 8px 15px;">Add Entry ➕</button>
-            </form>
-
-            <table style="width: 100%; border-collapse: collapse;">
-              <thead>
-                <tr style="background: #f8f9fa; text-align: left;">
-                  <th style="padding: 8px;">Category</th>
-                  <th style="padding: 8px;">Size</th>
-                  <th style="padding: 8px;">Price (₦)</th>
-                  <th style="padding: 8px; text-align: right;">Action</th>
-                </tr>
-              </thead>
-              <tbody id="admin-price-list-body"></tbody>
-            </table>
-          </div>
-
-          <div style="overflow-x: auto; margin-top: 20px;">
-            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
-              <thead>
-                <tr style="background: var(--light, #f8f9fa); border-bottom: 2px solid var(--border, #eee);">
-                  <th style="padding: 10px;">Item</th>
-                  <th style="padding: 10px;">Category</th>
-                  <th style="padding: 10px;">Price (₦)</th>
-                  <th style="padding: 10px;">Status</th>
-                  <th style="padding: 10px; text-align: right;">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="admin-inventory-table"></tbody>
-            </table>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
   </div>
 
   <a href="https://wa.me/2349135059528?text=Hello%20%F0%9F%90%8B%20Elma%20we%20want%20to%20Order%20a%20Cake" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
@@ -409,7 +269,6 @@
     </svg>
   </a>
   
-  <!-- IMAGE PREVIEW MODAL -->
   <div id="image-modal" onclick="closeImageModal()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center;">
     <img id="modal-img" src="" alt="Cake Preview" style="max-width:90%; max-height:90%; border-radius:10px; box-shadow:0 0 20px rgba(255,255,255,0.2);">
   </div>
