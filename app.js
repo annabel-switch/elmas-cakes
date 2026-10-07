@@ -15,14 +15,15 @@ let ordersList = JSON.parse(localStorage.getItem('elma_orders')) || [];
 let defaultReviews = [
   { name: "Osasere K.", rating: 5, comment: "The Chocolate Fudge Cake was extremely moist and fresh! Arrived right on time in GRA.", referral: "Referred by Osasere" },
   { name: "Adesuwa O.", rating: 5, comment: "Ordered a birthday cake for my sister. Super delicious and neat packaging!", referral: "Referred by Divine" },
-  { name: "Eseosa B.", rating: 5, comment: "Best cupcakes in Benin City! Soft, fluffy, and rich in taste.", referral: "Referred by Mercy" },
-  { name: "Precious A.", rating: 5, comment: "Fast delivery to UNIBEN Ugbowo campus! Everyone loved the Red Velvet cake.", referral: "Direct Customer" }
+  { name: "Eseosa B.", rating: 5, comment: "Best cupcakes in Benin City! Soft, fluffy, and rich in taste.", referral: "Referred by Mercy" }
 ];
 
 let reviewsList = JSON.parse(localStorage.getItem('elma_reviews')) || defaultReviews;
 let discountApplied = 0;
 let currentCategoryFilter = 'All';
 let currentDeliveryFee = 0;
+
+const ADMIN_PIN = "1234";
 
 function saveProducts() { 
   try {
@@ -58,26 +59,20 @@ const locationData = {
   }
 };
 
-// CATEGORIZED PRICE MATRIX (Buttercream, Fondant, Whipped Cream)
+// CATEGORIZED PRICE MATRIX
 let priceMatrix = JSON.parse(localStorage.getItem('elma_price_matrix')) || [
   { id: 1, category: "Buttercream Cakes", size: '6" Single Tier', price: 15000 },
   { id: 2, category: "Buttercream Cakes", size: '8" Single Tier', price: 20000 },
   { id: 3, category: "Buttercream Cakes", size: '10" Single Tier', price: 28000 },
-  
   { id: 4, category: "Fondant Cakes", size: '6" Single Tier', price: 25000 },
   { id: 5, category: "Fondant Cakes", size: '8" Single Tier', price: 35000 },
   { id: 6, category: "Fondant Cakes", size: '2-Tier Celebration', price: 65000 },
-
   { id: 7, category: "Whipped Cream Cakes", size: '6" Single Tier', price: 16000 },
   { id: 8, category: "Whipped Cream Cakes", size: '8" Single Tier', price: 22000 },
   { id: 9, category: "Whipped Cream Cakes", size: '10" Single Tier', price: 30000 }
 ];
 
-function savePriceMatrix() {
-  localStorage.setItem('elma_price_matrix', JSON.stringify(priceMatrix));
-}
-
-// RENDER PRODUCTS IN STORE
+// RENDER PRODUCTS
 function renderProducts() {
   const grid = document.getElementById("product-grid");
   if (!grid) return;
@@ -115,7 +110,7 @@ function renderProducts() {
   });
 }
 
-// ADD TO CART FUNCTION
+// CART ACTIONS
 window.addToCart = function(id) {
   const prod = products.find(p => p.id === id);
   if (prod) {
@@ -126,14 +121,12 @@ window.addToCart = function(id) {
   }
 };
 
-// REMOVE FROM CART FUNCTION
 window.removeFromCart = function(index) {
   cart.splice(index, 1);
   localStorage.setItem('elma_cart', JSON.stringify(cart));
   updateCartUI();
 };
 
-// UPDATE CART DISPLAY
 function updateCartUI() {
   const cartContainer = document.getElementById("cart-items");
   const totalAmount = document.getElementById("total-amount");
@@ -178,84 +171,99 @@ function updateCartUI() {
   if (checkoutBtn) checkoutBtn.style.display = "block";
 }
 
-// PROMO CODE SYSTEM
-function applyPromoCode() {
-  const codeInput = document.getElementById("promo-input");
-  const msg = document.getElementById("promo-message");
-  if (!codeInput || !msg) return;
+// ADMIN AUTHENTICATION
+function unlockAdmin(e) {
+  if (e) e.preventDefault();
+  const pinInput = document.getElementById("admin-pin-input");
+  const loginScreen = document.getElementById("admin-login-screen");
+  const dashboard = document.getElementById("admin-dashboard");
+  const errorMsg = document.getElementById("admin-login-error");
 
-  const code = codeInput.value.trim().toUpperCase();
+  if (pinInput && pinInput.value === ADMIN_PIN) {
+    if (loginScreen) loginScreen.style.display = "none";
+    if (dashboard) dashboard.style.display = "block";
+    renderAdminDashboard();
+  } else if (errorMsg) {
+    errorMsg.style.display = "block";
+  }
+}
+
+function lockAdmin() {
+  const loginScreen = document.getElementById("admin-login-screen");
+  const dashboard = document.getElementById("admin-dashboard");
+  if (loginScreen) loginScreen.style.display = "block";
+  if (dashboard) dashboard.style.display = "none";
+}
+
+function renderAdminDashboard() {
+  let totalRev = ordersList.reduce((acc, curr) => acc + curr.total, 0);
   
-  if (code === "ELMA10" || code === "UNIBENFREE") {
-    discountApplied = 0.10;
-    msg.style.color = "#27ae60";
-    msg.innerText = "🎉 Promo Applied! 10% discount added to your cart.";
-  } else {
-    discountApplied = 0;
-    msg.style.color = "#e74c3c";
-    msg.innerText = "❌ Invalid Promo Code.";
+  const revStat = document.getElementById("stat-total-revenue");
+  const prodStat = document.getElementById("stat-product-count");
+  const revCountStat = document.getElementById("stat-reviews-count");
+
+  if (revStat) revStat.innerText = `₦${totalRev.toLocaleString()}`;
+  if (prodStat) prodStat.innerText = products.length;
+  if (revCountStat) revCountStat.innerText = reviewsList.length;
+
+  const priceBody = document.getElementById("price-editor-body");
+  if (priceBody) {
+    priceBody.innerHTML = "";
+    products.forEach((p, index) => {
+      const tr = document.createElement("tr");
+      tr.style.borderBottom = "1px solid #eee";
+      tr.innerHTML = `
+        <td style="padding:8px; font-weight:bold;">${p.name}</td>
+        <td style="padding:8px;">
+          <input type="number" id="quick-price-${index}" value="${p.price}" style="width:90px; padding:4px; border:1px solid #ccc; border-radius:4px;">
+        </td>
+        <td style="padding:8px; text-align:right;">
+          <button onclick="updateQuickPrice(${index})" class="btn" style="padding:4px 8px; font-size:0.75rem; width:auto;">Save 💾</button>
+        </td>
+      `;
+      priceBody.appendChild(tr);
+    });
   }
-  updateCartUI();
+
+  const orderTable = document.getElementById("admin-orders-table");
+  if (orderTable) {
+    orderTable.innerHTML = "";
+    ordersList.forEach((o, index) => {
+      const row = document.createElement("tr");
+      row.style.borderBottom = "1px solid #eee";
+      row.innerHTML = `
+        <td style="padding:6px;"><strong>${o.id}</strong></td>
+        <td style="padding:6px;">${o.phone}</td>
+        <td style="padding:6px;">${o.items}</td>
+        <td style="padding:6px; font-weight:bold;">₦${o.total.toLocaleString()}</td>
+        <td style="padding:6px;">${o.status}</td>
+        <td style="padding:6px; text-align:right;"><button onclick="deleteOrder(${index})" style="background:#ff7675; color:white; border:none; padding:2px 6px; border-radius:4px;">Delete</button></td>
+      `;
+      orderTable.appendChild(row);
+    });
+  }
 }
 
-// SEND ORDER TO WHATSAPP
-function sendToWhatsApp() {
-  if (cart.length === 0) return;
-  const date = document.getElementById("delivery-date") ? document.getElementById("delivery-date").value : "Not specified";
-  const state = document.getElementById("select-state") ? document.getElementById("select-state").value : "";
-  const city = document.getElementById("select-city") ? document.getElementById("select-city").value : "";
-  const area = document.getElementById("select-area") ? document.getElementById("select-area").value : "";
-
-  if (!state || !city || !area) {
-    alert("Please select your State, City, and Area before checking out!");
-    return;
-  }
-
-  const userPhone = prompt("Enter your phone number so you can track your order status:");
-  if (!userPhone) return;
-
-  const orderId = `ORD-${Math.floor(100 + Math.random() * 900)}`;
-  let message = `Hello Elma's Cakes! 🎂\n*Order ID:* ${orderId}\n\n`;
-  let subtotal = 0;
-  let itemNames = [];
-
-  cart.forEach((item, i) => {
-    message += `${i + 1}. ${item.name} - ₦${Number(item.price).toLocaleString()}\n`;
-    itemNames.push(item.name);
-    subtotal += Number(item.price);
-  });
-
-  let totalAfterDiscount = subtotal;
-  if (discountApplied > 0) {
-    const discountVal = subtotal * discountApplied;
-    totalAfterDiscount = subtotal - discountVal;
-    message += `\n*Discount Applied:* 10% OFF (-₦${discountVal.toLocaleString()})`;
-  }
-
-  const grandTotal = totalAfterDiscount + currentDeliveryFee;
-
-  message += `\n\n📍 *Delivery Location:* ${area}, ${city}, ${state}`;
-  message += `\n🚚 *Delivery Fee:* ₦${currentDeliveryFee.toLocaleString()}`;
-  message += `\n💰 *Grand Total:* ₦${Math.round(grandTotal).toLocaleString()}`;
-  message += `\n📅 *Delivery Date:* ${date}`;
-
-  ordersList.unshift({
-    id: orderId,
-    phone: userPhone,
-    items: itemNames.join(", "),
-    total: Math.round(grandTotal),
-    status: "Order Received 📝"
-  });
-  saveOrders();
-
-  cart = [];
-  localStorage.setItem('elma_cart', JSON.stringify(cart));
-  updateCartUI();
-
-  window.open(`https://wa.me/2349135059528?text=${encodeURIComponent(message)}`, '_blank');
+function updateQuickPrice(index) {
+  const input = document.getElementById(`quick-price-${index}`);
+  if (!input) return;
+  const newPrice = parseFloat(input.value);
+  if (isNaN(newPrice) || newPrice < 0) return;
+  products[index].price = newPrice;
+  saveProducts();
+  renderAdminDashboard();
+  renderProducts();
+  alert(`Price updated! 💰`);
 }
 
-// RENDER PRICE LIST (BUTTERCREAM, FONDANT, WHIPPED CREAM)
+function deleteOrder(index) {
+  if (confirm("Delete order?")) {
+    ordersList.splice(index, 1);
+    saveOrders();
+    renderAdminDashboard();
+  }
+}
+
 function renderCustomerPriceList() {
   const container = document.getElementById("price-list-container");
   if (!container) return;
@@ -268,7 +276,7 @@ function renderCustomerPriceList() {
     if (items.length === 0) return;
 
     const card = document.createElement("div");
-    card.style.cssText = "background: #fff; border: 2px solid #ffccd5; border-radius: 12px; overflow: hidden; margin-bottom:15px;";
+    card.style.cssText = "background: #fff; border: 2px solid #ffccd5; border-radius: 12px; overflow: hidden;";
     
     let rowsHtml = items.map(row => `
       <tr style="border-bottom: 1px solid #ffe6ea;">
@@ -278,7 +286,7 @@ function renderCustomerPriceList() {
     `).join('');
 
     card.innerHTML = `
-      <div style="background: #d63031; color: white; padding: 12px; text-align: center; font-weight: bold; font-size:1.05rem;">
+      <div style="background: #d63031; color: white; padding: 12px; text-align: center; font-weight: bold;">
         🎂 ${cat.toUpperCase()} 🎂
       </div>
       <table style="width: 100%; border-collapse: collapse;">
@@ -289,7 +297,7 @@ function renderCustomerPriceList() {
   });
 }
 
-// TAB SWITCHER FUNCTION
+// TAB SWITCHER
 window.switchTab = function(tabId, ev) {
   document.querySelectorAll('.tab-content').forEach(tab => {
     tab.style.display = 'none';
@@ -312,7 +320,6 @@ window.switchTab = function(tabId, ev) {
   if (tabId === 'price-list') renderCustomerPriceList();
 };
 
-// MODAL CONTROLS
 function openImageModal(imgSrc) {
   const modal = document.getElementById("image-modal");
   const modalImg = document.getElementById("modal-img");
@@ -333,7 +340,7 @@ function updateDeliveryDisplay() {
   updateCartUI();
 }
 
-// INITIALIZE STORE & LOCATION LISTENERS
+// INITIAL DOM SETUP
 document.addEventListener("DOMContentLoaded", () => {
   switchTab("store");
   renderProducts();
@@ -403,4 +410,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
